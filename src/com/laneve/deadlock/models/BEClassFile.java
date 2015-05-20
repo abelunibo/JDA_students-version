@@ -1,26 +1,29 @@
 package com.laneve.deadlock.models;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class BEClassFile extends BEBase{
 	String className;
-	BEClassDec classDec;
-	BECostantPool costantPool;
-	HashMap<String, String> methods;
+	BEConstantPool costantPool;
+	HashMap<String, LinkedList<String>> methods;
 
-	
-	public BEClassFile(String className, BEClassDec classDec,
-			BECostantPool costantPool) {
-		
+
+	public BEClassFile(String className,BEConstantPool costantPool) {
 		super();
-		methods = new HashMap<String, String>();
 		this.className = className;
-		this.classDec = classDec;
 		this.costantPool = costantPool;
 	}
-	
+
 	public void addMethod(BEMethodDec methodDec){
-		
+
 	}
-	
+
+	public String getClassName() {
+		return className;
+	}
+
+	public BEConstantPool getCostantPool() {
+		return costantPool;
+	}
 }

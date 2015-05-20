@@ -1,103 +1,107 @@
 package com.laneve.deadlock.visitor;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Map.Entry;
 
 import org.antlr.v4.runtime.misc.NotNull;
-import org.antlr.v4.runtime.tree.ParseTree;
 
 import com.laneve.bytecode.parser.BytecodeBaseVisitor;
 import com.laneve.bytecode.parser.BytecodeParser;
 import com.laneve.bytecode.parser.BytecodeParser.MethodDeclarationContext;
+import com.laneve.bytecode.parser.BytecodeParser.RefContext;
+import com.laneve.bytecode.parser.BytecodeParser.TableEntryContext;
 import com.laneve.deadlock.models.BEBase;
-import com.laneve.deadlock.models.BEClassDec;
 import com.laneve.deadlock.models.BEClassFile;
-import com.laneve.deadlock.models.BECostantPool;
+import com.laneve.deadlock.models.BEConstantAndInfo;
+import com.laneve.deadlock.models.BEConstantPool;
 import com.laneve.deadlock.models.BEMethodDec;
+import com.laneve.deadlock.models.BERef;
+import com.laneve.deadlock.models.BETableEntries;
+import com.laneve.deadlock.models.BETableEntry;
 
 public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
 
-	HashMap<String, LinkedList<String>> method = new HashMap<String, LinkedList<String>>();
-	HashMap<String, ArrayList<String>> localvar = new HashMap<String, ArrayList<String>>();
 
-	@Override public BEBase visitClassfile(@NotNull BytecodeParser.ClassfileContext ctx) {
+	@Override 
+	public BEBase visitClassfile(@NotNull BytecodeParser.ClassfileContext ctx) {
 		BEClassFile classFile;
-		BECostantPool costantPool;
-		BEClassDec classDec;
-	
+		BEConstantPool costantPool;
+
 		String className = ctx.classDec().ilmio.getText();
-		costantPool = (BECostantPool)visitConstantPool(ctx.constantPool());
-		//TODO classdec forse non serve
-		classFile = new BEClassFile(className, null, costantPool);
-		
+		costantPool = (BEConstantPool) visitConstantPool(ctx.constantPool());
+
+		classFile = new BEClassFile(className,costantPool);
+
 		for(MethodDeclarationContext mdc : ctx.methodDeclaration()){
-			BEMethodDec methodDec = (BEMethodDec)visitMethodDeclaration(mdc);
+			BEMethodDec methodDec = (BEMethodDec) visitMethodDeclaration(mdc);
 			classFile.addMethod(methodDec);
 		}
-		
+
 		return classFile;
 	}
 
-	@Override public BEBase visitClassDec(@NotNull BytecodeParser.ClassDecContext ctx) { 
-		//	System.out.println("sdfafdaf'");		
+	@Override 
+	public BEBase visitClassDec(@NotNull BytecodeParser.ClassDecContext ctx) { 
 		return visitChildren(ctx); 
 	}
 
 	@Override 
 	public BEBase visitConstantPool(@NotNull BytecodeParser.ConstantPoolContext ctx) { 
-		BECostantPool costantPool = new BECostantPool();
-		HashMap<String, HashMap<String, ArrayList<String>>> cpools = new HashMap<String, HashMap<String,ArrayList<String>>>();	
-		HashMap<String,ArrayList<String>> cpoolref = new HashMap<String, ArrayList<String>>();
+		BETableEntries tableEntries;
+		BEConstantPool constantPool; 
+		tableEntries = (BETableEntries) visitTableEntries(ctx.tableEntries());
+		constantPool = new BEConstantPool(tableEntries);
+		return constantPool;
 
-		//System.out.println(ctx.tableEntries().getText());
-		int tableEntryNum = ctx.tableEntries().getChildCount();
-		for (int j = 0; j < tableEntryNum; j++){
-			String ref = ctx.tableEntries().getChild(j).getChild(0).getText();
-			String type = ctx.tableEntries().getChild(j).getChild(2).getChild(0).getText();
-
-			//System.out.println(ref +" "+type);
-
-			if(type.contains("Fieldref") || type.contains("Methodref") 
-					|| type.contains("NameAndType")  ){
-
-				ArrayList<String> a = new ArrayList<String>();
-				String r1 = ctx.tableEntries().getChild(j).getChild(2).getChild(1).getText();
-				String r2 = ctx.tableEntries().getChild(j).getChild(2).getChild(3).getText();
-				a.add(type);
-				a.add(r1);
-				a.add(r2);
-				cpoolref.put(ref, a);
-				//System.out.println(ref+" "+type+ " " + r1 + " "+ r2);
-
-			}else if(type.contains("Class") || type.contains("Integer")){
-
-				String r1 = ctx.tableEntries().getChild(j).getChild(2).getChild(1).getText();
-				ArrayList<String> a = new ArrayList<String>();
-				a.add(type);
-				a.add(r1);
-				cpoolref.put(ref,a);
-				//System.out.println(ref+" "+type+" "+r1);
-
-			}else{//UTF8 
-				ParseTree r1 = ctx.tableEntries().getChild(j).getChild(2);
-				if(r1!=null){
-					String s = r1.getText().substring(r1.getText().indexOf("8")+1, r1.getText().length());
-					ArrayList<String> a = new ArrayList<String>();
-					a.add(type);
-					a.add(s);
-					cpoolref.put(ref,a);
-					//System.out.println(type + " " + s);
-				}
-			}
-		}
-		costantPool.addHashMap(cpools);
-	//	cpools.put(className, cpoolref);
-	  //printCpool();
-		return costantPool; 
 	}
 
+	@Override
+	public BEBase visitTableEntries(@NotNull BytecodeParser.TableEntriesContext ctx) { 
+		BETableEntries tableEntries = new BETableEntries() ;
+
+		for(TableEntryContext tb : ctx.tableEntry()){
+			BETableEntry tableEntry = (BETableEntry) visitTableEntry(tb);
+			tableEntries.addTableEntry(tableEntry);
+		}
+		return tableEntries; 
+	}
+
+	@Override
+	public BEBase visitTableEntry(@NotNull BytecodeParser.TableEntryContext ctx) { 
+		BERef ref = (BERef) visitRef(ctx.ref());
+		BEConstantAndInfo costantAndInfo = (BEConstantAndInfo) visitConstantAndInfo(ctx.constantAndInfo());
+		BETableEntry tableEntry = new BETableEntry(ref, costantAndInfo);
+		return tableEntry; 
+	}
+
+	@Override
+	public BEBase visitRef(@NotNull BytecodeParser.RefContext ctx) { 
+		BERef ref = new BERef(ctx.getText());
+		return ref;
+	}
+
+	@Override
+	public BEBase visitConstantAndInfo(@NotNull BytecodeParser.ConstantAndInfoContext ctx) { 
+		ArrayList<String> c = new ArrayList<String>();
+		String type = ctx.getChild(0).getText();
+		c.add(type);
+
+		if(!type.contentEquals("Utf8")){
+			for(RefContext r : ctx.ref()){
+				BERef ref = (BERef) visitRef(r);
+				c.add(ref.getRef());
+			}
+		}else{
+			String utf8 = ctx.getText();
+			int n = utf8.indexOf('8');
+			String utf8Ref = utf8.subSequence(n+1, utf8.length()).toString();
+			c.add(utf8Ref);
+		}
+
+		BEConstantAndInfo costantAndInfo = new BEConstantAndInfo(c);
+		return costantAndInfo;
+	}
+
+	//TODO dobbiamo prendere il return dei metodi 
 	@Override 
 	public BEBase visitMethodDeclaration(@NotNull BytecodeParser.MethodDeclarationContext ctx) { 
 
@@ -112,52 +116,38 @@ public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
 
 		for (int j = 0; j < ctx.methodBody().instructions().getChildCount(); j++) {
 			instructions.add(ctx.methodBody().instructions().getChild(j).getText());
-			if(ctx.methodBody().instructions().getChild(j).getText().contains("invokespecial")||
-					ctx.methodBody().instructions().getChild(j).getText().contains("invokevirtual")){
-				
-				String is = ctx.methodBody().instructions().getChild(j).getText();
-				int n = is.indexOf('#');
-				String ref = is.substring(n, is.length());
-				
-				//System.out.print(ref);
-//				ArrayList<String> a = cpools.get(className).get(ref);
-//				//System.out.println(" "+a.get(1)+" "+a.get(2));
-//				//System.out.println(a.get(2));
-//				//System.out.println(" "+cpools.get(className).get(a.get(2)));
-//				ArrayList<String> a2 = cpools.get(className).get(a.get(2));
-//				
-//				//System.out.println(a2.get(2));
-//				ArrayList<String> a3 = cpools.get(className).get(a2.get(2));
-//				System.out.println(a3.get(1));
-//				a3.get(1).indexOf(')');
+
+			//TODO forse serve per recuperare il return nella costant pool
+			//			if(ctx.methodBody().instructions().getChild(j).getText().contains("invokespecial")||
+			//					ctx.methodBody().instructions().getChild(j).getText().contains("invokevirtual")){
+
+			String is = ctx.methodBody().instructions().getChild(j).getText();
+			//				System.out.println(is);
+
+			//				int n = is.indexOf('#');
+			//				String ref = is.substring(n, is.length());
+
+			//System.out.print(ref);
+			//				ArrayList<String> a = cpools.get(className).get(ref);
+			//				//System.out.println(" "+a.get(1)+" "+a.get(2));
+			//				//System.out.println(a.get(2));
+			//				//System.out.println(" "+cpools.get(className).get(a.get(2)));
+			//				ArrayList<String> a2 = cpools.get(className).get(a.get(2));
+			//				
+			//				//System.out.println(a2.get(2));
+			//				ArrayList<String> a3 = cpools.get(className).get(a2.get(2));
+			//				System.out.println(a3.get(1));
+			//				a3.get(1).indexOf(')');
 
 
-				//System.out.println(cpools.get(className).get(ref));
-				//System.out.println(ctx.methodBody().instructions().getChild(j).getText());
-			}
+			//System.out.println(cpools.get(className).get(ref));
+			//System.out.println(ctx.methodBody().instructions().getChild(j).getText());
 		}
+		//}
 
 		//System.out.println(ctx.getText());
 		return null;
 		//return visitChildren(ctx);
 	}
-
-	//	public void printCpool(){
-	//		for (Entry<String, HashMap<String, ArrayList<String>>> entry : cpools.entrySet()){
-	//			HashMap<String, ArrayList<String>> cpool = entry.getValue();
-	//			for (Entry<String, ArrayList<String>>  c : cpool.entrySet()){
-	//				int n = c.getValue().size();
-	//				switch (n) {
-	//				case 2:
-	//					System.out.println(entry.getKey()+" "+c.getKey() + " " + c.getValue().get(0)+ " " + c.getValue().get(1));
-	//					break;
-	//				case 3:
-	//					System.out.println(entry.getKey()+" "+c.getKey() + " " + c.getValue().get(0)+ " " + c.getValue().get(1)+ " " + c.getValue().get(2) );
-	//					break;
-	//				}
-	//
-	//			}
-	//		}
-	//	}
 
 }
