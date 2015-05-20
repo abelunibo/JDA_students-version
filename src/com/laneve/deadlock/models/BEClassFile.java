@@ -4,14 +4,23 @@ import java.util.HashMap;
 
 public class BEClassFile extends BEBase{
 	String className;
+	BEClassDec classDec;
+	BECostantPool costantPool;
+	HashMap<String, String> methods;
 
-	HashMap<String, String> methods = new HashMap<String, String>();
-
-	public BEClassFile(String name){
-		this.className = name;
+	
+	public BEClassFile(String className, BEClassDec classDec,
+			BECostantPool costantPool) {
+		
+		super();
+		methods = new HashMap<String, String>();
+		this.className = className;
+		this.classDec = classDec;
+		this.costantPool = costantPool;
 	}
 	
-	public String getName(){
-		return className;
+	public void addMethod(BEMethodDec methodDec){
+		
 	}
+	
 }

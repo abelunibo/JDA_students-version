@@ -235,13 +235,14 @@ public class BytecodeParser extends Parser {
 	}
 
 	public static class ClassDecContext extends ParserRuleContext {
+		public PackageAndClassNameContext ilmio;
 		public ClassModifierContext classModifier() {
 			return getRuleContext(ClassModifierContext.class,0);
 		}
+		public TerminalNode ENUM() { return getToken(BytecodeParser.ENUM, 0); }
 		public PackageAndClassNameContext packageAndClassName(int i) {
 			return getRuleContext(PackageAndClassNameContext.class,i);
 		}
-		public TerminalNode ENUM() { return getToken(BytecodeParser.ENUM, 0); }
 		public TerminalNode CLASS() { return getToken(BytecodeParser.CLASS, 0); }
 		public List<PackageAndClassNameContext> packageAndClassName() {
 			return getRuleContexts(PackageAndClassNameContext.class);
@@ -286,7 +287,7 @@ public class BytecodeParser extends Parser {
 			_errHandler.recoverInline(this);
 			}
 			consume();
-			setState(97); packageAndClassName(0);
+			setState(97); ((ClassDecContext)_localctx).ilmio = packageAndClassName(0);
 			setState(100);
 			_la = _input.LA(1);
 			if (_la==T__17) {

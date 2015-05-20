@@ -1,6 +1,7 @@
 package com.laneve.deadlock.visitor;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map.Entry;
 
@@ -9,22 +10,34 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 import com.laneve.bytecode.parser.BytecodeBaseVisitor;
 import com.laneve.bytecode.parser.BytecodeParser;
+import com.laneve.bytecode.parser.BytecodeParser.MethodDeclarationContext;
 import com.laneve.deadlock.models.BEBase;
+import com.laneve.deadlock.models.BEClassDec;
 import com.laneve.deadlock.models.BEClassFile;
+import com.laneve.deadlock.models.BECostantPool;
+import com.laneve.deadlock.models.BEMethodDec;
 
 public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
 
-	String className;
-	HashMap<String, HashMap<String, ArrayList<String>>> cpools = new HashMap<String, HashMap<String,ArrayList<String>>>();
 	HashMap<String, LinkedList<String>> method = new HashMap<String, LinkedList<String>>();
 	HashMap<String, ArrayList<String>> localvar = new HashMap<String, ArrayList<String>>();
 
 	@Override public BEBase visitClassfile(@NotNull BytecodeParser.ClassfileContext ctx) {
-		className = ctx.classDec().packageAndClassName().get(0).getText(); 		
-		BEBase beClassFile = new BEClassFile(className);
-		System.out.println(className);
-		//return beClassFile;
-		return visitChildren(ctx);
+		BEClassFile classFile;
+		BECostantPool costantPool;
+		BEClassDec classDec;
+	
+		String className = ctx.classDec().ilmio.getText();
+		costantPool = (BECostantPool)visitConstantPool(ctx.constantPool());
+		//TODO classdec forse non serve
+		classFile = new BEClassFile(className, null, costantPool);
+		
+		for(MethodDeclarationContext mdc : ctx.methodDeclaration()){
+			BEMethodDec methodDec = (BEMethodDec)visitMethodDeclaration(mdc);
+			classFile.addMethod(methodDec);
+		}
+		
+		return classFile;
 	}
 
 	@Override public BEBase visitClassDec(@NotNull BytecodeParser.ClassDecContext ctx) { 
@@ -34,7 +47,8 @@ public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
 
 	@Override 
 	public BEBase visitConstantPool(@NotNull BytecodeParser.ConstantPoolContext ctx) { 
-
+		BECostantPool costantPool = new BECostantPool();
+		HashMap<String, HashMap<String, ArrayList<String>>> cpools = new HashMap<String, HashMap<String,ArrayList<String>>>();	
 		HashMap<String,ArrayList<String>> cpoolref = new HashMap<String, ArrayList<String>>();
 
 		//System.out.println(ctx.tableEntries().getText());
@@ -78,13 +92,15 @@ public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
 				}
 			}
 		}
-		cpools.put(className, cpoolref);
-		//printCpool();
-		return visitChildren(ctx); 
+		costantPool.addHashMap(cpools);
+	//	cpools.put(className, cpoolref);
+	  //printCpool();
+		return costantPool; 
 	}
 
 	@Override 
 	public BEBase visitMethodDeclaration(@NotNull BytecodeParser.MethodDeclarationContext ctx) { 
+
 		LinkedList<String> instructions = new LinkedList<String>();
 		String signature = "";
 
@@ -104,16 +120,16 @@ public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
 				String ref = is.substring(n, is.length());
 				
 				//System.out.print(ref);
-				ArrayList<String> a = cpools.get(className).get(ref);
-				//System.out.println(" "+a.get(1)+" "+a.get(2));
-				//System.out.println(a.get(2));
-				//System.out.println(" "+cpools.get(className).get(a.get(2)));
-				ArrayList<String> a2 = cpools.get(className).get(a.get(2));
-				
-				//System.out.println(a2.get(2));
-				ArrayList<String> a3 = cpools.get(className).get(a2.get(2));
-				System.out.println(a3.get(1));
-				a3.get(1).indexOf(')');
+//				ArrayList<String> a = cpools.get(className).get(ref);
+//				//System.out.println(" "+a.get(1)+" "+a.get(2));
+//				//System.out.println(a.get(2));
+//				//System.out.println(" "+cpools.get(className).get(a.get(2)));
+//				ArrayList<String> a2 = cpools.get(className).get(a.get(2));
+//				
+//				//System.out.println(a2.get(2));
+//				ArrayList<String> a3 = cpools.get(className).get(a2.get(2));
+//				System.out.println(a3.get(1));
+//				a3.get(1).indexOf(')');
 
 
 				//System.out.println(cpools.get(className).get(ref));

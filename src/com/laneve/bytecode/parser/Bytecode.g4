@@ -7,7 +7,7 @@ classfile
 	;
 
 classDec
-	: classModifier? (CLASS | ENUM) packageAndClassName ('extends' packageAndClassName)? (('implements' packageAndClassName) (',' packageAndClassName)*)?
+	: classModifier? (CLASS | ENUM) ilmio=packageAndClassName ('extends' packageAndClassName)? (('implements' packageAndClassName) (',' packageAndClassName)*)?
 	;
 	
 CLASS:'class';
