@@ -1,0 +1,224 @@
+// Generated from Bytecode.g4 by ANTLR 4.4
+package com.laneve.bytecode.parser;
+import org.antlr.v4.runtime.misc.NotNull;
+import org.antlr.v4.runtime.tree.ParseTreeVisitor;
+
+/**
+ * This interface defines a complete generic visitor for a parse tree produced
+ * by {@link BytecodeParser}.
+ *
+ * @param <T> The return type of the visit operation. Use {@link Void} for
+ * operations with no return type.
+ */
+public interface BytecodeVisitor<T> extends ParseTreeVisitor<T> {
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#classfile}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitClassfile(@NotNull BytecodeParser.ClassfileContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#exceptionType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExceptionType(@NotNull BytecodeParser.ExceptionTypeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#instructions}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInstructions(@NotNull BytecodeParser.InstructionsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#methodDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMethodDeclaration(@NotNull BytecodeParser.MethodDeclarationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#fieldName}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFieldName(@NotNull BytecodeParser.FieldNameContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#exceptionTypeList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExceptionTypeList(@NotNull BytecodeParser.ExceptionTypeListContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#methodBody}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMethodBody(@NotNull BytecodeParser.MethodBodyContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#classModifier}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitClassModifier(@NotNull BytecodeParser.ClassModifierContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#packageAndClassName}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPackageAndClassName(@NotNull BytecodeParser.PackageAndClassNameContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#methodDeclarator}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMethodDeclarator(@NotNull BytecodeParser.MethodDeclaratorContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#num}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNum(@NotNull BytecodeParser.NumContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#referenceType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReferenceType(@NotNull BytecodeParser.ReferenceTypeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#innerClass}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInnerClass(@NotNull BytecodeParser.InnerClassContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#constantPool}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConstantPool(@NotNull BytecodeParser.ConstantPoolContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#type}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitType(@NotNull BytecodeParser.TypeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#result}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitResult(@NotNull BytecodeParser.ResultContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#ref}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRef(@NotNull BytecodeParser.RefContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#methodHeader}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMethodHeader(@NotNull BytecodeParser.MethodHeaderContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#identifierExtended}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIdentifierExtended(@NotNull BytecodeParser.IdentifierExtendedContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#fieldModifier}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFieldModifier(@NotNull BytecodeParser.FieldModifierContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#methodModifier}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMethodModifier(@NotNull BytecodeParser.MethodModifierContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#primitiveType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrimitiveType(@NotNull BytecodeParser.PrimitiveTypeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#formalParameter}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFormalParameter(@NotNull BytecodeParser.FormalParameterContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#floatingPointType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFloatingPointType(@NotNull BytecodeParser.FloatingPointTypeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#tableEntry}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTableEntry(@NotNull BytecodeParser.TableEntryContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#methodName}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMethodName(@NotNull BytecodeParser.MethodNameContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#integralType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIntegralType(@NotNull BytecodeParser.IntegralTypeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#classDec}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitClassDec(@NotNull BytecodeParser.ClassDecContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#constantAndInfo}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConstantAndInfo(@NotNull BytecodeParser.ConstantAndInfoContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#tableEntries}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTableEntries(@NotNull BytecodeParser.TableEntriesContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#instruction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInstruction(@NotNull BytecodeParser.InstructionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#throws_}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitThrows_(@NotNull BytecodeParser.Throws_Context ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#numericType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNumericType(@NotNull BytecodeParser.NumericTypeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#formalParameters}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFormalParameters(@NotNull BytecodeParser.FormalParametersContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BytecodeParser#fields}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFields(@NotNull BytecodeParser.FieldsContext ctx);
+}
