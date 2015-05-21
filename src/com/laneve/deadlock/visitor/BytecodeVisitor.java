@@ -6,20 +6,27 @@ import org.antlr.v4.runtime.misc.NotNull;
 
 import com.laneve.bytecode.parser.BytecodeBaseVisitor;
 import com.laneve.bytecode.parser.BytecodeParser;
+import com.laneve.bytecode.parser.BytecodeParser.FormalParameterContext;
+import com.laneve.bytecode.parser.BytecodeParser.InstructionContext;
 import com.laneve.bytecode.parser.BytecodeParser.MethodDeclarationContext;
+import com.laneve.bytecode.parser.BytecodeParser.MethodModifierContext;
 import com.laneve.bytecode.parser.BytecodeParser.RefContext;
 import com.laneve.bytecode.parser.BytecodeParser.TableEntryContext;
 import com.laneve.deadlock.models.BEBase;
 import com.laneve.deadlock.models.BEClassFile;
 import com.laneve.deadlock.models.BEConstantAndInfo;
 import com.laneve.deadlock.models.BEConstantPool;
-import com.laneve.deadlock.models.BEMethodDec;
+import com.laneve.deadlock.models.BEInstruction;
+import com.laneve.deadlock.models.BEMethodBody;
+import com.laneve.deadlock.models.BEMethodDeclaration;
+import com.laneve.deadlock.models.BEMethodDeclarator;
+import com.laneve.deadlock.models.BEMethodHeader;
+import com.laneve.deadlock.models.BEMethodModifier;
 import com.laneve.deadlock.models.BERef;
 import com.laneve.deadlock.models.BETableEntries;
 import com.laneve.deadlock.models.BETableEntry;
 
 public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
-
 
 	@Override 
 	public BEBase visitClassfile(@NotNull BytecodeParser.ClassfileContext ctx) {
@@ -32,7 +39,7 @@ public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
 		classFile = new BEClassFile(className,costantPool);
 
 		for(MethodDeclarationContext mdc : ctx.methodDeclaration()){
-			BEMethodDec methodDec = (BEMethodDec) visitMethodDeclaration(mdc);
+			BEMethodDeclaration methodDec = (BEMethodDeclaration) visitMethodDeclaration(mdc);
 			classFile.addMethod(methodDec);
 		}
 
@@ -57,7 +64,6 @@ public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
 	@Override
 	public BEBase visitTableEntries(@NotNull BytecodeParser.TableEntriesContext ctx) { 
 		BETableEntries tableEntries = new BETableEntries() ;
-
 		for(TableEntryContext tb : ctx.tableEntry()){
 			BETableEntry tableEntry = (BETableEntry) visitTableEntry(tb);
 			tableEntries.addTableEntry(tableEntry);
@@ -75,7 +81,9 @@ public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
 
 	@Override
 	public BEBase visitRef(@NotNull BytecodeParser.RefContext ctx) { 
-		BERef ref = new BERef(ctx.getText());
+		BERef ref = null;
+		if(!(ctx == null))
+			ref = new BERef(ctx.getText());
 		return ref;
 	}
 
@@ -101,53 +109,72 @@ public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
 		return costantAndInfo;
 	}
 
-	//TODO dobbiamo prendere il return dei metodi 
 	@Override 
 	public BEBase visitMethodDeclaration(@NotNull BytecodeParser.MethodDeclarationContext ctx) { 
+		BEMethodDeclaration methodDeclaration;
+		BEMethodModifier methodModifier = new BEMethodModifier("");;
+		BEMethodBody methodBody;
+		BEMethodHeader methodHeader;
 
-		LinkedList<String> instructions = new LinkedList<String>();
-		String signature = "";
+		for(MethodModifierContext m : ctx.methodModifier()){
+			BEMethodModifier modifier = (BEMethodModifier)visitMethodModifier(m);
+			if(modifier.getModifier().contentEquals("syncronized"))
+				methodModifier = modifier;
 
-		if(ctx.getText().contains("synchronized"))
-			signature+= "synchronized ";
-
-		signature+= ctx.methodHeader().methodDeclarator().getText();
-		//System.out.println(signature);
-
-		for (int j = 0; j < ctx.methodBody().instructions().getChildCount(); j++) {
-			instructions.add(ctx.methodBody().instructions().getChild(j).getText());
-
-			//TODO forse serve per recuperare il return nella costant pool
-			//			if(ctx.methodBody().instructions().getChild(j).getText().contains("invokespecial")||
-			//					ctx.methodBody().instructions().getChild(j).getText().contains("invokevirtual")){
-
-			String is = ctx.methodBody().instructions().getChild(j).getText();
-			//				System.out.println(is);
-
-			//				int n = is.indexOf('#');
-			//				String ref = is.substring(n, is.length());
-
-			//System.out.print(ref);
-			//				ArrayList<String> a = cpools.get(className).get(ref);
-			//				//System.out.println(" "+a.get(1)+" "+a.get(2));
-			//				//System.out.println(a.get(2));
-			//				//System.out.println(" "+cpools.get(className).get(a.get(2)));
-			//				ArrayList<String> a2 = cpools.get(className).get(a.get(2));
-			//				
-			//				//System.out.println(a2.get(2));
-			//				ArrayList<String> a3 = cpools.get(className).get(a2.get(2));
-			//				System.out.println(a3.get(1));
-			//				a3.get(1).indexOf(')');
-
-
-			//System.out.println(cpools.get(className).get(ref));
-			//System.out.println(ctx.methodBody().instructions().getChild(j).getText());
 		}
-		//}
+		methodHeader = (BEMethodHeader) visitMethodHeader(ctx.methodHeader());
+		methodBody = (BEMethodBody) visitMethodBody(ctx.methodBody());
+		methodDeclaration = new BEMethodDeclaration(methodModifier, methodHeader, methodBody);
 
-		//System.out.println(ctx.getText());
-		return null;
-		//return visitChildren(ctx);
+		return methodDeclaration;
+	}
+
+	@Override public BEBase visitMethodBody(@NotNull BytecodeParser.MethodBodyContext ctx) {
+		BEMethodBody methodBody;
+		LinkedList<BEInstruction> instruction = new LinkedList<BEInstruction>();
+		for(InstructionContext i : ctx.instructions().instruction()){
+			instruction.add((BEInstruction) visitInstruction(i)); 
+		}
+		methodBody = new BEMethodBody(instruction);
+		return methodBody; 
+	}
+
+	@Override public BEBase visitInstruction(@NotNull BytecodeParser.InstructionContext ctx) { 
+		BERef ref = (BERef) visitRef(ctx.ref());
+		BEInstruction instruction = new BEInstruction(ctx.getChild(0).getText(), ctx.getChild(1).getText(), ref);
+
+		return instruction;
+	}
+
+
+	@Override public BEBase visitMethodModifier(@NotNull BytecodeParser.MethodModifierContext ctx) {
+		BEMethodModifier modifier = new BEMethodModifier(ctx.getText());
+		return modifier; 
+	}
+
+	@Override public BEBase visitMethodHeader(@NotNull BytecodeParser.MethodHeaderContext ctx) { 
+		BEMethodHeader methodHeader;
+		String result = null;
+		BEMethodDeclarator methodDeclarator = (BEMethodDeclarator) visitMethodDeclarator(ctx.methodDeclarator());
+		if(ctx.result() == null)
+			result = "void";
+		else result = ctx.result().getText();
+
+		methodHeader = new BEMethodHeader(result,methodDeclarator);
+		return methodHeader;
+	}
+
+	@Override public BEBase visitMethodDeclarator(@NotNull BytecodeParser.MethodDeclaratorContext ctx) { 
+		BEMethodDeclarator methodDeclarator;
+		ArrayList<FormalParameterContext> formalParameters = new ArrayList<BytecodeParser.FormalParameterContext>();
+		if(!(ctx.formalParameters() == null)){
+			for(FormalParameterContext f : ctx.formalParameters().formalParameter()){
+				formalParameters.add(f);
+			}
+		}
+		methodDeclarator = new BEMethodDeclarator(ctx.methodName().packageAndClassName().getText(), formalParameters);
+
+		return methodDeclarator; 
 	}
 
 }

@@ -1,12 +1,11 @@
 package com.laneve.deadlock.models;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 
 public class BEClassFile extends BEBase{
 	String className;
 	BEConstantPool costantPool;
-	HashMap<String, LinkedList<String>> methods;
+	HashMap<BEMethodHeader, BEMethodDeclaration> methods = new HashMap<BEMethodHeader, BEMethodDeclaration>();
 
 
 	public BEClassFile(String className,BEConstantPool costantPool) {
@@ -14,11 +13,12 @@ public class BEClassFile extends BEBase{
 		this.className = className;
 		this.costantPool = costantPool;
 	}
-
-	public void addMethod(BEMethodDec methodDec){
-
+	
+	public void addMethod(BEMethodDeclaration methodDec) {
+		methods.put(methodDec.getMethodHeader(), methodDec);
+		
 	}
-
+	
 	public String getClassName() {
 		return className;
 	}
@@ -26,4 +26,9 @@ public class BEClassFile extends BEBase{
 	public BEConstantPool getCostantPool() {
 		return costantPool;
 	}
+
+	public HashMap<BEMethodHeader, BEMethodDeclaration> getMethods() {
+		return methods;
+	}
+
 }
