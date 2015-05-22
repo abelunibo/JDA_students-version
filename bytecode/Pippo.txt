@@ -1,0 +1,156 @@
+Classfile /Users/andrea/Documents/workspace/Prova/bin/Pippo.class
+  Last modified 22-mag-2015; size 740 bytes
+  MD5 checksum 4f453c943a63055a86f7e3313cfcf229
+  Compiled from "Pippo.java"
+public class Pippo
+  minor version: 0
+  major version: 52
+  flags: ACC_PUBLIC, ACC_SUPER
+Constant pool:
+   #1 = Class              #2             // Pippo
+   #2 = Utf8               Pippo
+   #3 = Class              #4             // java/lang/Object
+   #4 = Utf8               java/lang/Object
+   #5 = Utf8               a
+   #6 = Utf8               Ljava/lang/Object;
+   #7 = Utf8               b
+   #8 = Utf8               <init>
+   #9 = Utf8               ()V
+  #10 = Utf8               Code
+  #11 = Methodref          #3.#12         // java/lang/Object."<init>":()V
+  #12 = NameAndType        #8:#9          // "<init>":()V
+  #13 = Fieldref           #1.#14         // Pippo.a:Ljava/lang/Object;
+  #14 = NameAndType        #5:#6          // a:Ljava/lang/Object;
+  #15 = Fieldref           #1.#16         // Pippo.b:Ljava/lang/Object;
+  #16 = NameAndType        #7:#6          // b:Ljava/lang/Object;
+  #17 = Utf8               LineNumberTable
+  #18 = Utf8               LocalVariableTable
+  #19 = Utf8               this
+  #20 = Utf8               LPippo;
+  #21 = Utf8               takelock
+  #22 = Utf8               Exceptions
+  #23 = Class              #24            // java/lang/InterruptedException
+  #24 = Utf8               java/lang/InterruptedException
+  #25 = Utf8               StackMapTable
+  #26 = Class              #27            // java/lang/Throwable
+  #27 = Utf8               java/lang/Throwable
+  #28 = Utf8               takelock2
+  #29 = Utf8               SourceFile
+  #30 = Utf8               Pippo.java
+{
+  public Pippo();
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+      stack=3, locals=1, args_size=1
+         0: aload_0
+         1: invokespecial #11                 // Method java/lang/Object."<init>":()V
+         4: aload_0
+         5: new           #3                  // class java/lang/Object
+         8: dup
+         9: invokespecial #11                 // Method java/lang/Object."<init>":()V
+        12: putfield      #13                 // Field a:Ljava/lang/Object;
+        15: aload_0
+        16: new           #3                  // class java/lang/Object
+        19: dup
+        20: invokespecial #11                 // Method java/lang/Object."<init>":()V
+        23: putfield      #15                 // Field b:Ljava/lang/Object;
+        26: return
+      LineNumberTable:
+        line 2: 0
+        line 4: 4
+        line 5: 15
+        line 2: 26
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0      27     0  this   LPippo;
+
+  public void takelock() throws java.lang.InterruptedException;
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Exceptions:
+      throws java.lang.InterruptedException
+    Code:
+      stack=2, locals=2, args_size=1
+         0: aload_0
+         1: getfield      #13                 // Field a:Ljava/lang/Object;
+         4: dup
+         5: astore_1
+         6: monitorenter
+         7: aload_0
+         8: getfield      #15                 // Field b:Ljava/lang/Object;
+        11: dup
+        12: monitorenter
+        13: monitorexit
+        14: aload_1
+        15: monitorexit
+        16: goto          22
+        19: aload_1
+        20: monitorexit
+        21: athrow
+        22: return
+      Exception table:
+         from    to  target type
+             7    16    19   any
+            19    21    19   any
+      LineNumberTable:
+        line 8: 0
+        line 9: 7
+        line 8: 14
+        line 12: 22
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0      23     0  this   LPippo;
+      StackMapTable: number_of_entries = 2
+        frame_type = 255 /* full_frame */
+          offset_delta = 19
+          locals = [ class Pippo, class java/lang/Object ]
+          stack = [ class java/lang/Throwable ]
+        frame_type = 250 /* chop */
+          offset_delta = 2
+
+  public void takelock2() throws java.lang.InterruptedException;
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Exceptions:
+      throws java.lang.InterruptedException
+    Code:
+      stack=2, locals=2, args_size=1
+         0: aload_0
+         1: getfield      #15                 // Field b:Ljava/lang/Object;
+         4: dup
+         5: astore_1
+         6: monitorenter
+         7: aload_0
+         8: getfield      #13                 // Field a:Ljava/lang/Object;
+        11: dup
+        12: monitorenter
+        13: monitorexit
+        14: aload_1
+        15: monitorexit
+        16: goto          22
+        19: aload_1
+        20: monitorexit
+        21: athrow
+        22: return
+      Exception table:
+         from    to  target type
+             7    16    19   any
+            19    21    19   any
+      LineNumberTable:
+        line 15: 0
+        line 16: 7
+        line 15: 14
+        line 19: 22
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0      23     0  this   LPippo;
+      StackMapTable: number_of_entries = 2
+        frame_type = 255 /* full_frame */
+          offset_delta = 19
+          locals = [ class Pippo, class java/lang/Object ]
+          stack = [ class java/lang/Throwable ]
+        frame_type = 250 /* chop */
+          offset_delta = 2
+}
+SourceFile: "Pippo.java"
