@@ -48,7 +48,7 @@ public class BEInstruction extends BEBase{
 
 	@Override
 	public LamBase generateLam(Environment environment) {
-		LamZero l = new LamZero();
+		LamBase l = new LamZero();
 		l.setLam(instructionName);
 		return l;
 	}

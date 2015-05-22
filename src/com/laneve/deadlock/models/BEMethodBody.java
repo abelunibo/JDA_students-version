@@ -3,11 +3,10 @@ package com.laneve.deadlock.models;
 import java.util.LinkedList;
 
 import com.laneve.deadlock.models.lam.LamBase;
+import com.laneve.deadlock.models.lam.LamSequence;
 
 public class BEMethodBody extends BEBase{
 	LinkedList<BEInstruction> instructions;
-	//LinkedList<LamBase> lamebase;
-
 
 	public BEMethodBody(LinkedList<BEInstruction> instructions) {
 		this.instructions = instructions;
@@ -16,15 +15,14 @@ public class BEMethodBody extends BEBase{
 	public LinkedList<BEInstruction> getInstructions() {
 		return instructions;
 	}
-
+	
 	@Override
 	public LamBase generateLam(Environment environment) {
-		LamBase l = null;
+		LamSequence l = new LamSequence();
 		environment.openScope();
 		for(BEInstruction i : instructions)
-			l = i.generateLam(environment); 
+			l.createSequence(i.generateLam(environment)); 
 		environment.closeScope();
-
 		return l;
 	}
 }

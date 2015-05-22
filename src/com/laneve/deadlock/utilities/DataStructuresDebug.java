@@ -45,9 +45,9 @@ public class DataStructuresDebug {
 					parameters += '('+f.getText()+" "+')';
 				}
 				Logger.logInfo(m.getKey().getSignature()+" "+parameters);
-				
+
 				for(BEInstruction i :  m.getValue().getMethodBody().getInstructions()){
-						Logger.logInfo(i.getIndex()+" "+i.getName()+" "+i.getNat()+" "+i.getNumber()+" "+i.getRef());
+					Logger.logInfo(i.getIndex()+" "+i.getName()+" "+i.getNat()+" "+i.getNumber()+" "+i.getRef());
 
 				}
 			}
@@ -55,10 +55,15 @@ public class DataStructuresDebug {
 	}
 
 	public static void printGenerateLams(ArrayList<LamBase> lams) {
-		for(LamBase l : lams){
-			System.out.println("\n Lam \n");
-			System.out.println(l.getLam());
+		int i = 0;
+		for(LamBase l : lams ){
+			System.out.print("LAM :"+ i +" ");
+			System.out.println(l.getLam()+" ; ");
+			i++;
+
 		}
+		System.out.println("\n");
 	}
+
 
 }

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import com.laneve.deadlock.models.lam.LamBase;
+import com.laneve.deadlock.models.lam.LamSequence;
 
 public class BEClassFile extends BEBase{
 	String className;
@@ -33,15 +34,14 @@ public class BEClassFile extends BEBase{
 	public HashMap<BEMethodHeader, BEMethodDeclaration> getMethods() {
 		return methods;
 	}
-
+		
 	@Override
 	public LamBase generateLam(Environment environment) {
-		LamBase l = null;
+		LamSequence l = new LamSequence();
 		for(Entry<BEMethodHeader, BEMethodDeclaration> m : methods.entrySet()){
 			BEMethodDeclaration methodDeclaration = m.getValue();
-			l = methodDeclaration.generateLam(environment);
+			l.createSequence(methodDeclaration.generateLam(environment));
 		}
 		return l;
 	}
-
 }
