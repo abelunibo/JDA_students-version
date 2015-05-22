@@ -6,11 +6,13 @@ import org.antlr.v4.runtime.misc.NotNull;
 
 import com.laneve.bytecode.parser.BytecodeBaseVisitor;
 import com.laneve.bytecode.parser.BytecodeParser;
+import com.laneve.bytecode.parser.BytecodeParser.ConstContext;
 import com.laneve.bytecode.parser.BytecodeParser.FormalParameterContext;
-import com.laneve.bytecode.parser.BytecodeParser.InstructionContext;
+import com.laneve.bytecode.parser.BytecodeParser.InstructionLineContext;
 import com.laneve.bytecode.parser.BytecodeParser.MethodDeclarationContext;
 import com.laneve.bytecode.parser.BytecodeParser.MethodModifierContext;
 import com.laneve.bytecode.parser.BytecodeParser.RefContext;
+import com.laneve.bytecode.parser.BytecodeParser.StoreContext;
 import com.laneve.bytecode.parser.BytecodeParser.TableEntryContext;
 import com.laneve.deadlock.models.BEBase;
 import com.laneve.deadlock.models.BEClassFile;
@@ -22,35 +24,38 @@ import com.laneve.deadlock.models.BEMethodDeclaration;
 import com.laneve.deadlock.models.BEMethodDeclarator;
 import com.laneve.deadlock.models.BEMethodHeader;
 import com.laneve.deadlock.models.BEMethodModifier;
-import com.laneve.deadlock.models.BERef;
 import com.laneve.deadlock.models.BETableEntries;
 import com.laneve.deadlock.models.BETableEntry;
+import com.laneve.deadlock.models.instructions.BEAthrow;
+import com.laneve.deadlock.models.instructions.BEConst;
+import com.laneve.deadlock.models.instructions.BEDup;
+import com.laneve.deadlock.models.instructions.BEGoto;
+import com.laneve.deadlock.models.instructions.BEIf;
+import com.laneve.deadlock.models.instructions.BEInvoke;
+import com.laneve.deadlock.models.instructions.BELoad;
+import com.laneve.deadlock.models.instructions.BEMonitorEnter;
+import com.laneve.deadlock.models.instructions.BEMonitorExit;
+import com.laneve.deadlock.models.instructions.BENew;
+import com.laneve.deadlock.models.instructions.BENotImplemented;
+import com.laneve.deadlock.models.instructions.BEOperation;
+import com.laneve.deadlock.models.instructions.BEPop;
+import com.laneve.deadlock.models.instructions.BEReturn;
+import com.laneve.deadlock.models.instructions.BEStore;
 
 public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
 
 	@Override 
-	public BEBase visitClassfile(@NotNull BytecodeParser.ClassfileContext ctx) {
-		BEClassFile classFile;
-		BEConstantPool costantPool;
-
+	public BEBase visitClassfile(@NotNull BytecodeParser.ClassfileContext ctx) {		
 		String className = ctx.classDec().ilmio.getText();
-		costantPool = (BEConstantPool) visitConstantPool(ctx.constantPool());
-
-		classFile = new BEClassFile(className,costantPool);
-
+		BEConstantPool costantPool = (BEConstantPool) visitConstantPool(ctx.constantPool());
+		BEClassFile classFile = new BEClassFile(className,costantPool);
 		for(MethodDeclarationContext mdc : ctx.methodDeclaration()){
 			BEMethodDeclaration methodDec = (BEMethodDeclaration) visitMethodDeclaration(mdc);
 			classFile.addMethod(methodDec);
 		}
-
 		return classFile;
 	}
-
-	@Override 
-	public BEBase visitClassDec(@NotNull BytecodeParser.ClassDecContext ctx) { 
-		return visitChildren(ctx); 
-	}
-
+	
 	@Override 
 	public BEBase visitConstantPool(@NotNull BytecodeParser.ConstantPoolContext ctx) { 
 		BETableEntries tableEntries;
@@ -58,7 +63,6 @@ public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
 		tableEntries = (BETableEntries) visitTableEntries(ctx.tableEntries());
 		constantPool = new BEConstantPool(tableEntries);
 		return constantPool;
-
 	}
 
 	@Override
@@ -73,18 +77,10 @@ public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
 
 	@Override
 	public BEBase visitTableEntry(@NotNull BytecodeParser.TableEntryContext ctx) { 
-		BERef ref = (BERef) visitRef(ctx.ref());
+		String ref = ctx.ref().getText();
 		BEConstantAndInfo costantAndInfo = (BEConstantAndInfo) visitConstantAndInfo(ctx.constantAndInfo());
 		BETableEntry tableEntry = new BETableEntry(ref, costantAndInfo);
 		return tableEntry; 
-	}
-
-	@Override
-	public BEBase visitRef(@NotNull BytecodeParser.RefContext ctx) { 
-		BERef ref = null;
-		if(!(ctx == null))
-			ref = new BERef(ctx.getText());
-		return ref;
 	}
 
 	@Override
@@ -95,8 +91,7 @@ public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
 
 		if(!type.contentEquals("Utf8")){
 			for(RefContext r : ctx.ref()){
-				BERef ref = (BERef) visitRef(r);
-				c.add(ref.getRef());
+				c.add(r.getText());
 			}
 		}else{
 			String utf8 = ctx.getText();
@@ -108,7 +103,7 @@ public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
 		BEConstantAndInfo costantAndInfo = new BEConstantAndInfo(c);
 		return costantAndInfo;
 	}
-
+	
 	@Override 
 	public BEBase visitMethodDeclaration(@NotNull BytecodeParser.MethodDeclarationContext ctx) { 
 		BEMethodDeclaration methodDeclaration;
@@ -128,24 +123,6 @@ public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
 
 		return methodDeclaration;
 	}
-
-	@Override public BEBase visitMethodBody(@NotNull BytecodeParser.MethodBodyContext ctx) {
-		BEMethodBody methodBody;
-		LinkedList<BEInstruction> instruction = new LinkedList<BEInstruction>();
-		for(InstructionContext i : ctx.instructions().instruction()){
-			instruction.add((BEInstruction) visitInstruction(i)); 
-		}
-		methodBody = new BEMethodBody(instruction);
-		return methodBody; 
-	}
-
-	@Override public BEBase visitInstruction(@NotNull BytecodeParser.InstructionContext ctx) { 
-		BERef ref = (BERef) visitRef(ctx.ref());
-		BEInstruction instruction = new BEInstruction(ctx.getChild(0).getText(), ctx.getChild(1).getText(), ref);
-
-		return instruction;
-	}
-
 
 	@Override public BEBase visitMethodModifier(@NotNull BytecodeParser.MethodModifierContext ctx) {
 		BEMethodModifier modifier = new BEMethodModifier(ctx.getText());
@@ -176,5 +153,86 @@ public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
 
 		return methodDeclarator; 
 	}
+	
+	@Override public BEBase visitMethodBody(@NotNull BytecodeParser.MethodBodyContext ctx) {
+		BEMethodBody methodBody;
+		LinkedList<BEInstruction> instruction = new LinkedList<BEInstruction>();
+		for(InstructionLineContext i : ctx.instructionLine()){
+			instruction.add((BEInstruction) visitInstructionLine(i)); 
+		}
+		methodBody = new BEMethodBody(instruction);
+		return methodBody; 
+	}
+	@Override public BEBase visitInstructionLine(@NotNull BytecodeParser.InstructionLineContext ctx) {
+		BEInstruction instruction = (BEInstruction) visit(ctx.instruction());
+		instruction.setIndex(ctx.INDEX() == null ? " ":ctx.INDEX().getText());
+		instruction.setNumber(ctx.num() == null ? " ":ctx.num().getText());
+		instruction.setNat(ctx.NAT() == null? " ":ctx.NAT().getText());
+		instruction.setRef(ctx.ref() == null? " ":ctx.ref().getText());
+		return instruction;
+	}
+	
+	@Override public BEBase visitPop(com.laneve.bytecode.parser.BytecodeParser.PopContext ctx) {
+		return new BEPop(ctx.getText());
+	};
+	
+	@Override public BEBase visitNew(com.laneve.bytecode.parser.BytecodeParser.NewContext ctx) {
+		return new BENew(ctx.getText());
+	};
+	
+	@Override public BEBase visitMonitorexit(com.laneve.bytecode.parser.BytecodeParser.MonitorexitContext ctx) {
+		return new BEMonitorExit(ctx.getText());
+	};
+	
+	@Override public BEBase visitMonitorenter(com.laneve.bytecode.parser.BytecodeParser.MonitorenterContext ctx) {
+		return new BEMonitorEnter(ctx.getText());
+	};
+	
+	@Override public BEBase visitInvoke(com.laneve.bytecode.parser.BytecodeParser.InvokeContext ctx) {
+		return new BEInvoke(ctx.getText());
+	};
+	
+	@Override public BEBase visitIf(com.laneve.bytecode.parser.BytecodeParser.IfContext ctx) {
+		return new BEIf(ctx.getText());
+	};
+	
+	@Override public BEBase visitOperation(com.laneve.bytecode.parser.BytecodeParser.OperationContext ctx) {
+		return new BEOperation(ctx.getText());
+	};
+	
+	@Override public BEBase visitGoto(com.laneve.bytecode.parser.BytecodeParser.GotoContext ctx) {
+		return new BEGoto(ctx.getText());
+	};
+	
+	@Override public BEBase visitNotImplemented(com.laneve.bytecode.parser.BytecodeParser.NotImplementedContext ctx) {
+		return new BENotImplemented(ctx.getText());
+	};
+	
+	@Override public BEBase visitDup(com.laneve.bytecode.parser.BytecodeParser.DupContext ctx) {
+		return new BEDup(ctx.getText());
+	};
+	
+	@Override public BEBase visitAthrow(com.laneve.bytecode.parser.BytecodeParser.AthrowContext ctx) {
+		return new BEAthrow(ctx.getText());
+	};
+	
+	@Override public BEBase visitReturn(com.laneve.bytecode.parser.BytecodeParser.ReturnContext ctx) {
+		return new BEReturn(ctx.getText());
+	};
+	
+	@Override public BEBase visitLoad(com.laneve.bytecode.parser.BytecodeParser.LoadContext ctx) {
+		return new BELoad(ctx.getText());
+	};
+	
+	@Override
+	public BEBase visitStore(StoreContext ctx) {
+		return new BEStore(ctx.getText());
+	}
+	
+	@Override
+	public BEBase visitConst(ConstContext ctx) {
+		return new BEConst(ctx.getText());
+	}
+
 
 }

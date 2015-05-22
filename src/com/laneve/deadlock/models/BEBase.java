@@ -1,8 +1,10 @@
 package com.laneve.deadlock.models;
 
-public abstract class BEBase {
+import com.laneve.deadlock.models.lam.LamBase;
 
-//	public abstract String generateLam();
-//  public abstract String createEnvironment();
+
+public abstract class BEBase{
+
+	public abstract LamBase generateLam(Environment environment);
 	
 }

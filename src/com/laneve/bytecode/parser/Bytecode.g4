@@ -156,75 +156,77 @@ exceptionType
 	;
 	
 methodBody
-	: 'Code:' instructions 
+	: 'Code:' instructionLine+ 
 	;
 
-//ci deve essere almeno un istruzione nel metodo (il return)
-instructions: instruction+;
 
 // istruzioni 
+instructionLine : INDEX instruction ((NAT? num?) | ref);
+
+//'astore' ('_'NAT)?
+
 instruction
-	: INDEX ('aconst_null' 
-	| 'aload' NAT 
-	|  ALOAD
-	| 'areturn' 
-	| 'astore' NAT 
-	| ASTORE 
-	| 'athrow' 
-	| 'dup' 
-	| 'getfield' ref 
-	| 'getstatic' ref 
-	| 'goto' num //indirizzo per il goto e' dato come offset da sommare/sottrarre all'indirizzo nel program counter 
-	| 'iadd' 
-	| 'iconst_m1' 
-	| 'iconst_0' 
-	| 'iconst_1' 
-	| 'iconst_2' 
-	| 'iconst_3' 
-	| 'iconst_4' 
-	| 'iconst_5' 
-	| 'bipush' num 
-	| 'idiv' 
-	| 'if_acmpeq' NAT
-	| 'if_acmpne' NAT
-	| 'if_icmpeq' NAT 
-	| 'if_icmpne' NAT 
-	| 'if_icmplt' NAT 
-	| 'if_icmpge' NAT 
-	| 'if_icmpgt' NAT 
-	| 'if_icmple' NAT 
-	| 'ifeq' NAT 
-	| 'ifne' NAT 
-	| 'iflt' NAT 
-	| 'ifle' NAT 
-	| 'ifgt' NAT 
-	| 'ifge' NAT 
-	| 'ifnonnull' 
-	| 'ifnull' 
-	| 'iinc' NAT num
-	| 'iload' NAT 
-	| ILOAD 
-	| 'imul' 
-	| 'invokespecial' ref 
-	| 'invokestatic' ref 
-	| 'invokevirtual' ref 
-	| 'irem' 
-	| 'ireturn' 
-	| 'istore' NAT 
-	| ISTORE
-	| 'isub' 
-	| 'ldc' ref
-	| 'ldc_w' ref
-	| 'ldc2_w' ref // ldc2_w is used for loading category 2 constants (doubles and longs) quindi, se consideriamo solo interi, a noi non interessa
-	| 'monitorenter' 
-	| 'monitorexit' 
-	| 'new' ref 
-	| 'pop' 
-	| 'putfield' ref 
-	| 'putstatic' ref
-	| 'anewarray' ref // riguarda array (non dovremmo considerarla ma servono per parsare classe di esempio DeadlockFriend)
-	| 'aastore' // riguarda array (non dovremmo considerarla ma servono per parsare classe di esempio DeadlockFriend)
-	| 'return') 
+	: 'aconst_null' #Const
+	| 'aload' #Load 
+	|  ALOAD #Load
+	| 'areturn' #Return
+	| 'astore' #Store
+	|  ASTORE #Store  
+	| 'athrow' #Athrow
+	| 'dup' #Dup
+	| 'getfield' #NotImplemented 
+	| 'getstatic'  #NotImplemented
+	| 'goto'  #Goto //indirizzo per il goto e' dato come offset da sommare/sottrarre all'indirizzo nel program counter 
+	| 'iadd' #Operation
+	| 'iconst_m1'#Const
+	| 'iconst_0' #Const
+	| 'iconst_1' #Const
+	| 'iconst_2' #Const
+	| 'iconst_3' #Const
+	| 'iconst_4' #Const
+	| 'iconst_5' #Const
+	| 'bipush'  #Const
+	| 'idiv' #Operation
+	| 'if_acmpeq' #If
+	| 'if_acmpne' #If
+	| 'if_icmpeq' #If 
+	| 'if_icmpne' #If
+	| 'if_icmplt' #If 
+	| 'if_icmpge' #If 
+	| 'if_icmpgt' #If 
+	| 'if_icmple' #If 
+	| 'ifeq'  #If
+	| 'ifne'  #If
+	| 'iflt'  #If
+	| 'ifle'  #If
+	| 'ifgt'  #If
+	| 'ifge'  #If
+	| 'ifnonnull' #If 
+	| 'ifnull' #If
+	| 'iinc'  #Operation
+	| 'iload' #Load 
+	| ILOAD #Load
+	| 'imul' #Operation
+	| 'invokespecial' #Invoke 
+	| 'invokestatic'  #Invoke
+	| 'invokevirtual' #Invoke 
+	| 'irem' #Operation
+	| 'ireturn' #Return
+	| 'istore'  #Store
+	| ISTORE #Store
+	| 'isub' #Operation
+	| 'ldc' #Const
+	| 'ldc_w' #Const
+	| 'ldc2_w' #NotImplemented // ldc2_w is used for loading category 2 constants (doubles and longs) quindi, se consideriamo solo interi, a noi non interessa
+	| 'monitorenter' #Monitorenter 
+	| 'monitorexit' #Monitorexit
+	| 'new'  #New
+	| 'pop' #Pop
+	| 'putfield'  #NotImplemented
+	| 'putstatic' #NotImplemented
+	| 'anewarray' #NotImplemented // riguarda array (non dovremmo considerarla ma servono per parsare classe di esempio DeadlockFriend)
+	| 'aastore' #NotImplemented // riguarda array (non dovremmo considerarla ma servono per parsare classe di esempio DeadlockFriend)
+	| 'return' #Return
 	;
 
 INDEX: NAT':';
@@ -233,10 +235,9 @@ ref : REFNUM
 	;
 	
 ALOAD: 'aload_' NAT;
-ASTORE:'astore_'NAT;
 ILOAD: 'iload_'NAT;
 ISTORE:'istore_'NAT ;
-
+ASTORE:'astore_'NAT;
 
  //numerazione della constant pool parte da 1
 REFNUM: '#'[1-9][0-9]*;

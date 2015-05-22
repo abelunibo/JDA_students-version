@@ -2,6 +2,8 @@ package com.laneve.deadlock.models;
 
 import java.util.ArrayList;
 
+import com.laneve.deadlock.models.lam.LamBase;
+
 
 public class BEConstantAndInfo extends BEBase{
 	
@@ -13,6 +15,12 @@ public class BEConstantAndInfo extends BEBase{
 
 	public ArrayList<String> getConstantAndInfo() {
 		return constantAndInfo;
+	}
+
+	@Override
+	public LamBase generateLam(Environment environment) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.laneve.deadlock.models;
 
+import com.laneve.deadlock.models.lam.LamBase;
+
 public class BEMethodModifier extends BEBase{
 	String modifier;
 	
@@ -9,5 +11,11 @@ public class BEMethodModifier extends BEBase{
 	public String getModifier(){
 		return modifier;
 	}
+	@Override
+	public LamBase generateLam(Environment environment) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 
 }

@@ -3,6 +3,7 @@ package com.laneve.deadlock.models;
 import java.util.ArrayList;
 
 import com.laneve.bytecode.parser.BytecodeParser.FormalParameterContext;
+import com.laneve.deadlock.models.lam.LamBase;
 
 public class BEMethodDeclarator extends BEBase {
 	String methodName;
@@ -18,7 +19,9 @@ public class BEMethodDeclarator extends BEBase {
 	public ArrayList<FormalParameterContext> getFormalParameters() {
 		return formalParameters;
 	}
-		
-	
+	@Override
+	public LamBase generateLam(Environment environment) {
+		return null;
+	}
 	
 }

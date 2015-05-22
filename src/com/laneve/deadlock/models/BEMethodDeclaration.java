@@ -1,5 +1,7 @@
 package com.laneve.deadlock.models;
 
+import com.laneve.deadlock.models.lam.LamBase;
+
 
 public class BEMethodDeclaration extends BEBase{
 	BEMethodModifier modifier;
@@ -23,5 +25,12 @@ public class BEMethodDeclaration extends BEBase{
 	public BEMethodBody getMethodBody() {
 		return methodBody;
 	}
+
+	@Override
+	public LamBase generateLam(Environment environment) {
+		return methodBody.generateLam(environment);
+	}
+
+	
 
 }

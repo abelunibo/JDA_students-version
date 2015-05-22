@@ -1,5 +1,7 @@
 package com.laneve.deadlock.models;
 
+import com.laneve.deadlock.models.lam.LamBase;
+
 public class BEMethodHeader extends BEBase{
 	String signature;
 	String result;
@@ -21,6 +23,12 @@ public class BEMethodHeader extends BEBase{
 
 	public BEMethodDeclarator getMethodDeclarator() {
 		return methodDeclarator;
+	}
+
+	@Override
+	public LamBase generateLam(Environment environment) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
