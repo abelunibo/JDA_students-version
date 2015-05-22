@@ -18,7 +18,7 @@ import com.laneve.deadlock.models.BEBase;
 import com.laneve.deadlock.models.BEClassFile;
 import com.laneve.deadlock.models.BEConstantAndInfo;
 import com.laneve.deadlock.models.BEConstantPool;
-import com.laneve.deadlock.models.BEInstruction;
+import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.BEMethodBody;
 import com.laneve.deadlock.models.BEMethodDeclaration;
 import com.laneve.deadlock.models.BEMethodDeclarator;
@@ -156,15 +156,15 @@ public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
 	
 	@Override public BEBase visitMethodBody(@NotNull BytecodeParser.MethodBodyContext ctx) {
 		BEMethodBody methodBody;
-		LinkedList<BEInstruction> instruction = new LinkedList<BEInstruction>();
+		LinkedList<BEInstructionLine> instruction = new LinkedList<BEInstructionLine>();
 		for(InstructionLineContext i : ctx.instructionLine()){
-			instruction.add((BEInstruction) visitInstructionLine(i)); 
+			instruction.add((BEInstructionLine) visitInstructionLine(i)); 
 		}
 		methodBody = new BEMethodBody(instruction);
 		return methodBody; 
 	}
 	@Override public BEBase visitInstructionLine(@NotNull BytecodeParser.InstructionLineContext ctx) {
-		BEInstruction instruction = (BEInstruction) visit(ctx.instruction());
+		BEInstructionLine instruction = (BEInstructionLine) visit(ctx.instruction());
 		instruction.setIndex(ctx.INDEX() == null ? " ":ctx.INDEX().getText());
 		instruction.setNumber(ctx.num() == null ? " ":ctx.num().getText());
 		instruction.setNat(ctx.NAT() == null? " ":ctx.NAT().getText());

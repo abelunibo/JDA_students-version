@@ -6,13 +6,13 @@ import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.models.lam.LamSequence;
 
 public class BEMethodBody extends BEBase{
-	LinkedList<BEInstruction> instructions;
+	LinkedList<BEInstructionLine> instructions;
 
-	public BEMethodBody(LinkedList<BEInstruction> instructions) {
+	public BEMethodBody(LinkedList<BEInstructionLine> instructions) {
 		this.instructions = instructions;
 	}
 
-	public LinkedList<BEInstruction> getInstructions() {
+	public LinkedList<BEInstructionLine> getInstructions() {
 		return instructions;
 	}
 	
@@ -20,7 +20,7 @@ public class BEMethodBody extends BEBase{
 	public LamBase generateLam(Environment environment) {
 		LamSequence l = new LamSequence();
 		environment.openScope();
-		for(BEInstruction i : instructions)
+		for(BEInstructionLine i : instructions)
 			l.createSequence(i.generateLam(environment)); 
 		environment.closeScope();
 		return l;

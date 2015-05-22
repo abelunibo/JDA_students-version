@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 import com.laneve.bytecode.parser.BytecodeParser.FormalParameterContext;
 import com.laneve.deadlock.models.BEClassFile;
 import com.laneve.deadlock.models.BEConstantAndInfo;
-import com.laneve.deadlock.models.BEInstruction;
+import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.BEMethodDeclaration;
 import com.laneve.deadlock.models.BEMethodHeader;
 import com.laneve.deadlock.models.BETableEntries;
@@ -45,8 +45,8 @@ public class DataStructuresDebug {
 					parameters += '('+f.getText()+" "+')';
 				}
 				Logger.logInfo(m.getKey().getSignature()+" "+parameters);
-
-				for(BEInstruction i :  m.getValue().getMethodBody().getInstructions()){
+				
+				for(BEInstructionLine i :  m.getValue().getMethodBody().getInstructions()){
 					Logger.logInfo(i.getIndex()+" "+i.getName()+" "+i.getNat()+" "+i.getNumber()+" "+i.getRef());
 
 				}
@@ -60,7 +60,6 @@ public class DataStructuresDebug {
 			System.out.print("LAM :"+ i +" ");
 			System.out.println(l.getLam()+" ; ");
 			i++;
-
 		}
 		System.out.println("\n");
 	}

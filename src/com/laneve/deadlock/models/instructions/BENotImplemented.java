@@ -1,10 +1,10 @@
 package com.laneve.deadlock.models.instructions;
 
-import com.laneve.deadlock.models.BEInstruction;
+import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
 
-public class BENotImplemented extends BEInstruction{
+public class BENotImplemented extends BEInstructionLine implements BEInstruction{
 
 	public BENotImplemented(String text) {
 		instructionName = text;
@@ -14,5 +14,13 @@ public class BENotImplemented extends BEInstruction{
 	public LamBase generateLam(Environment environment) {
 		return super.generateLam(environment);
 	}
+
+	@Override
+	public void handleEnvironment(Environment environment) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 
 }

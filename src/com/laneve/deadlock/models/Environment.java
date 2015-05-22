@@ -1,11 +1,13 @@
 package com.laneve.deadlock.models;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Environment {
 	
 	BEConstantPool constantPool;
 	LinkedList<String>  operandStack, locks, queuethreads;
+	HashMap<String, String> localVar;
 		
 	public Environment(BEConstantPool costantPool) {
 		this.constantPool = costantPool;
@@ -15,6 +17,7 @@ public class Environment {
 		operandStack = new LinkedList<String>();
 		locks = new LinkedList<String>();
 		queuethreads = new LinkedList<String>();
+		localVar = new HashMap<String, String>();
 	}
 
 	public void closeScope() {
@@ -23,36 +26,58 @@ public class Environment {
 		queuethreads = null;		
 	}
 
-	protected BEConstantPool getConstantPool() {
+	public BEConstantPool getConstantPool() {
 		return constantPool;
 	}
 
-	protected void setConstantPool(BEConstantPool constantPool) {
+	public void setConstantPool(BEConstantPool constantPool) {
 		this.constantPool = constantPool;
 	}
 
-	protected LinkedList<String> getOperandStack() {
+	public LinkedList<String> getOperandStack() {
 		return operandStack;
 	}
 
-	protected void setOperandStack(LinkedList<String> operandStack) {
+	public void setOperandStack(LinkedList<String> operandStack) {
 		this.operandStack = operandStack;
 	}
 
-	protected LinkedList<String> getLocks() {
+	public LinkedList<String> getLocks() {
 		return locks;
 	}
 
-	protected void setLocks(LinkedList<String> locks) {
+	public void setLocks(LinkedList<String> locks) {
 		this.locks = locks;
 	}
 
-	protected LinkedList<String> getQueuethreads() {
+	public LinkedList<String> getQueuethreads() {
 		return queuethreads;
 	}
 
-	protected void setQueuethreads(LinkedList<String> queuethreads) {
+	public void setQueuethreads(LinkedList<String> queuethreads) {
 		this.queuethreads = queuethreads;
 	}
+
+	public HashMap<String, String> getLocalVar() {
+		return localVar;
+	}
+
+	public void setLocalVar(HashMap<String, String> localVar) {
+		
+	}
 	
+	public String popStack(){
+		return operandStack.removeFirst();
+	}
+	
+	public void pushStack(String val){
+		operandStack.add(val);
+	}
+
+	public void putLocalVar(String localVarIndex, String val) {
+		localVar.put(localVarIndex, val);
+		
+	}
+	
+
 }

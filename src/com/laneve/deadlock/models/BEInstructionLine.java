@@ -3,9 +3,10 @@ package com.laneve.deadlock.models;
 import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.models.lam.LamZero;
 
-public class BEInstruction extends BEBase{
+public class BEInstructionLine extends BEBase {
 	protected String instructionName;
 	protected String number;
+	//it is the local var index in other compiler
 	protected String nat;
 	protected String ref;
 	protected String index;
@@ -51,5 +52,6 @@ public class BEInstruction extends BEBase{
 		LamBase l = new LamZero();
 		l.setLam(instructionName);
 		return l;
-	}
+	}	
 }
+	
