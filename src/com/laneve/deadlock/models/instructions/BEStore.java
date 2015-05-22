@@ -20,7 +20,7 @@ public class BEStore extends BEInstructionLine implements BEInstruction{
 	
 	@Override
 	public void handleEnvironment(Environment environment) {
-		String valtemp = environment.popStack();
+		String valtemp = null;//environment.popStack(); //scoppia se non implemento tutto
 		if(getName().contentEquals("astore")){
 			localVarIndex = getNat();
 		}else if(getName().contentEquals("istore")){
