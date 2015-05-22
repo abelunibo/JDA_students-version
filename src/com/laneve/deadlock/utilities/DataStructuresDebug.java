@@ -39,6 +39,7 @@ public class DataStructuresDebug {
 			Logger.logInfo("\n file: "+ cf.getClassName()+" \n");
 			HashMap<BEMethodHeader, BEMethodDeclaration> methodDeclaration = cf.getMethods();
 			for(Entry<BEMethodHeader, BEMethodDeclaration> m : methodDeclaration.entrySet()){
+				if(m.getKey()==null) continue; //blocco statico
 				ArrayList<FormalParameterContext> formalparameters = m.getKey().getMethodDeclarator().getFormalParameters();
 				String parameters = "";
 				for(FormalParameterContext f : formalparameters){
