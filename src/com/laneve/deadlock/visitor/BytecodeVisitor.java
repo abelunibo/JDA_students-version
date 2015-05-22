@@ -117,7 +117,14 @@ public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
 				methodModifier = modifier;
 
 		}
-		methodHeader = (BEMethodHeader) visitMethodHeader(ctx.methodHeader());
+		
+		if(ctx.methodHeader()!=null){
+			methodHeader = (BEMethodHeader) visitMethodHeader(ctx.methodHeader());
+		}
+		else{ //blocco statico (non ha nome metodo e parametri formali)
+			methodHeader = null;
+		}
+		
 		methodBody = (BEMethodBody) visitMethodBody(ctx.methodBody());
 		methodDeclaration = new BEMethodDeclaration(methodModifier, methodHeader, methodBody);
 
