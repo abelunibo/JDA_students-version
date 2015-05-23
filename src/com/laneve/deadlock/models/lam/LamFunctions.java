@@ -1,44 +1,10 @@
-package com.laneve.test;
+package com.laneve.deadlock.models.lam;
 
-import java.util.LinkedList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Set;
 
 public class LamFunctions {
-	
-	public static void main(String args[]) { 
-	
-		LinkedList<String> z = new LinkedList<String>();
-		z.add("a");
-		z.add("b");
-		z.add("c");
-		z.add("b"); 
-		z.add("d");
-		z.add("c");
-		z.add("c");
-		z.add("a");
-		z.add("e");
-		z.add("c"); //l'ultimo lock preso e' in fondo alla lista
-	
-		LinkedList<String> t = new LinkedList<String>();
-		t.add("p");
-		t.add("q");
-		t.add("r");
-		
-		System.out.println("Z --> " + z.toString());
-		
-		System.out.println("Z{segnato} --> " + getZbar(z).toString());
-				
-		System.out.println("TopZ{segnato} --> " + getTopZbar(z));
-		
-		//System.out.println("ZHat --> " + getZhat(z));
-
-		System.out.println("ZHat{segnato} --> " + getZhatBar(z));
-		
-		System.out.println("THat --> " + getThat(t));
-
-	}
-	
 	
 	/* Calcola z segnato*/
 	public static LinkedList<String> getZbar(LinkedList<String> z){
@@ -54,12 +20,14 @@ public class LamFunctions {
 		
 	}
 	
+	
 	/*Calcola z top segnato*/
 	public static String getTopZbar(LinkedList<String> z){
 		
 		LinkedList<String> zbar= getZbar(z);
 		return zbar!=null && zbar.size()>0?zbar.get(zbar.size()-1):null;		
 	}
+	
 	
 	/* Calcola z cappello */
 	public static String getZhat(LinkedList<String> z){
@@ -82,11 +50,13 @@ public class LamFunctions {
 		
 	}
 	
+	
 	/* Calcola z cappello segnato */
 	public static String getZhatBar(LinkedList<String> z){
 		
 		return z!=null && z.size()>0?getZhat(getZbar(z)):null;
 	}
+	
 	
 	/* Calcola T cappello */
 	public static String getThat(LinkedList<String> t){
@@ -108,5 +78,5 @@ public class LamFunctions {
 		return tHat.isEmpty()?"0":tHat;
 
 	}
-	
+
 }

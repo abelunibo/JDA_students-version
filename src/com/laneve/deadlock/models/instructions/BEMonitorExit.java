@@ -12,13 +12,15 @@ public class BEMonitorExit extends BEInstructionLine implements BEInstruction{
 
 	@Override
 	public LamBase generateLam(Environment environment) {
+		//TODO crea LAM prima di aggiornare ambiente
+		handleEnvironment(environment);
 		return super.generateLam(environment);
 	}
 
 	@Override
 	public void handleEnvironment(Environment environment) {
-		// TODO Auto-generated method stub
-		
+		environment.popStack();
+		environment.removeLock();
 	}
 
 

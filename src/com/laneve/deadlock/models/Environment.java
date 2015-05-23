@@ -6,7 +6,7 @@ import java.util.LinkedList;
 public class Environment {
 	
 	BEConstantPool constantPool;
-	LinkedList<String>  operandStack, locks, queuethreads;
+	LinkedList<String>  operandStack, locks, queueThreads;
 	HashMap<String, String> localVar;
 		
 	public Environment(BEConstantPool costantPool) {
@@ -16,14 +16,14 @@ public class Environment {
 	public void openScope() {
 		operandStack = new LinkedList<String>();
 		locks = new LinkedList<String>();
-		queuethreads = new LinkedList<String>();
+		queueThreads = new LinkedList<String>();
 		localVar = new HashMap<String, String>();
 	}
 
 	public void closeScope() {
 		operandStack = null;
 		locks = null;
-		queuethreads = null;		
+		queueThreads = null;		
 	}
 
 	public BEConstantPool getConstantPool() {
@@ -50,12 +50,20 @@ public class Environment {
 		this.locks = locks;
 	}
 
-	public LinkedList<String> getQueuethreads() {
-		return queuethreads;
+	public void addLock(String lock){
+		this.locks.add(lock);
+	}
+	
+	public void removeLock(){
+		this.locks.removeLast();
+	}
+	
+	protected LinkedList<String> getQueuethreads() {
+		return queueThreads;
 	}
 
-	public void setQueuethreads(LinkedList<String> queuethreads) {
-		this.queuethreads = queuethreads;
+	protected void setQueuethreads(LinkedList<String> queueThreads) {
+		this.queueThreads = queueThreads;
 	}
 
 	public HashMap<String, String> getLocalVar() {
@@ -69,7 +77,7 @@ public class Environment {
 	public String popStack(){
 		String o = null;
 		if(!operandStack.isEmpty())
-			o = operandStack.removeFirst();
+			o = operandStack.removeLast();
 		return o;
 	}
 	
