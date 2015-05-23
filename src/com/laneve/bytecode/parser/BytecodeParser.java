@@ -142,14 +142,6 @@ public class BytecodeParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_classfile; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterClassfile(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitClassfile(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitClassfile(this);
 			else return visitor.visitChildren(this);
@@ -252,14 +244,6 @@ public class BytecodeParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_classDec; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterClassDec(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitClassDec(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitClassDec(this);
 			else return visitor.visitChildren(this);
@@ -341,14 +325,6 @@ public class BytecodeParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_classModifier; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterClassModifier(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitClassModifier(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitClassModifier(this);
 			else return visitor.visitChildren(this);
@@ -392,14 +368,6 @@ public class BytecodeParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_innerClass; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterInnerClass(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitInnerClass(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitInnerClass(this);
@@ -504,14 +472,6 @@ public class BytecodeParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_fields; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterFields(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitFields(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitFields(this);
 			else return visitor.visitChildren(this);
@@ -562,14 +522,6 @@ public class BytecodeParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_fieldModifier; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterFieldModifier(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitFieldModifier(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitFieldModifier(this);
@@ -628,14 +580,6 @@ public class BytecodeParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_fieldName; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterFieldName(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitFieldName(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitFieldName(this);
 			else return visitor.visitChildren(this);
@@ -670,14 +614,6 @@ public class BytecodeParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_constantPool; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterConstantPool(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitConstantPool(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitConstantPool(this);
@@ -717,14 +653,6 @@ public class BytecodeParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_tableEntries; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterTableEntries(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitTableEntries(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitTableEntries(this);
@@ -776,14 +704,6 @@ public class BytecodeParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_tableEntry; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterTableEntry(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitTableEntry(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitTableEntry(this);
@@ -843,14 +763,6 @@ public class BytecodeParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_constantAndInfo; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterConstantAndInfo(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitConstantAndInfo(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitConstantAndInfo(this);
@@ -1113,14 +1025,6 @@ public class BytecodeParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_methodDeclaration; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterMethodDeclaration(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitMethodDeclaration(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitMethodDeclaration(this);
 			else return visitor.visitChildren(this);
@@ -1185,14 +1089,6 @@ public class BytecodeParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_methodModifier; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterMethodModifier(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitMethodModifier(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitMethodModifier(this);
@@ -1264,14 +1160,6 @@ public class BytecodeParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_methodHeader; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterMethodHeader(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitMethodHeader(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitMethodHeader(this);
 			else return visitor.visitChildren(this);
@@ -1324,14 +1212,6 @@ public class BytecodeParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_result; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterResult(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitResult(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitResult(this);
 			else return visitor.visitChildren(this);
@@ -1382,14 +1262,6 @@ public class BytecodeParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_type; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterType(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitType(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitType(this);
@@ -1448,14 +1320,6 @@ public class BytecodeParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_primitiveType; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterPrimitiveType(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitPrimitiveType(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitPrimitiveType(this);
 			else return visitor.visitChildren(this);
@@ -1513,14 +1377,6 @@ public class BytecodeParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_numericType; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterNumericType(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitNumericType(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitNumericType(this);
 			else return visitor.visitChildren(this);
@@ -1571,14 +1427,6 @@ public class BytecodeParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_integralType; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterIntegralType(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitIntegralType(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitIntegralType(this);
 			else return visitor.visitChildren(this);
@@ -1616,14 +1464,6 @@ public class BytecodeParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_floatingPointType; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterFloatingPointType(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitFloatingPointType(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitFloatingPointType(this);
@@ -1666,14 +1506,6 @@ public class BytecodeParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_referenceType; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterReferenceType(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitReferenceType(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitReferenceType(this);
 			else return visitor.visitChildren(this);
@@ -1712,14 +1544,6 @@ public class BytecodeParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_packageAndClassName; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterPackageAndClassName(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitPackageAndClassName(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitPackageAndClassName(this);
@@ -1881,14 +1705,6 @@ public class BytecodeParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_methodDeclarator; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterMethodDeclarator(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitMethodDeclarator(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitMethodDeclarator(this);
 			else return visitor.visitChildren(this);
@@ -1935,14 +1751,6 @@ public class BytecodeParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_methodName; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterMethodName(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitMethodName(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitMethodName(this);
 			else return visitor.visitChildren(this);
@@ -1980,14 +1788,6 @@ public class BytecodeParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_formalParameters; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterFormalParameters(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitFormalParameters(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitFormalParameters(this);
@@ -2039,14 +1839,6 @@ public class BytecodeParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_formalParameter; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterFormalParameter(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitFormalParameter(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitFormalParameter(this);
@@ -2104,14 +1896,6 @@ public class BytecodeParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_throws_; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterThrows_(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitThrows_(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitThrows_(this);
 			else return visitor.visitChildren(this);
@@ -2150,14 +1934,6 @@ public class BytecodeParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_exceptionTypeList; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterExceptionTypeList(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitExceptionTypeList(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitExceptionTypeList(this);
@@ -2209,14 +1985,6 @@ public class BytecodeParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_exceptionType; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterExceptionType(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitExceptionType(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitExceptionType(this);
 			else return visitor.visitChildren(this);
@@ -2254,14 +2022,6 @@ public class BytecodeParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_methodBody; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterMethodBody(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitMethodBody(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitMethodBody(this);
@@ -2325,14 +2085,6 @@ public class BytecodeParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_instructionLine; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterInstructionLine(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitInstructionLine(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitInstructionLine(this);
@@ -2405,14 +2157,6 @@ public class BytecodeParser extends Parser {
 	public static class MonitorenterContext extends InstructionContext {
 		public MonitorenterContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterMonitorenter(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitMonitorenter(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitMonitorenter(this);
 			else return visitor.visitChildren(this);
@@ -2420,14 +2164,6 @@ public class BytecodeParser extends Parser {
 	}
 	public static class NewContext extends InstructionContext {
 		public NewContext(InstructionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterNew(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitNew(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitNew(this);
@@ -2439,14 +2175,6 @@ public class BytecodeParser extends Parser {
 		public TerminalNode ILOAD() { return getToken(BytecodeParser.ILOAD, 0); }
 		public LoadContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterLoad(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitLoad(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitLoad(this);
 			else return visitor.visitChildren(this);
@@ -2455,14 +2183,6 @@ public class BytecodeParser extends Parser {
 	public static class ReturnContext extends InstructionContext {
 		public ReturnContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterReturn(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitReturn(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitReturn(this);
 			else return visitor.visitChildren(this);
@@ -2470,14 +2190,6 @@ public class BytecodeParser extends Parser {
 	}
 	public static class ConstContext extends InstructionContext {
 		public ConstContext(InstructionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterConst(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitConst(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitConst(this);
@@ -2489,14 +2201,6 @@ public class BytecodeParser extends Parser {
 		public TerminalNode ISTORE() { return getToken(BytecodeParser.ISTORE, 0); }
 		public StoreContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterStore(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitStore(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitStore(this);
 			else return visitor.visitChildren(this);
@@ -2504,14 +2208,6 @@ public class BytecodeParser extends Parser {
 	}
 	public static class NotImplementedContext extends InstructionContext {
 		public NotImplementedContext(InstructionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterNotImplemented(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitNotImplemented(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitNotImplemented(this);
@@ -2521,14 +2217,6 @@ public class BytecodeParser extends Parser {
 	public static class OperationContext extends InstructionContext {
 		public OperationContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterOperation(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitOperation(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitOperation(this);
 			else return visitor.visitChildren(this);
@@ -2536,14 +2224,6 @@ public class BytecodeParser extends Parser {
 	}
 	public static class InvokeContext extends InstructionContext {
 		public InvokeContext(InstructionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterInvoke(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitInvoke(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitInvoke(this);
@@ -2553,14 +2233,6 @@ public class BytecodeParser extends Parser {
 	public static class MonitorexitContext extends InstructionContext {
 		public MonitorexitContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterMonitorexit(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitMonitorexit(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitMonitorexit(this);
 			else return visitor.visitChildren(this);
@@ -2568,14 +2240,6 @@ public class BytecodeParser extends Parser {
 	}
 	public static class PopContext extends InstructionContext {
 		public PopContext(InstructionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterPop(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitPop(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitPop(this);
@@ -2590,32 +2254,8 @@ public class BytecodeParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class IincContext extends InstructionContext {
-		public IincContext(InstructionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterIinc(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitIinc(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitIinc(this);
-			else return visitor.visitChildren(this);
-		}
-	}
 	public static class AthrowContext extends InstructionContext {
 		public AthrowContext(InstructionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterAthrow(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitAthrow(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitAthrow(this);
@@ -2625,14 +2265,6 @@ public class BytecodeParser extends Parser {
 	public static class IfContext extends InstructionContext {
 		public IfContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterIf(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitIf(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitIf(this);
 			else return visitor.visitChildren(this);
@@ -2640,14 +2272,6 @@ public class BytecodeParser extends Parser {
 	}
 	public static class DupContext extends InstructionContext {
 		public DupContext(InstructionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterDup(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitDup(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitDup(this);
@@ -3110,14 +2734,6 @@ public class BytecodeParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_ref; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterRef(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitRef(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitRef(this);
 			else return visitor.visitChildren(this);
@@ -3151,14 +2767,6 @@ public class BytecodeParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_num; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterNum(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitNum(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitNum(this);
@@ -3200,14 +2808,6 @@ public class BytecodeParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_identifierExtended; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).enterIdentifierExtended(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof BytecodeListener ) ((BytecodeListener)listener).exitIdentifierExtended(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitIdentifierExtended(this);

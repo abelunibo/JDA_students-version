@@ -1,13 +1,12 @@
 package com.laneve.deadlock.models.instructions;
 
-import java.util.LinkedList;
-
 import com.laneve.deadlock.exceptions.BEException;
 import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.models.lam.LamZT;
-import com.laneve.deadlock.utilities.Logger;
+import com.laneve.deadlock.type.Type;
+import com.laneve.deadlock.type.TypeInt;
 
 public class BEOperation extends BEInstructionLine implements BEInstruction{
 
@@ -17,41 +16,18 @@ public class BEOperation extends BEInstructionLine implements BEInstruction{
 
 	@Override
 	public LamBase generateLam(Environment environment) {
-		LamZT lzt = new LamZT();
-		
-		LinkedList<String> z = new LinkedList<String>();
-		z.add("a");
-		z.add("b");
-		z.add("c");
-		z.add("b"); 
-		z.add("d");
-		z.add("c");
-		z.add("c");
-		z.add("a");
-		z.add("e");
-		z.add("c"); //l'ultimo lock preso e' in fondo alla lista
-	
-		LinkedList<String> t = new LinkedList<String>();
-		t.add("p");
-		t.add("q");
-		t.add("r");
-		
-		environment.setLocks(z);
-		environment.setQueuethreads(t);
-		
+		LamBase lzt = new LamZT();		
+		LamZT.addDebugZT(environment);
 		String lamZ = LamZT.getZhatBar(environment.getLocks());
 		String lamT = LamZT.getThat(environment.getQueuethreads());	
-		
 		lzt.setLam(lamZ+" & "+lamT);
-		
-		Logger.logInfo(lzt.getLam());
-		
-		handleEnvironment(environment);
-		return super.generateLam(environment);
+//		Logger.logInfo(lzt.getLam());
+		changeEnvironment(environment);
+		return lzt;
 	}
 
 	@Override
-	public void handleEnvironment(Environment environment) {
+	public void changeEnvironment(Environment environment) {
 
 		try {
 			environment.popStack(2);
@@ -60,7 +36,7 @@ public class BEOperation extends BEInstructionLine implements BEInstruction{
 			System.exit(1);
 		}
 		
-		environment.pushStack("INT");
+		environment.pushStack(new TypeInt());
 		
 	}
 

@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.models.lam.LamSequence;
+import com.laneve.deadlock.type.TypeObject;
 
 public class BEMethodBody extends BEMethodDeclaration{
 	LinkedList<BEInstructionLine> instructions;
@@ -22,7 +23,7 @@ public class BEMethodBody extends BEMethodDeclaration{
 		environment.openScope();
 		if(getModifier() != null && 
 				getModifier().getModifier().contentEquals("synchronized"))
-			environment.addLock(getClassName());
+			environment.addLock(new TypeObject(getClassName()));
 		
 		for(BEInstructionLine i : instructions)
 			l.createSequence(i.generateLam(environment)); 

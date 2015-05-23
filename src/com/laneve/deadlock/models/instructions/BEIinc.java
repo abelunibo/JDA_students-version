@@ -3,6 +3,8 @@ package com.laneve.deadlock.models.instructions;
 import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
+import com.laneve.deadlock.models.lam.LamZT;
+import com.laneve.deadlock.type.TypeInt;
 
 public class BEIinc extends BEInstructionLine implements BEInstruction{
 
@@ -14,17 +16,19 @@ public class BEIinc extends BEInstructionLine implements BEInstruction{
 	@Override
 	public LamBase generateLam(Environment environment) {	
 		
+		LamBase lzt = new LamZT();
+
 		String lamZ = LamZT.getZhatBar(environment.getLocks());
 		String lamT = LamZT.getThat(environment.getQueuethreads());	
 		
 		lzt.setLam(lamZ+" & "+lamT);
-		handleEnvironment(environment);
-		return super.generateLam(environment);
+		changeEnvironment(environment);
+		return lzt;
 	}
 	
 	
 	@Override
-	public void handleEnvironment(Environment environment) {
+	public void changeEnvironment(Environment environment) {
 		
 		String localVarIndex = getNat();
 		
@@ -33,7 +37,7 @@ public class BEIinc extends BEInstructionLine implements BEInstruction{
 		 */
 		//String inc = getNumber(); 
 		
-		environment.putLocalVar(localVarIndex, "INT");
+		environment.putLocalVar(localVarIndex, new TypeInt());
 		
 	}
 
