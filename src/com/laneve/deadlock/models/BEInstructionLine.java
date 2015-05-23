@@ -1,7 +1,7 @@
 package com.laneve.deadlock.models;
 
 import com.laneve.deadlock.models.lam.LamBase;
-import com.laneve.deadlock.models.lam.LamZero;
+import com.laneve.deadlock.models.lam.LamZT;
 
 public class BEInstructionLine extends BEBase {
 	protected String instructionName;
@@ -49,7 +49,7 @@ public class BEInstructionLine extends BEBase {
 
 	@Override
 	public LamBase generateLam(Environment environment) {
-		LamBase l = new LamZero();
+		LamBase l = new LamZT();
 		l.setLam(instructionName);
 		return l;
 	}	

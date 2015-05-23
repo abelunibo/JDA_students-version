@@ -17,7 +17,7 @@ public class LamSequence extends LamBase {
 	}
 
 	public void createSequence(LamBase generateLam) {
-		lam += " ; "+ generateLam.getLam();
+		lam += generateLam.getLam()+" ; ";
 		
 	}
 

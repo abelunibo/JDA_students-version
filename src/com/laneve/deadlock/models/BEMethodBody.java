@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.models.lam.LamSequence;
 
-public class BEMethodBody extends BEBase{
+public class BEMethodBody extends BEMethodDeclaration{
 	LinkedList<BEInstructionLine> instructions;
 
 	public BEMethodBody(LinkedList<BEInstructionLine> instructions) {
@@ -20,6 +20,10 @@ public class BEMethodBody extends BEBase{
 	public LamBase generateLam(Environment environment) {
 		LamSequence l = new LamSequence();
 		environment.openScope();
+		if(getModifier() != null && 
+				getModifier().getModifier().contentEquals("synchronized"))
+			environment.addLock(getClassName());
+		
 		for(BEInstructionLine i : instructions)
 			l.createSequence(i.generateLam(environment)); 
 		environment.closeScope();

@@ -3,10 +3,14 @@ package com.laneve.deadlock.models;
 import com.laneve.deadlock.models.lam.LamBase;
 
 
-public class BEMethodDeclaration extends BEBase{
+public class BEMethodDeclaration extends BEClassFile{
 	BEMethodModifier modifier;
 	BEMethodHeader methodHeader;
 	BEMethodBody methodBody;
+	
+	public BEMethodDeclaration() {
+		// TODO Auto-generated constructor stub
+	}
 	
 	public BEMethodDeclaration(BEMethodModifier modifier,BEMethodHeader methodHeader,BEMethodBody methodBody) {
 		this.modifier = modifier;
