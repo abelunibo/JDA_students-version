@@ -114,4 +114,17 @@ public class Environment {
 			return a.get(1);
 		}
 	}
+
+	//TODO usata solo per debug
+	public void setLocks(LinkedList<Type> z) {
+		this.locks=z;
+	}
+
+	//TODO usata solo per debug
+	public void setQueuethreads(LinkedList<Type> t) {
+		this.queueThreads=t;
+		
+	}
+	
+	
 }	

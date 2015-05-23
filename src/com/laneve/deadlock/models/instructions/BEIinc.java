@@ -4,29 +4,41 @@ import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.models.lam.LamZT;
+import com.laneve.deadlock.type.TypeInt;
 
-public class BENotImplemented extends BEInstructionLine implements BEInstruction{
+public class BEIinc extends BEInstructionLine implements BEInstruction{
 
-	public BENotImplemented(String text) {
+	
+	public BEIinc(String text) {
 		instructionName = text;
 	}
 
 	@Override
-	public LamBase generateLam(Environment environment) {
+	public LamBase generateLam(Environment environment) {	
+		
 		LamBase lzt = new LamZT();
 		LamZT.addDebugZT(environment);
 		String lamZ = LamZT.getZhatBar(environment.getLocks());
-		String lamT = LamZT.getThat(environment.getQueuethreads());	
+		String lamT = LamZT.getThat(environment.getQueuethreads());
 		lzt.setLam(lamZ+" & "+lamT);
 //		Logger.logInfo(lzt.getLam());
 		changeEnvironment(environment);
 		return lzt;
 	}
-
+	
+	
 	@Override
 	public void changeEnvironment(Environment environment) {
+		
+		String localVarIndex = getNat();
+		
+		/* e' inutile ottenere il valore da incrementare...tanto alla fine il
+		 * il risultato sara' sempre un tipo INT
+		 */
+		//String inc = getNumber(); 
+		
+		environment.putLocalVar(localVarIndex, new TypeInt());
+		
 	}
-
-
 
 }
