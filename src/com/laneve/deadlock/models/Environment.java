@@ -67,7 +67,10 @@ public class Environment {
 	}
 	
 	public String popStack(){
-		return operandStack.removeFirst();
+		String o = null;
+		if(!operandStack.isEmpty())
+			o = operandStack.removeFirst();
+		return o;
 	}
 	
 	public void pushStack(String val){
