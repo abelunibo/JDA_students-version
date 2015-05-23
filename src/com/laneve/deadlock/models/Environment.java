@@ -1,5 +1,6 @@
 package com.laneve.deadlock.models;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -87,7 +88,6 @@ public class Environment {
 		//else throw new BEException("pop da operand stack vuoto"); TODO rimetterlo
 		return o;
 	}
-	
 	//pop multiplo senza interesse su cosa si è scartato
 	public void popStack(int count) throws BEException {
 
@@ -105,6 +105,16 @@ public class Environment {
 		localVar.put(localVarIndex, val);
 		
 	}
-	
 
-}
+	public String takeCpoolRef(String ref) {
+		BEConstantAndInfo constantInfo = constantPool.getTableEntries().getTableEntry().get(ref);
+		ArrayList<String> a = constantInfo.getConstantAndInfo();
+		switch (a.get(0)) {
+		case "Class":
+			String cRef = a.get(1);
+			return takeCpoolRef(cRef);
+		default://"Utf8"
+			return a.get(1);
+		}
+	}
+}	

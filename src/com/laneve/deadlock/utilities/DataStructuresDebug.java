@@ -19,7 +19,7 @@ public class DataStructuresDebug {
 		for(BEClassFile cf : classfiles){
 			Logger.logInfo("\n\n ---- file: "+ cf.getClassName()+" ----- \n");
 			BETableEntries tb = cf.getCostantPool().getTableEntries();
-			HashMap<String, BEConstantAndInfo> t = tb.getTableEntries();
+			HashMap<String, BEConstantAndInfo> t = tb.getTableEntry();
 			for(Entry<String, BEConstantAndInfo> entry : t.entrySet()){
 				String debug = " ";
 				String ref = entry.getKey();

@@ -5,7 +5,6 @@ import com.laneve.deadlock.models.lam.LamBase;
 
 public class BEStore extends BEInstructionLine implements BEInstruction{
 	private String localVarIndex;
-	private String val;
 	
 	public BEStore(String text) {
 		instructionName = text;
@@ -19,7 +18,6 @@ public class BEStore extends BEInstructionLine implements BEInstruction{
 	
 	@Override
 	public void handleEnvironment(Environment environment) {
-		String valtemp = null;//environment.popStack(); //scoppia se non implemento tutto
 		if(getName().contentEquals("astore")){
 			localVarIndex = getNat();
 		}else if(getName().contentEquals("istore")){
@@ -29,8 +27,7 @@ public class BEStore extends BEInstructionLine implements BEInstruction{
 		}else if(getName().contains("astore_")){
 			localVarIndex = getName().substring(getName().indexOf("_")+1, getName().length());
 		}
-		val = getNat() == null ? val = valtemp : "INT" ;
-		environment.putLocalVar(localVarIndex,val);
+//		environment.putLocalVar(localVarIndex,environment.popStack());
 //		Logger.logInfo(environment.getLocalVar().get(localVarIndex));
 	}
 }
