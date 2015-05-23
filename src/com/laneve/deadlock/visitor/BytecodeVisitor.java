@@ -14,6 +14,7 @@ import com.laneve.bytecode.parser.BytecodeParser.MethodModifierContext;
 import com.laneve.bytecode.parser.BytecodeParser.RefContext;
 import com.laneve.bytecode.parser.BytecodeParser.StoreContext;
 import com.laneve.bytecode.parser.BytecodeParser.TableEntryContext;
+import com.laneve.deadlock.exceptions.BEException;
 import com.laneve.deadlock.models.BEBase;
 import com.laneve.deadlock.models.BEClassFile;
 import com.laneve.deadlock.models.BEConstantAndInfo;
@@ -43,7 +44,11 @@ import com.laneve.deadlock.models.instructions.BEReturn;
 import com.laneve.deadlock.models.instructions.BEStore;
 
 public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
+	
+	
+	private long staticCounter=0; //contatore per assegnare nome univoco ai blocchi statici
 
+	
 	@Override 
 	public BEBase visitClassfile(@NotNull BytecodeParser.ClassfileContext ctx) {		
 		String className = ctx.classDec().ilmio.getText();
@@ -51,7 +56,12 @@ public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
 		BEClassFile classFile = new BEClassFile(className,costantPool);
 		for(MethodDeclarationContext mdc : ctx.methodDeclaration()){
 			BEMethodDeclaration methodDec = (BEMethodDeclaration) visitMethodDeclaration(mdc);
-			classFile.addMethod(methodDec);
+			try {
+				classFile.addMethod(methodDec);
+			} catch (BEException e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
 		}
 		return classFile;
 	}
@@ -113,16 +123,17 @@ public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
 
 		for(MethodModifierContext m : ctx.methodModifier()){
 			BEMethodModifier modifier = (BEMethodModifier)visitMethodModifier(m);
-			if(modifier.getModifier().contentEquals("syncronized"))
+			if(modifier.getModifier().contentEquals("synchronized"))
 				methodModifier = modifier;
-
 		}
 		
 		if(ctx.methodHeader()!=null){
 			methodHeader = (BEMethodHeader) visitMethodHeader(ctx.methodHeader());
 		}
-		else{ //blocco statico (non ha nome metodo e parametri formali)
-			methodHeader = null;
+		else{ /* blocco statico (non ha nome metodo e parametri formali quindi gli assegniamo un nome univoco;
+				il '?' non puo' essere usato nei nomi di metodi in Java per cui non ci saranno altri metodi con lo stesso nome) */
+			methodHeader = new BEMethodHeader("void",new BEMethodDeclarator("staticBlock?"+ staticCounter++,
+										new ArrayList<BytecodeParser.FormalParameterContext>()));
 		}
 		
 		methodBody = (BEMethodBody) visitMethodBody(ctx.methodBody());

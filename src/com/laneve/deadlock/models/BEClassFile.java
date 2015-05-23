@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 
 import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.models.lam.LamSequence;
+import com.laneve.deadlock.exceptions.BEException;
 
 public class BEClassFile extends BEBase{
 	String className;
@@ -18,7 +19,10 @@ public class BEClassFile extends BEBase{
 		this.costantPool = costantPool;
 	}
 	
-	public void addMethod(BEMethodDeclaration methodDec) {
+	public void addMethod(BEMethodDeclaration methodDec) throws BEException {
+		if(methods.containsKey(methodDec.getMethodHeader())){ //NON DOVREBBE SUCCEDERE
+			throw new BEException("Due metodi con lo stesso header dentro lo stesso classfile");
+		}
 		methods.put(methodDec.getMethodHeader(), methodDec);
 		
 	}

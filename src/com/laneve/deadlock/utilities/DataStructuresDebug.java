@@ -17,7 +17,7 @@ public class DataStructuresDebug {
 
 	public static void printDataStructures(ArrayList<BEClassFile> classfiles){
 		for(BEClassFile cf : classfiles){
-			Logger.logInfo("\n file: "+ cf.getClassName()+" \n");
+			Logger.logInfo("\n\n ---- file: "+ cf.getClassName()+" ----- \n");
 			BETableEntries tb = cf.getCostantPool().getTableEntries();
 			HashMap<String, BEConstantAndInfo> t = tb.getTableEntries();
 			for(Entry<String, BEConstantAndInfo> entry : t.entrySet()){
@@ -35,17 +35,19 @@ public class DataStructuresDebug {
 	}
 
 	public static void printDataMethods(ArrayList<BEClassFile> classfiles) {
-		for(BEClassFile cf : classfiles){
-			Logger.logInfo("\n file: "+ cf.getClassName()+" \n");
+		
+		Logger.logInfo("\n\n***********************************************");
+		
+		for(BEClassFile cf : classfiles){			
+			Logger.logInfo("\n\n ---- file: "+ cf.getClassName()+" ----- \n");
 			HashMap<BEMethodHeader, BEMethodDeclaration> methodDeclaration = cf.getMethods();
 			for(Entry<BEMethodHeader, BEMethodDeclaration> m : methodDeclaration.entrySet()){
-				if(m.getKey()==null) continue; //blocco statico
 				ArrayList<FormalParameterContext> formalparameters = m.getKey().getMethodDeclarator().getFormalParameters();
 				String parameters = "";
 				for(FormalParameterContext f : formalparameters){
 					parameters += '('+f.getText()+" "+')';
 				}
-				Logger.logInfo(m.getKey().getSignature()+" "+parameters);
+				Logger.logInfo("\n" +m.getKey().getSignature()+" "+parameters);
 				
 				for(BEInstructionLine i :  m.getValue().getMethodBody().getInstructions()){
 					Logger.logInfo(i.getIndex()+" "+i.getName()+" "+i.getNat()+" "+i.getNumber()+" "+i.getRef());
@@ -53,6 +55,8 @@ public class DataStructuresDebug {
 				}
 			}
 		}
+		
+		Logger.logInfo("\n***********************************************");
 	}
 
 	public static void printGenerateLams(ArrayList<LamBase> lams) {
