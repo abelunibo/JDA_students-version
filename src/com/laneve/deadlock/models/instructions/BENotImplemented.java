@@ -24,7 +24,6 @@ public class BENotImplemented extends BEInstructionLine implements BEInstruction
 
 	@Override
 	public void changeEnvironment(Environment environment) {
-		
 	}
 
 

@@ -14,6 +14,7 @@ import com.laneve.bytecode.parser.BytecodeParser;
 import com.laneve.deadlock.models.BEClassFile;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
+import com.laneve.deadlock.utilities.DataStructuresDebug;
 import com.laneve.deadlock.visitor.BytecodeVisitor;
 
 public class DeadlockAnalysis {
@@ -44,6 +45,6 @@ public class DeadlockAnalysis {
 		
 		//DataStructuresDebug.printDataStructures(classfiles);
 		//DataStructuresDebug.printDataMethods(classfiles);
-		//DataStructuresDebug.printGenerateLams(lams);
+		DataStructuresDebug.printGenerateLams(lams);
 	}
 }

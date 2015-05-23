@@ -8,8 +8,12 @@ import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.type.Type;
 import com.laneve.deadlock.type.TypeObject;
 
+import com.laneve.deadlock.models.Environment;
+
 public class LamZT extends LamBase{
 	String lam;
+	LinkedList<String> z = new LinkedList<String>();
+	LinkedList<String> t = new LinkedList<String>();
 	
 	public String getLam() {
 		return lam;
@@ -21,16 +25,13 @@ public class LamZT extends LamBase{
 	
 	
 	public static LinkedList<Type> getZbar(LinkedList<Type> z){
-		
-		
+	
 		Set<Type> set = new LinkedHashSet<Type>();
-		
 		for(int i=0; i < z.size(); i++){
 			set.add(z.get(i));
 		}
 		
 		return z!=null && z.size()>0?new LinkedList<Type>(set):null;
-		
 	}
 	
 	
@@ -39,31 +40,28 @@ public class LamZT extends LamBase{
 		LinkedList<Type> zbar= getZbar(z);
 		return zbar!=null && zbar.size()>0?zbar.get(zbar.size()-1).getName():null;		
 	}
-	
+
 	
 	public static String getZhat(LinkedList<Type> z){
 		
 		String zHat = "";
-				
+		
 		if(z!=null && z.size()>1){
 			
 			zHat+= "(" + z.get(0).getName() + "," + z.get(1).getName() + ")";
-						
+
 			for(int i=1; i < z.size() -  1; i++){
 								
 				zHat+= " & (" + z.get(i).getName() + "," + z.get(i+1).getName() + ")";
-			
+
 			}
-			
 		}
-		
 		return zHat.isEmpty()?"0":zHat;
-		
 	}
 	
 	
 	public static String getZhatBar(LinkedList<Type> z){
-		
+
 		return z!=null && z.size()>0?getZhat(getZbar(z)):null;
 	}
 	
@@ -71,9 +69,7 @@ public class LamZT extends LamBase{
 	/* Calcola T cappello */
 	public static String getThat(LinkedList<Type> t){
 	
-
 		String tHat = "";
-				
 		if(t!=null && t.size()>1){
 		
 			tHat+= "run("+t.get(0).getName()+")";
@@ -82,11 +78,8 @@ public class LamZT extends LamBase{
 
 					tHat+= " & run("+t.get(i).getName()+")";
 			}
-					
 		}
-		
 		return tHat.isEmpty()?"0":tHat;
-
 	}
 	
 	@Override
@@ -111,7 +104,6 @@ public class LamZT extends LamBase{
 		t.add(new TypeObject("p"));
 		t.add(new TypeObject("q"));
 		t.add(new TypeObject("r"));
-		
 		environment.setLocks(z);
 		environment.setQueuethreads(t);
 	}

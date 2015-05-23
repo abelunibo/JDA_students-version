@@ -6,6 +6,7 @@ import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.models.lam.LamZT;
 
+
 public class BEAthrow extends BEInstructionLine implements BEInstruction{
 	
 	public BEAthrow(String text) {
@@ -26,7 +27,6 @@ public class BEAthrow extends BEInstructionLine implements BEInstruction{
 
 	@Override
 	public void changeEnvironment(Environment environment) {
-
 		try {
 			environment.popStack();
 		} catch (BEException e) {

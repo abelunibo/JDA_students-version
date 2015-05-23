@@ -28,7 +28,6 @@ public class BEOperation extends BEInstructionLine implements BEInstruction{
 
 	@Override
 	public void changeEnvironment(Environment environment) {
-
 		try {
 			environment.popStack(2);
 		} catch (BEException e) {
@@ -37,8 +36,6 @@ public class BEOperation extends BEInstructionLine implements BEInstruction{
 		}
 		
 		environment.pushStack(new TypeInt());
-		
 	}
-
 
 }
