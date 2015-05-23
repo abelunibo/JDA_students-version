@@ -110,6 +110,16 @@ public class Environment {
 		case "Class":
 			String cRef = a.get(1);
 			return takeCpoolRef(cRef);
+		case "Methodref":
+			String mRef = a.get(1);
+			String classname = takeCpoolRef(mRef);
+		case "NameAndType":
+			String methodNameRef = a.get(1);
+			String returnTypeRef = a.get(2);
+			String methodName = takeCpoolRef(methodNameRef);
+			String returnType = takeCpoolRef(returnTypeRef);
+			//example "<init>":()V
+			return methodName+":"+returnType;
 		default://"Utf8"
 			return a.get(1);
 		}

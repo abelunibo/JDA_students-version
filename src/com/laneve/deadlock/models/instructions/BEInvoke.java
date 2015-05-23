@@ -4,6 +4,7 @@ import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.models.lam.LamZT;
+import com.laneve.deadlock.utilities.Logger;
 
 public class BEInvoke extends BEInstructionLine implements BEInstruction{
 	private String signature;
@@ -27,7 +28,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 	@Override
 	public void changeEnvironment(Environment environment) {
 		if(getName().contentEquals("invokespecial")){
-			//((v di new) parametri) <init>
+			Logger.logInfo(environment.takeCpoolRef(getRef()));
 			
 		}
 		else if(getName().contentEquals("invokevirtual")){

@@ -44,7 +44,7 @@ public class DeadlockAnalysis {
 		}
 		
 		//DataStructuresDebug.printDataStructures(classfiles);
-		DataStructuresDebug.printDataMethods(classfiles);
+		//DataStructuresDebug.printDataMethods(classfiles);
 		//DataStructuresDebug.printGenerateLams(lams);
 	}
 }
