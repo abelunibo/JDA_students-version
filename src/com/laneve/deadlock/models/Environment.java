@@ -65,11 +65,11 @@ public class Environment {
 		return o;
 	}
 	
-	protected LinkedList<String> getQueuethreads() {
+	public LinkedList<String> getQueuethreads() {
 		return queueThreads;
 	}
 
-	protected void setQueuethreads(LinkedList<String> queueThreads) {
+	public void setQueuethreads(LinkedList<String> queueThreads) {
 		this.queueThreads = queueThreads;
 	}
 

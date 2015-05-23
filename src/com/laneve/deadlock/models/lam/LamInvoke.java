@@ -1,6 +1,6 @@
 package com.laneve.deadlock.models.lam;
 
-public class LamInvoke extends LamBase {
+public class LamInvoke extends LamZT {
 	private String signature;
 	
 	@Override
