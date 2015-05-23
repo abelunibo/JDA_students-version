@@ -4,6 +4,7 @@ import com.laneve.deadlock.exceptions.BEException;
 import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
+import com.laneve.deadlock.type.TypeObject;
 import com.laneve.deadlock.models.lam.LamZT;
 import com.laneve.deadlock.utilities.Logger;
 
@@ -28,9 +29,9 @@ public class BEMonitorEnter extends BEInstructionLine implements BEInstruction{
 
 	@Override
 	public void changeEnvironment(Environment environment) {
-		String topStack="";
+		TypeObject topStack=null;
 		try {
-			topStack = environment.popStack();
+			topStack = (TypeObject) environment.popStack();
 		} catch (BEException e) {
 			e.printStackTrace();
 			System.exit(1);

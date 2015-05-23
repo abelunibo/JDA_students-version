@@ -5,7 +5,8 @@ import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.models.lam.LamZT;
-import com.laneve.deadlock.utilities.Logger;
+import com.laneve.deadlock.type.Type;
+import com.laneve.deadlock.type.TypeInt;
 
 public class BEOperation extends BEInstructionLine implements BEInstruction{
 
@@ -33,7 +34,8 @@ public class BEOperation extends BEInstructionLine implements BEInstruction{
 			e.printStackTrace();
 			System.exit(1);
 		}
-		environment.pushStack("INT");		
+		
+		environment.pushStack(new TypeInt());
 	}
 
 }

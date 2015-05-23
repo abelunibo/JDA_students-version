@@ -5,22 +5,23 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import com.laneve.deadlock.exceptions.BEException;
+import com.laneve.deadlock.type.Type;
 
 public class Environment {
 	
 	BEConstantPool constantPool;
-	LinkedList<String>  operandStack, locks, queueThreads;
-	HashMap<String, String> localVar;
+	LinkedList<Type>  operandStack, locks, queueThreads;
+	HashMap<String, Type> localVar;
 		
 	public Environment(BEConstantPool costantPool) {
 		this.constantPool = costantPool;
 	}
 
 	public void openScope() {
-		operandStack = new LinkedList<String>();
-		locks = new LinkedList<String>();
-		queueThreads = new LinkedList<String>();
-		localVar = new HashMap<String, String>();
+		operandStack = new LinkedList<Type>();
+		locks = new LinkedList<Type>();
+		queueThreads = new LinkedList<Type>();
+		localVar = new HashMap<String, Type>();
 	}
 
 	public void closeScope() {
@@ -37,52 +38,48 @@ public class Environment {
 		this.constantPool = constantPool;
 	}
 
-	public LinkedList<String> getOperandStack() {
+	public LinkedList<Type> getOperandStack() {
 		return operandStack;
 	}
 
-	public void setOperandStack(LinkedList<String> operandStack) {
-		this.operandStack = operandStack;
-	}
-
-	public LinkedList<String> getLocks() {
+	public LinkedList<Type> getLocks() {
 		return locks;
 	}
 
-	public void setLocks(LinkedList<String> locks) {
-		this.locks = locks;
-	}
-
-	public void addLock(String lock){
+	public void addLock(Type lock){
 		this.locks.add(lock);
 	}
 	
-	public String removeLock() throws BEException{
-		String o = null;
+	public Type removeLock() throws BEException{
+		Type o = null;
 		if(!locks.isEmpty())
 			o = locks.removeLast();
 		//else throw new BEException("rimozione da pila dei lock vuota"); TODO rimetterlo
 		return o;
 	}
 	
-	public LinkedList<String> getQueuethreads() {
+	public LinkedList<Type> getQueuethreads() {
 		return queueThreads;
 	}
 
-	public void setQueuethreads(LinkedList<String> queueThreads) {
-		this.queueThreads = queueThreads;
-	}
 
-	public HashMap<String, String> getLocalVar() {
+	public HashMap<String, Type> getLocalVar() {
 		return localVar;
 	}
 
-	public void setLocalVar(HashMap<String, String> localVar) {
+	
+	//recupera il valore in cima allo stack senza rimuoverlo
+	public Type getTopStack() throws BEException{
+		Type o;
+		if(!operandStack.isEmpty())
+			o=operandStack.getLast();
+		else throw new BEException("recupero valore da operand stack vuoto");
 		
+		return o;
 	}
 	
-	public String popStack() throws BEException {
-		String o = null;
+	public Type popStack() throws BEException {
+		Type o = null;
 		if(!operandStack.isEmpty())
 			o = operandStack.removeLast();
 		//else throw new BEException("pop da operand stack vuoto"); TODO rimetterlo
@@ -94,14 +91,14 @@ public class Environment {
 		for(int i = 0; i<count; i++){
 			if(!operandStack.isEmpty())
 				operandStack.removeLast();
-			else throw new BEException("pop da operand stack vuoto"); //TODO rimetterlo
+			//else throw new BEException("pop da operand stack vuoto"); //TODO rimetterlo
 		}
 	}
-	public void pushStack(String val){
+	public void pushStack(Type val){
 		operandStack.add(val);
 	}
 
-	public void putLocalVar(String localVarIndex, String val) {
+	public void putLocalVar(String localVarIndex, Type val) {
 		localVar.put(localVarIndex, val);
 		
 	}

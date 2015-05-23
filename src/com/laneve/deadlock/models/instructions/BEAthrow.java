@@ -1,10 +1,11 @@
 package com.laneve.deadlock.models.instructions;
 
+import com.laneve.deadlock.exceptions.BEException;
 import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.models.lam.LamZT;
-import com.laneve.deadlock.utilities.Logger;
+
 
 public class BEAthrow extends BEInstructionLine implements BEInstruction{
 	
@@ -26,8 +27,11 @@ public class BEAthrow extends BEInstructionLine implements BEInstruction{
 
 	@Override
 	public void changeEnvironment(Environment environment) {
-		// TODO Auto-generated method stub
-		
+		try {
+			environment.popStack();
+		} catch (BEException e) {
+			e.printStackTrace();
+		}
 	}
 
 
