@@ -23,7 +23,6 @@ public class BEDup extends BEInstructionLine implements BEInstruction{
 //		Logger.logInfo(lzt.getLam());
 		changeEnvironment(environment);		
 		return lzt;
-
 	}
 
 	@Override

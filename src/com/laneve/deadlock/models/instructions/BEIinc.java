@@ -17,11 +17,11 @@ public class BEIinc extends BEInstructionLine implements BEInstruction{
 	public LamBase generateLam(Environment environment) {	
 		
 		LamBase lzt = new LamZT();
-
+		LamZT.addDebugZT(environment);
 		String lamZ = LamZT.getZhatBar(environment.getLocks());
-		String lamT = LamZT.getThat(environment.getQueuethreads());	
-		
+		String lamT = LamZT.getThat(environment.getQueuethreads());
 		lzt.setLam(lamZ+" & "+lamT);
+//		Logger.logInfo(lzt.getLam());
 		changeEnvironment(environment);
 		return lzt;
 	}
