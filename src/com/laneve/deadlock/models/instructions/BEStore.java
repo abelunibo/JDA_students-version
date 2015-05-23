@@ -2,7 +2,6 @@ package com.laneve.deadlock.models.instructions;
 import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
-import com.laneve.deadlock.utilities.Logger;
 
 public class BEStore extends BEInstructionLine implements BEInstruction{
 	private String localVarIndex;
@@ -32,6 +31,6 @@ public class BEStore extends BEInstructionLine implements BEInstruction{
 		}
 		val = getNat() == null ? val = valtemp : "INT" ;
 		environment.putLocalVar(localVarIndex,val);
-		Logger.logInfo(environment.getLocalVar().get(localVarIndex));
+//		Logger.logInfo(environment.getLocalVar().get(localVarIndex));
 	}
 }

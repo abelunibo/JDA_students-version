@@ -5,7 +5,8 @@ import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
 
 public class BEInvoke extends BEInstructionLine implements BEInstruction{
-
+	private String signature;
+	
 	public BEInvoke(String text) {
 		instructionName = text;
 	}
@@ -18,6 +19,10 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 	@Override
 	public void handleEnvironment(Environment environment) {
 		// TODO Auto-generated method stub
+		if(getName().contentEquals("invokespecial")){
+			//((v di new) parametri) <init>
+		}
+		signature = environment.popStack();
 		
 	}
 

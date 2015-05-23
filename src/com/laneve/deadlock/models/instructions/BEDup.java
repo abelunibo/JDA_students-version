@@ -12,14 +12,15 @@ public class BEDup extends BEInstructionLine implements BEInstruction{
 
 	@Override
 	public LamBase generateLam(Environment environment) {
+		handleEnvironment(environment);
 		return super.generateLam(environment);
 
 	}
 
 	@Override
 	public void handleEnvironment(Environment environment) {
-		// TODO Auto-generated method stub
-		
+	// da scommentare quando saranno implementate tutte le regole
+	//	environment.pushStack(environment.getOperandStack().getFirst());
 	}
 
 

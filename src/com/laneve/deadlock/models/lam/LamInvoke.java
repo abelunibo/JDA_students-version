@@ -1,7 +1,8 @@
 package com.laneve.deadlock.models.lam;
 
 public class LamInvoke extends LamBase {
-
+	private String signature;
+	
 	@Override
 	public void semplify(LamBase lam) {
 		// TODO Auto-generated method stub
