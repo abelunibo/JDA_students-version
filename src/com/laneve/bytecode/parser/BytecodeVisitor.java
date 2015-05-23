@@ -94,13 +94,6 @@ public interface BytecodeVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLoad(@NotNull BytecodeParser.LoadContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Goto}
-	 * labeled alternative in {@link BytecodeParser#instruction}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitGoto(@NotNull BytecodeParser.GotoContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link BytecodeParser#tableEntry}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -264,6 +257,13 @@ public interface BytecodeVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitMethodHeader(@NotNull BytecodeParser.MethodHeaderContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Iinc}
+	 * labeled alternative in {@link BytecodeParser#instruction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIinc(@NotNull BytecodeParser.IincContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link BytecodeParser#fieldModifier}.
 	 * @param ctx the parse tree

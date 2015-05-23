@@ -13,7 +13,11 @@ public class BEIinc extends BEInstructionLine implements BEInstruction{
 
 	@Override
 	public LamBase generateLam(Environment environment) {	
-		//TODO generare lam qui
+		
+		String lamZ = LamZT.getZhatBar(environment.getLocks());
+		String lamT = LamZT.getThat(environment.getQueuethreads());	
+		
+		lzt.setLam(lamZ+" & "+lamT);
 		handleEnvironment(environment);
 		return super.generateLam(environment);
 	}
@@ -21,7 +25,15 @@ public class BEIinc extends BEInstructionLine implements BEInstruction{
 	
 	@Override
 	public void handleEnvironment(Environment environment) {
-		// TODO Auto-generated method stub
+		
+		String localVarIndex = getNat();
+		
+		/* e' inutile ottenere il valore da incrementare...tanto alla fine il
+		 * il risultato sara' sempre un tipo INT
+		 */
+		//String inc = getNumber(); 
+		
+		environment.putLocalVar(localVarIndex, "INT");
 		
 	}
 

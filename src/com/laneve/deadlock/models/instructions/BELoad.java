@@ -30,6 +30,6 @@ public class BELoad extends BEInstructionLine implements BEInstruction{
 			localVarIndex = getName().substring(getName().indexOf("_")+1, getName().length());
 		}
 		environment.pushStack(environment.getLocalVar().get(localVarIndex));
-		Logger.logInfo(environment.getLocalVar().get(localVarIndex));
+//		Logger.logInfo(environment.getLocalVar().get(localVarIndex));
 	}
 }

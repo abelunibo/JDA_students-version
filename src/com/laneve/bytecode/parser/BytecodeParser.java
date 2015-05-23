@@ -2180,14 +2180,6 @@ public class BytecodeParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class GotoContext extends InstructionContext {
-		public GotoContext(InstructionContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitGoto(this);
-			else return visitor.visitChildren(this);
-		}
-	}
 	public static class ReturnContext extends InstructionContext {
 		public ReturnContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
@@ -2251,6 +2243,14 @@ public class BytecodeParser extends Parser {
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitPop(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class IincContext extends InstructionContext {
+		public IincContext(InstructionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitIinc(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2356,7 +2356,7 @@ public class BytecodeParser extends Parser {
 				}
 				break;
 			case T__20:
-				_localctx = new GotoContext(_localctx);
+				_localctx = new NotImplementedContext(_localctx);
 				enterOuterAlt(_localctx, 11);
 				{
 				setState(382); match(T__20);
@@ -2545,7 +2545,7 @@ public class BytecodeParser extends Parser {
 				}
 				break;
 			case T__80:
-				_localctx = new OperationContext(_localctx);
+				_localctx = new IincContext(_localctx);
 				enterOuterAlt(_localctx, 38);
 				{
 				setState(409); match(T__80);

@@ -12,6 +12,7 @@ public class BEConst extends BEInstructionLine implements BEInstruction{
 
 	@Override
 	public LamBase generateLam(Environment environment) {
+		//TODO generare lam qui
 		handleEnvironment(environment);
 		return super.generateLam(environment);
 
@@ -19,6 +20,9 @@ public class BEConst extends BEInstructionLine implements BEInstruction{
 
 	@Override
 	public void handleEnvironment(Environment environment) {
+		
+		
+		
 	}
 
 }

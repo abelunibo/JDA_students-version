@@ -6,14 +6,14 @@ import com.laneve.deadlock.models.lam.LamBase;
 
 
 public class BETableEntries extends BEBase{
-	HashMap<String, BEConstantAndInfo> tableEntries =  new HashMap<String, BEConstantAndInfo>();
+	HashMap<String, BEConstantAndInfo> tableEntry =  new HashMap<String, BEConstantAndInfo>();
 
 	public void addTableEntry(BETableEntry tableEntry) {
-		this.tableEntries.put(tableEntry.getRef(), tableEntry.costantAndInfo);
+		this.tableEntry.put(tableEntry.getRef(), tableEntry.costantAndInfo);
 	}
 
-	public HashMap<String, BEConstantAndInfo> getTableEntries() {
-		return tableEntries;
+	public HashMap<String, BEConstantAndInfo> getTableEntry() {
+		return tableEntry;
 	}
 
 	@Override
@@ -21,5 +21,4 @@ public class BETableEntries extends BEBase{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

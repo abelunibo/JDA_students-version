@@ -30,7 +30,6 @@ import com.laneve.deadlock.models.BETableEntry;
 import com.laneve.deadlock.models.instructions.BEAthrow;
 import com.laneve.deadlock.models.instructions.BEConst;
 import com.laneve.deadlock.models.instructions.BEDup;
-import com.laneve.deadlock.models.instructions.BEGoto;
 import com.laneve.deadlock.models.instructions.BEIf;
 import com.laneve.deadlock.models.instructions.BEInvoke;
 import com.laneve.deadlock.models.instructions.BELoad;
@@ -216,10 +215,6 @@ public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
 	
 	@Override public BEBase visitOperation(com.laneve.bytecode.parser.BytecodeParser.OperationContext ctx) {
 		return new BEOperation(ctx.getText());
-	};
-	
-	@Override public BEBase visitGoto(com.laneve.bytecode.parser.BytecodeParser.GotoContext ctx) {
-		return new BEGoto(ctx.getText());
 	};
 	
 	@Override public BEBase visitNotImplemented(com.laneve.bytecode.parser.BytecodeParser.NotImplementedContext ctx) {

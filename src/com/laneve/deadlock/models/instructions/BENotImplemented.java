@@ -12,13 +12,14 @@ public class BENotImplemented extends BEInstructionLine implements BEInstruction
 
 	@Override
 	public LamBase generateLam(Environment environment) {
+		
+		//TODO tutti i not implemented devono calcolare le LAM come "T & Z"
+		
 		return super.generateLam(environment);
 	}
 
 	@Override
-	public void handleEnvironment(Environment environment) {
-		// TODO Auto-generated method stub
-		
+	public void handleEnvironment(Environment environment) {		
 	}
 
 
