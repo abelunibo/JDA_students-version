@@ -176,7 +176,7 @@ instruction
 	| 'dup' #Dup
 	| 'getfield' #NotImplemented 
 	| 'getstatic'  #NotImplemented
-	| 'goto'  #Goto //indirizzo per il goto e' dato come offset da sommare/sottrarre all'indirizzo nel program counter 
+	| 'goto'  #NotImplemented //indirizzo per il goto e' dato come offset da sommare/sottrarre all'indirizzo nel program counter 
 	| 'iadd' #Operation
 	| 'iconst_m1'#Const
 	| 'iconst_0' #Const
@@ -203,7 +203,7 @@ instruction
 	| 'ifge'  #If
 	| 'ifnonnull' #If 
 	| 'ifnull' #If
-	| 'iinc'  #Operation
+	| 'iinc'  #Iinc
 	| 'iload' #Load 
 	| ILOAD #Load
 	| 'imul' #Operation
