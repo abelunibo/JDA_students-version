@@ -88,6 +88,15 @@ public class Environment {
 		return o;
 	}
 	
+	//pop multiplo senza interesse su cosa si è scartato
+	public void popStack(int count) throws BEException {
+
+		for(int i = 0; i<count; i++){
+			if(!operandStack.isEmpty())
+				operandStack.removeLast();
+			else throw new BEException("pop da operand stack vuoto"); //TODO rimetterlo
+		}
+	}
 	public void pushStack(String val){
 		operandStack.add(val);
 	}
