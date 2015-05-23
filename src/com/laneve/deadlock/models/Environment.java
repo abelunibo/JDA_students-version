@@ -3,6 +3,8 @@ package com.laneve.deadlock.models;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import com.laneve.deadlock.exceptions.BEException;
+
 public class Environment {
 	
 	BEConstantPool constantPool;
@@ -54,8 +56,12 @@ public class Environment {
 		this.locks.add(lock);
 	}
 	
-	public void removeLock(){
-		this.locks.removeLast();
+	public String removeLock() throws BEException{
+		String o = null;
+		if(!locks.isEmpty())
+			o = locks.removeLast();
+		//else throw new BEException("rimozione da pila dei lock vuota"); TODO rimetterlo
+		return o;
 	}
 	
 	protected LinkedList<String> getQueuethreads() {
@@ -74,10 +80,11 @@ public class Environment {
 		
 	}
 	
-	public String popStack(){
+	public String popStack() throws BEException {
 		String o = null;
 		if(!operandStack.isEmpty())
 			o = operandStack.removeLast();
+		//else throw new BEException("pop da operand stack vuoto"); TODO rimetterlo
 		return o;
 	}
 	
