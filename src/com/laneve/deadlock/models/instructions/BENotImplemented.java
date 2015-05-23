@@ -16,7 +16,7 @@ public class BENotImplemented extends BEInstructionLine implements BEInstruction
 	}
 
 	@Override
-	public void handleEnvironment(Environment environment) {
+	public void changeEnvironment(Environment environment) {
 		// TODO Auto-generated method stub
 		
 	}
