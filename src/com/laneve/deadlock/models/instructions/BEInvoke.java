@@ -46,7 +46,6 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 			parameters =  signature.substring(openP+1, closedP);
 			numParameters=0;
 			if(parameters.contains(";")){
-				//Logger.logInfo(parameters);
 				for (int i = 0; i < parameters.length(); i++) {
 					if (parameters.charAt(i) == ';') {
 						numParameters++;
@@ -67,7 +66,6 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 					System.exit(1);
 				}
 					
-					//Logger.logInfo(String.valueOf(numParameters));
 			}
 			
 			//recupero infine l'oggetto this su cui viene invocato il metodo se il metodo non è static

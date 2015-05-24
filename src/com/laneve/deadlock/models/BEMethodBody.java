@@ -1,6 +1,7 @@
 package com.laneve.deadlock.models;
 
 import java.util.HashMap;
+
 import java.util.LinkedList;
 import java.util.logging.Logger;
 
@@ -61,8 +62,7 @@ public class BEMethodBody extends BEBase{
 	public BEInstructionLine getInstructionTemp() {
 		return instructionTemp;
 	}
-
-
+	
 	public void setNextGotoInstruction(Integer indexListTojump){
 			nextGoToInstruction = indexListTojump;
 	}
@@ -75,7 +75,7 @@ public class BEMethodBody extends BEBase{
 	public LamBase generateLam(Environment environment) {
 		LamSequence l = new LamSequence();
 		environment.openScope(this);
-	
+
 		for(int i = 0 ; i < instructions.size() ;i++){
 			if(!(nextGoToInstruction == null)){
 				i = nextGoToInstruction;
@@ -126,9 +126,7 @@ public class BEMethodBody extends BEBase{
 			l.createSequence(instructions.get(i).generateLam(environment));
 			instructionTemp = instructions.get(i);
 
-		}
 		environment.closeScope();
 		return l;
 	}
-	
 }

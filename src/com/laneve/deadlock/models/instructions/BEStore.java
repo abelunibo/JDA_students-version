@@ -23,7 +23,7 @@ public class BEStore extends BEInstructionLine implements BEInstruction{
 		changeEnvironment(environment);
 		return lzt;
 	}
-	
+
 	@Override
 	public void changeEnvironment(Environment environment) {
 		if(getName().contentEquals("astore")){

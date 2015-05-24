@@ -1,5 +1,6 @@
 package com.laneve.deadlock.visitor;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import org.antlr.v4.runtime.misc.NotNull;
@@ -184,12 +185,19 @@ public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
 	@Override public BEBase visitMethodBody(@NotNull BytecodeParser.MethodBodyContext ctx) {
 		BEMethodBody methodBody;
 		LinkedList<BEInstructionLine> instruction = new LinkedList<BEInstructionLine>();
-		for(InstructionLineContext i : ctx.instructionLine()){
-			instruction.add((BEInstructionLine) visitInstructionLine(i)); 
+		
+		HashMap<String, Integer> instructionMap = new HashMap<String, Integer>();
+
+		for(int i= 0; i<ctx.instructionLine().size(); i++){
+			BEInstructionLine instructionLine = (BEInstructionLine) visitInstructionLine(ctx.instructionLine().get(i));
+			instruction.add(instructionLine);
+			instructionMap.put(instructionLine.getIndex().substring(0, instructionLine.getIndex().indexOf(":")), i);
 		}
-		methodBody = new BEMethodBody(instruction);
+		
+		methodBody = new BEMethodBody(instruction,instructionMap);
 		return methodBody; 
 	}
+
 	@Override public BEBase visitInstructionLine(@NotNull BytecodeParser.InstructionLineContext ctx) {
 		BEInstructionLine instruction = (BEInstructionLine) visit(ctx.instruction());
 		instruction.setIndex(ctx.INDEX() == null ? " ":ctx.INDEX().getText());

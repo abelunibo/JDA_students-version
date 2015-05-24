@@ -29,7 +29,6 @@ public class BENotImplemented extends BEInstructionLine implements BEInstruction
 
 	@Override
 	public void changeEnvironment(Environment environment) throws BEException{
-		
 		throw new BEException("Istruzione "+instructionName+" non gestita");
 	}
 

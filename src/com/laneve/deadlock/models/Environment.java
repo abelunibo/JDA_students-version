@@ -60,9 +60,9 @@ public class Environment {
 
 		if(mb.getMethodModifier() != null && 
 				!mb.getMethodModifier().getModifier().contains("static")){ //non è un modificatore statico
-				//aggiungo il this in posizione 0 delle localVar
-				localVar.put("0", new TypeObject(className,j));
-				j++;
+			//aggiungo il this in posizione 0 delle localVar
+			localVar.put("0", new TypeObject(className,j));
+			j++;
 		}
 
 		for(int i=0;i<pars.size(); i++){
@@ -135,10 +135,10 @@ public class Environment {
 		if(!operandStack.isEmpty())
 			o=operandStack.getLast();
 		else throw new BEException("recupero valore da operand stack vuoto");
-		
+
 		return o;
 	}
-	
+
 	public Type popStack() throws BEException {
 		Type o = null;
 		if(!operandStack.isEmpty())
@@ -161,15 +161,15 @@ public class Environment {
 
 	public void putLocalVar(String localVarIndex, Type val) {
 		localVar.put(localVarIndex, val);
-		
+
 	}
-	
-	
+
+
 	/*
-	* ------------
-	* Entry della constant pool
-	* -------------
-	* 'Class' ref 
+	 * ------------
+	 * Entry della constant pool
+	 * -------------
+	 * 'Class' ref 
 	| 'Fieldref' ref'.'ref
 	| 'Methodref' ref'.'ref
 	| 'InterfaceMethodref' ref'.'ref
@@ -180,8 +180,8 @@ public class Environment {
 	| 'Double' DEC
 	| 'NameAndType' ref':'ref
 	|
-	*/
-	
+	 */
+
 	public String takeCpoolRef(String ref) {
 		BEConstantAndInfo constantInfo = constantPool.getTableEntries().getTableEntry().get(ref);
 		ArrayList<String> a = constantInfo.getConstantAndInfo();
