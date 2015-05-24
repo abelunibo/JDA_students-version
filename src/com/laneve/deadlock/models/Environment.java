@@ -151,6 +151,7 @@ public class Environment {
 	| 'NameAndType' ref':'ref
 	|
 	*/
+	
 	public String takeCpoolRef(String ref) {
 		BEConstantAndInfo constantInfo = constantPool.getTableEntries().getTableEntry().get(ref);
 		ArrayList<String> a = constantInfo.getConstantAndInfo();
@@ -161,6 +162,12 @@ public class Environment {
 		case "Methodref":
 			String mRef = a.get(1);
 			String classname = takeCpoolRef(mRef);
+		case "Fieldref":
+			String fRef = a.get(1);
+			String nameAdnTypeRef = a.get(2);
+			String classnameField = takeCpoolRef(fRef);
+			String nameAdnType = takeCpoolRef(nameAdnTypeRef);
+			return classnameField+'.'+nameAdnType;
 		case "NameAndType":
 			String methodNameRef = a.get(1);
 			String returnTypeRef = a.get(2);
@@ -168,7 +175,6 @@ public class Environment {
 			String returnType = takeCpoolRef(returnTypeRef);
 			//example "<init>":()V
 			return methodName+":"+returnType;
-			
 		default://"Utf8"
 			return a.get(1);
 		}
