@@ -12,10 +12,6 @@ public class BEClassFile extends BEBase{
 	BEConstantPool costantPool;
 	HashMap<BEMethodHeader, BEMethodDeclaration> methods = new HashMap<BEMethodHeader, BEMethodDeclaration>();
 
-	public BEClassFile(){
-		
-	}
-
 	public BEClassFile(String className,BEConstantPool costantPool) {
 		super();
 		this.className = className;

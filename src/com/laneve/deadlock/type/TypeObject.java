@@ -4,10 +4,10 @@ import com.laneve.deadlock.exceptions.BEException;
 
 public class TypeObject extends Type{
 
-	Long index = null;
+	Integer index = null;
 	
 	//crea tipo oggetto per i parametri dei metodi
-	public TypeObject(String name, Long index){
+	public TypeObject(String name, Integer index){
 		super(name);
 		this.index=index;
 		this.isParameter=true;
@@ -17,18 +17,18 @@ public class TypeObject extends Type{
 		super(name);
 	}
 		
-	public void setIndex(Long index) throws BEException{
+	public void setIndex(Integer index) throws BEException{
 		if(index!=null) throw new BEException("Non puoi riassegnare un indice ad un tipo");
 		this.index=index;
 	}
 	
-	public Long getIndex(){
+	public Integer getIndex(){
 		return this.index;
 	}
 	
 	
 	// ritorna una copia del tipo eseguita con una dup 
-	public static TypeObject dup(TypeObject t, Long dupInstructionIndex){
+	public static TypeObject dup(TypeObject t, Integer dupInstructionIndex){
 		if(t.index==null)
 			try {
 				t.setIndex(dupInstructionIndex);
@@ -43,7 +43,7 @@ public class TypeObject extends Type{
 	
 	
 	//ritorna il tipo caricato con una load
-	public TypeObject load(Long loadInstructionIndex){
+	public TypeObject load(Integer loadInstructionIndex){
 		if(index==null)
 			try {
 				setIndex(loadInstructionIndex);
