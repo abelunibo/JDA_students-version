@@ -1,19 +1,16 @@
 package com.laneve.deadlock.models.instructions;
 
-import java.util.logging.Logger;
 
 import com.laneve.deadlock.exceptions.BEException;
 import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.models.lam.LamZT;
-import com.laneve.deadlock.type.Type;
 import com.laneve.deadlock.type.TypeInt;
 import com.laneve.deadlock.type.TypeObject;
 
 public class BEInvoke extends BEInstructionLine implements BEInstruction{
 	private String lamEnd="";
-	private static Logger LOGGER = Logger.getLogger(BEInvoke.class.getSimpleName());
 	
 	public BEInvoke(String text) {
 		instructionName = text;
@@ -56,7 +53,8 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 						a.insert(0,environment.popStack().getName()+",");
 					}
 				    a.insert(0,"(");
-				    a.insert(1,environment.popStack().getName()+",");
+				    obThis = environment.popStack().getName();
+				    a.insert(1,obThis +",");
 				    a.deleteCharAt(a.length()-1);
 				    a.insert(a.length(),")");
 					a.insert(0,"<init> ");
@@ -67,13 +65,8 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 					
 			}
 			
-			//recupero infine l'oggetto this su cui viene invocato il metodo se il metodo non è static
-					
-			try {
-				obThis = "(v " + environment.popStack().getName() + ")";
-			} catch (BEException e) {
-				e.printStackTrace();
-			}
+			
+			obThis = "(v " + obThis + ")";
 			
 			this.lamEnd= obThis + a.toString();
 			
