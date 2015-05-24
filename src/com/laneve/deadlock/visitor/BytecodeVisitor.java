@@ -9,7 +9,6 @@ import com.laneve.bytecode.parser.BytecodeBaseVisitor;
 import com.laneve.bytecode.parser.BytecodeParser;
 import com.laneve.bytecode.parser.BytecodeParser.ConstContext;
 import com.laneve.bytecode.parser.BytecodeParser.FormalParameterContext;
-import com.laneve.bytecode.parser.BytecodeParser.InstructionLineContext;
 import com.laneve.bytecode.parser.BytecodeParser.MethodDeclarationContext;
 import com.laneve.bytecode.parser.BytecodeParser.MethodModifierContext;
 import com.laneve.bytecode.parser.BytecodeParser.RefContext;
