@@ -4,24 +4,55 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import com.laneve.bytecode.parser.BytecodeParser.FormalParameterContext;
 import com.laneve.deadlock.exceptions.BEException;
 import com.laneve.deadlock.type.Type;
+import com.laneve.deadlock.type.TypeInt;
+import com.laneve.deadlock.type.TypeObject;
 
 public class Environment {
 	
 	BEConstantPool constantPool;
+	String className;
 	LinkedList<Type>  operandStack, locks, queueThreads;
 	HashMap<String, Type> localVar;
-		
-	public Environment(BEConstantPool costantPool) {
-		this.constantPool = costantPool;
+	
+
+	public Environment(BEConstantPool costantPool, String className) {
+		this.constantPool = costantPool;	
+		this.className=className;
 	}
 
-	public void openScope() {
+	public void openScope(BEMethodBody mb) {
+		
+		//inizializza le strutture
 		operandStack = new LinkedList<Type>();
 		locks = new LinkedList<Type>();
 		queueThreads = new LinkedList<Type>();
 		localVar = new HashMap<String, Type>();
+		
+		if(mb.getMethodModifier() != null && 
+				mb.getMethodModifier().getModifier().contentEquals("synchronized")){ 
+			// se metodo e' synchronized  aggiungi il this ai lock
+			addLock(new TypeObject(className,0)); //TODO controlla //il this e' il primo parametro quindi e' indicizzato a 0
+		}
+
+		//setta i parametri nelle corrispondenti posizioni della localVar
+		ArrayList<FormalParameterContext> pars=null;
+		try {
+			pars = mb.getMethodHeader().getMethodDeclarator().getFormalParameters();
+		} catch (BEException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}	
+		for(int i=0;i<pars.size(); i++){
+			if(pars.get(i).getText().equals("int")){
+				localVar.put(String.valueOf(i), new TypeInt());
+			}
+			else{
+				localVar.put(String.valueOf(i), new TypeObject(pars.get(i).getText(),i));
+			}
+		}
 	}
 
 	public void closeScope() {
@@ -102,7 +133,24 @@ public class Environment {
 		localVar.put(localVarIndex, val);
 		
 	}
-
+	
+	
+	/*
+	* ------------
+	* Entry della constant pool
+	* -------------
+	* 'Class' ref 
+	| 'Fieldref' ref'.'ref
+	| 'Methodref' ref'.'ref
+	| 'InterfaceMethodref' ref'.'ref
+	|  STRING ref
+	| 'Integer' num
+	| 'Float' DEC
+	| 'Long' num'l'
+	| 'Double' DEC
+	| 'NameAndType' ref':'ref
+	|
+	*/
 	public String takeCpoolRef(String ref) {
 		BEConstantAndInfo constantInfo = constantPool.getTableEntries().getTableEntry().get(ref);
 		ArrayList<String> a = constantInfo.getConstantAndInfo();
@@ -117,12 +165,20 @@ public class Environment {
 			String methodNameRef = a.get(1);
 			String returnTypeRef = a.get(2);
 			String methodName = takeCpoolRef(methodNameRef);
-			String returnType = takeCpoolRef(returnTypeRef);
+			String returnType = takeCpoolRef(methodNameRef);
 			//example "<init>":()V
 			return methodName+":"+returnType;
+			
 		default://"Utf8"
 			return a.get(1);
 		}
+	}
+	
+	
+	public String takeCpoolRefType(String ref) {
+		BEConstantAndInfo constantInfo = constantPool.getTableEntries().getTableEntry().get(ref);
+		ArrayList<String> a = constantInfo.getConstantAndInfo();
+		return a.get(0);
 	}
 
 	//TODO usata solo per debug
