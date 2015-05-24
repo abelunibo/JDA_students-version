@@ -1,5 +1,6 @@
 package com.laneve.deadlock.models;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import com.laneve.deadlock.exceptions.BEException;
@@ -54,8 +55,10 @@ public class BEMethodBody extends BEBase{
 		environment.openScope(this);
 		//TODO for(int i = 0 ; i < instructions.size ;i++)
 		//TODO i = istruzionesuccessiva;
+		
 		for(BEInstructionLine i : instructions){
-			 /*System.out.println(i.getName()+"--");
+			
+		 /*System.out.println(i.getName()+"--");
 			System.out.print("Stack--> "+ environment.getOperandStack().toString());
 			  
 			Iterator it = environment.getLocalVar().keySet().iterator();
@@ -70,12 +73,13 @@ public class BEMethodBody extends BEBase{
 			}
 			
 			System.out.println();*/
-			//TODO if setIstruzioneSuccessiva == null{
-			l.createSequence(i.generateLam(environment)); 
-			//TODO istruzioneTemp = i;
+			
+			l.createSequence(i.generateLam(environment));
+
 		}
 		
 		environment.closeScope();
 		return l;
 	}
+	
 }

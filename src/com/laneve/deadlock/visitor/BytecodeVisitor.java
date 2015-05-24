@@ -30,7 +30,10 @@ import com.laneve.deadlock.models.BETableEntry;
 import com.laneve.deadlock.models.instructions.BEAthrow;
 import com.laneve.deadlock.models.instructions.BEConst;
 import com.laneve.deadlock.models.instructions.BEDup;
+import com.laneve.deadlock.models.instructions.BEGet;
+import com.laneve.deadlock.models.instructions.BEGoto;
 import com.laneve.deadlock.models.instructions.BEIf;
+import com.laneve.deadlock.models.instructions.BEIinc;
 import com.laneve.deadlock.models.instructions.BEInvoke;
 import com.laneve.deadlock.models.instructions.BELoad;
 import com.laneve.deadlock.models.instructions.BEMonitorEnter;
@@ -39,6 +42,7 @@ import com.laneve.deadlock.models.instructions.BENew;
 import com.laneve.deadlock.models.instructions.BENotImplemented;
 import com.laneve.deadlock.models.instructions.BEOperation;
 import com.laneve.deadlock.models.instructions.BEPop;
+import com.laneve.deadlock.models.instructions.BEPut;
 import com.laneve.deadlock.models.instructions.BEReturn;
 import com.laneve.deadlock.models.instructions.BEStore;
 
@@ -241,6 +245,22 @@ public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
 	
 	@Override public BEBase visitLoad(com.laneve.bytecode.parser.BytecodeParser.LoadContext ctx) {
 		return new BELoad(ctx.getText());
+	};
+	
+	@Override public BEBase visitGet(com.laneve.bytecode.parser.BytecodeParser.GetContext ctx) {
+		return new BEGet(ctx.getText());
+	};
+	
+	@Override public BEBase visitPut(com.laneve.bytecode.parser.BytecodeParser.PutContext ctx) {
+		return new BEPut(ctx.getText());
+	};
+	
+	@Override public BEBase visitIinc(com.laneve.bytecode.parser.BytecodeParser.IincContext ctx) {
+		return new BEIinc(ctx.getText());
+	};
+	
+	@Override public BEBase visitGoto(com.laneve.bytecode.parser.BytecodeParser.GotoContext ctx) {
+		return new BEGoto(ctx.getText());
 	};
 	
 	@Override

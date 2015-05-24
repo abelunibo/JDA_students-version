@@ -5,6 +5,8 @@ import com.laneve.deadlock.exceptions.BEException;
 public class TypeObject extends Type{
 
 	Integer index = null;
+	boolean isParameter=false;
+	boolean isField=false;
 	
 	//crea tipo oggetto per i parametri dei metodi
 	public TypeObject(String name, Integer index){
@@ -16,6 +18,23 @@ public class TypeObject extends Type{
 	public TypeObject(String name){
 		super(name);
 	}
+	
+	public boolean isParameter(){
+		return isParameter;
+	}
+	
+	public boolean isField(){
+		return isField;
+	}
+	
+	//crea il tipo univoco per i campi
+	// fieldObj e' il tipo del campo
+	//field e' il nome del campo
+	// o e' il tipo dell'oggetto che contiene il campo
+	public TypeObject(TypeObject fieldObj, String field, TypeObject o){
+		super(fieldObj.getRawName()+"£"+field+"£"+o.getName());
+		this.isField=true;
+	}
 		
 	public void setIndex(Integer index) throws BEException{
 		if(index!=null) throw new BEException("Non puoi riassegnare un indice ad un tipo");
@@ -26,31 +45,37 @@ public class TypeObject extends Type{
 		return this.index;
 	}
 	
-	
-	// ritorna una copia del tipo eseguita con una dup 
-	public static TypeObject dup(TypeObject t, Integer dupInstructionIndex){
-		if(t.index==null)
+	@Override
+	public Type dup(Integer dupInstructionIndex){
+		if(index==null && !isField){
 			try {
-				t.setIndex(dupInstructionIndex);
+				setIndex(dupInstructionIndex); //aggiorno il mio indice
 			} catch (BEException e) {
 				e.printStackTrace();
 				System.exit(1);
 			}
-		TypeObject tNew=new TypeObject(t.name);
-		tNew.index=t.index;
-		return tNew;
+		}
+		return dup(this);
 	}
 	
+	private TypeObject dup(TypeObject t){
+		TypeObject t1 = new TypeObject(t.name);
+		t1.isField=t.isField;
+		t1.isParameter=t.isParameter;
+		t1.index=t.index;
+		return t1;
+	}
 	
-	//ritorna il tipo caricato con una load
-	public TypeObject load(Integer loadInstructionIndex){
-		if(index==null)
+	@Override
+	public Type load(Integer loadInstructionIndex){
+		if(index==null && !isField){
 			try {
-				setIndex(loadInstructionIndex);
+				setIndex(loadInstructionIndex); //aggiorno il mio indice
 			} catch (BEException e) {
 				e.printStackTrace();
 				System.exit(1);
 			}
+		}
 		return this;
 	}
 	
@@ -68,13 +93,14 @@ public class TypeObject extends Type{
 	//ritorna il nome del tipo indicizzato
 	private String getIndexName() {
 		
+		if(isField) return name;
+		
 		String s=name;
 		
-		if(isParameter){ //se e' un parametro di un metodo ha per forza un indice
+		if(isParameter){ //notazione per tipi parametri dei metodi (se e' un parametro di un metodo ha per forza un indice)
 			s+= "[" + index + "]";
 		}
-		else{
-			
+		else{ //notazione per tipo indicizzato
 			if(index!=null){
 				s+= "?"+index+"?";
 			}
