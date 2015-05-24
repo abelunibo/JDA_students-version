@@ -15,7 +15,7 @@ public class Environment {
 	BEConstantPool constantPool;
 	String className;
 	LinkedList<Type>  operandStack, locks, queueThreads;
-	HashMap<String, Type> localVar;
+	HashMap<String, Type> localVar; //TODO potrebbe essere un arraylist
 	BEMethodBody currentMethodBody;
 
 
@@ -116,6 +116,13 @@ public class Environment {
 		return queueThreads;
 	}
 
+	public void addThread(Type t){
+		queueThreads.add(t);
+	}
+	
+	public void removeThread(Type t){
+		queueThreads.remove(t);
+	}
 
 	public HashMap<String, Type> getLocalVar() {
 		return localVar;
@@ -187,11 +194,11 @@ public class Environment {
 			takeCpoolRef(mRef);
 		case "Fieldref":
 			String fRef = a.get(1);
-			String nameAdnTypeRef = a.get(2);
+			String nameAndTypeRef = a.get(2);
 			String classnameField = takeCpoolRef(fRef);
-			String nameAdnType = takeCpoolRef(nameAdnTypeRef);
+			String nameAndType = takeCpoolRef(nameAndTypeRef);
 			//return classnameField+'.'+nameAdnType;
-			return nameAdnType + " " + classnameField;
+			return nameAndType + " " + classnameField;
 		case "NameAndType":
 			String methodNameRef = a.get(1);
 			String returnTypeRef = a.get(2);

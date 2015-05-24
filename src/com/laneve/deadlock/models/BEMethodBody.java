@@ -126,6 +126,7 @@ public class BEMethodBody extends BEBase{
 			l.createSequence(instructions.get(i).generateLam(environment));
 			instructionTemp = instructions.get(i);
 		}
+
 		environment.closeScope();
 		return l;
 	}
