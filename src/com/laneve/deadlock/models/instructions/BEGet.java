@@ -5,6 +5,7 @@ import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.models.lam.LamZT;
+import com.laneve.deadlock.type.TypeInt;
 import com.laneve.deadlock.type.TypeObject;
 
 public class BEGet extends BEInstructionLine implements BEInstruction{
@@ -26,25 +27,35 @@ public class BEGet extends BEInstructionLine implements BEInstruction{
 
 	@Override
 	public void changeEnvironment(Environment environment){
-		if(getName().equals("getfield")){
-			TypeObject o = null;
-			try {
-				o= (TypeObject) environment.popStack(); //tolgo dallo stack elemento da cui devo recuperare il campo
-			} catch (BEException e) {
-				e.printStackTrace();
-				System.exit(1);
-			}
-			
-			//TODO qui i riferimenti vengono presi sicuramente sbagliati....controlla
-			environment.pushStack(new TypeObject(new TypeObject(environment.takeCpoolRef(getRef())),environment.takeCpoolRef(getRef()),o));
-			
-		}else if(getName().equals("getstatic")){
-			
-			//TODO qui i riferimenti vengono presi sicuramente sbagliati....controlla
-			environment.pushStack(new TypeObject(new TypeObject(environment.takeCpoolRef(getRef())),
-					environment.takeCpoolRef(getRef()),new TypeObject(environment.takeCpoolRef(getRef()))));
+		String getfieldRef = environment.takeCpoolRef(getRef());
+		String fieldType = getfieldRef.substring(0, getfieldRef.indexOf(" "));
+		String fieldName = getfieldRef.substring(getfieldRef.indexOf(" ")+1, getfieldRef.lastIndexOf(" "));
+		String fieldObjectType = getfieldRef.substring(getfieldRef.lastIndexOf(" ")+1);
+		String firstLetter = getfieldRef.substring(0, 1);
+		System.out.println(fieldType +"  "+fieldName+" "+fieldObjectType);
+		System.out.println(getfieldRef);
 
+		if(getName().equals("getfield")){
+			if(firstLetter.contentEquals("L")){
+
+				TypeObject o = null;
+				try {
+					o= (TypeObject) environment.popStack(); //tolgo dallo stack elemento da cui devo recuperare il campo
+				} catch (BEException e) {
+					e.printStackTrace();
+					System.exit(1);
+				}
+
+				environment.pushStack(new TypeObject(new TypeObject(fieldType), fieldName, o));
+			}
+			else environment.pushStack(new TypeInt());
+		}else if(getName().equals("getstatic")){
+			if(firstLetter.contentEquals("L")){
+				environment.pushStack(new TypeObject(new TypeObject(fieldType), fieldName, new TypeObject(fieldObjectType)));
+			}
+			else environment.pushStack(new TypeInt());
 		}
+
 	}
-	
+
 }
