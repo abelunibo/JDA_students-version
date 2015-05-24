@@ -13,14 +13,17 @@ import com.laneve.deadlock.type.TypeObject;
 public class Environment {
 	
 	BEConstantPool constantPool;
+	String className;
 	LinkedList<Type>  operandStack, locks, queueThreads;
 	HashMap<String, Type> localVar;
-		
-	public Environment(BEConstantPool costantPool) {
-		this.constantPool = costantPool;
+	
+
+	public Environment(BEConstantPool costantPool, String className) {
+		this.constantPool = costantPool;	
+		this.className=className;
 	}
 
-	public void openScope(BEMethodDeclaration md) {
+	public void openScope(BEMethodBody mb) {
 		
 		//inizializza le strutture
 		operandStack = new LinkedList<Type>();
@@ -28,22 +31,26 @@ public class Environment {
 		queueThreads = new LinkedList<Type>();
 		localVar = new HashMap<String, Type>();
 		
-		if(md.getModifier() != null && 
-				md.getModifier().getModifier().contentEquals("synchronized")){ 
+		if(mb.getMethodModifier() != null && 
+				mb.getMethodModifier().getModifier().contentEquals("synchronized")){ 
 			// se metodo e' synchronized  aggiungi il this ai lock
-			addLock(new TypeObject(md.getClassName(),0)); //TODO controlla //il this e' il primo parametro quindi e' indicizzato a 0
+			addLock(new TypeObject(className,0)); //TODO controlla //il this e' il primo parametro quindi e' indicizzato a 0
 		}
 
-		if(md.getMethodHeader()!=null){
-			//setta i parametri nelle corrispondenti posizioni della localVar
-			ArrayList<FormalParameterContext> pars = md.getMethodHeader().getMethodDeclarator().getFormalParameters();		
-			for(int i=0;i<pars.size(); i++){
-				if(pars.get(i).getText().equals("int")){
-					localVar.put(String.valueOf(i), new TypeInt());
-				}
-				else{
-					localVar.put(String.valueOf(i), new TypeObject(pars.get(i).getText(),i));
-				}
+		//setta i parametri nelle corrispondenti posizioni della localVar
+		ArrayList<FormalParameterContext> pars=null;
+		try {
+			pars = mb.getMethodHeader().getMethodDeclarator().getFormalParameters();
+		} catch (BEException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}	
+		for(int i=0;i<pars.size(); i++){
+			if(pars.get(i).getText().equals("int")){
+				localVar.put(String.valueOf(i), new TypeInt());
+			}
+			else{
+				localVar.put(String.valueOf(i), new TypeObject(pars.get(i).getText(),i));
 			}
 		}
 	}

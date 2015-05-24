@@ -39,7 +39,7 @@ public class DeadlockAnalysis {
 		}
 		
 		for(BEClassFile cf : classfiles){
-			environment = new Environment(cf.getCostantPool());
+			environment = new Environment(cf.getCostantPool(),cf.getClassName());
 			lams.add(cf.generateLam(environment));
 		}
 		

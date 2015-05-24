@@ -136,6 +136,12 @@ public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
 		}
 		
 		methodBody = (BEMethodBody) visitMethodBody(ctx.methodBody());
+		try {
+			methodBody.setMethodSignature(methodModifier,methodHeader);
+		} catch (BEException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
 		methodDeclaration = new BEMethodDeclaration(methodModifier, methodHeader, methodBody);
 
 		return methodDeclaration;
