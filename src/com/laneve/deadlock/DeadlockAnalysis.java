@@ -37,7 +37,11 @@ public class DeadlockAnalysis {
 		for ( File fileEntry : folder.listFiles()){
 			
 			if(fileEntry.getName().contains("Deadlock")) continue;
-			if(fileEntry.getName().contains("Pluto")) continue;
+			if(fileEntry.getName().contains("Pluto1")) continue;
+			if(fileEntry.getName().contains("Pluto2")) continue;
+			if(fileEntry.getName().contains("Pippo")) continue;
+
+		
 			FileInputStream in = new FileInputStream(fileEntry);
 			ANTLRInputStream input = new ANTLRInputStream(in);
 			BytecodeLexer lexer = new BytecodeLexer(input);
