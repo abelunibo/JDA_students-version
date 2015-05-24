@@ -1,0 +1,322 @@
+Classfile /Users/t6o/Desktop/laneve/workspace/deadlock/src/deadlock/Deadlock1.class
+  Last modified May 24, 2015; size 1434 bytes
+  MD5 checksum 35694cc936008f48df1d4cf032e0f920
+  Compiled from "Deadlock1.java"
+public class deadlock.Deadlock1
+  minor version: 0
+  major version: 52
+  flags: ACC_PUBLIC, ACC_SUPER
+Constant pool:
+   #1 = Methodref          #2.#43         // java/lang/Object."<init>":()V
+   #2 = Class              #44            // java/lang/Object
+   #3 = Fieldref           #7.#45         // deadlock/Deadlock1.o:Ljava/lang/Object;
+   #4 = Fieldref           #7.#46         // deadlock/Deadlock1.o_primo:Ljava/lang/Object;
+   #5 = Fieldref           #7.#47         // deadlock/Deadlock1.alfred:I
+   #6 = Fieldref           #7.#48         // deadlock/Deadlock1.a:I
+   #7 = Class              #49            // deadlock/Deadlock1
+   #8 = Methodref          #7.#43         // deadlock/Deadlock1."<init>":()V
+   #9 = String             #50            //
+  #10 = Methodref          #7.#51         // deadlock/Deadlock1."<init>":(Ljava/lang/String;Ljava/lang/String;)V
+  #11 = Class              #52            // deadlock/Deadlock1$1
+  #12 = Methodref          #11.#53        // deadlock/Deadlock1$1."<init>":(Ldeadlock/Deadlock1;)V
+  #13 = Methodref          #54.#55        // java/lang/Thread.start:()V
+  #14 = Class              #56            // deadlock/Deadlock1$2
+  #15 = Methodref          #14.#53        // deadlock/Deadlock1$2."<init>":(Ldeadlock/Deadlock1;)V
+  #16 = Utf8               InnerClasses
+  #17 = Utf8               o
+  #18 = Utf8               Ljava/lang/Object;
+  #19 = Utf8               o_primo
+  #20 = Utf8               alfred
+  #21 = Utf8               I
+  #22 = Utf8               a
+  #23 = Utf8               <init>
+  #24 = Utf8               ()V
+  #25 = Utf8               Code
+  #26 = Utf8               LineNumberTable
+  #27 = Utf8               (Ljava/lang/String;Ljava/lang/String;)V
+  #28 = Utf8               p
+  #29 = Utf8               (Ljava/lang/String;ILjava/lang/String;C)V
+  #30 = Utf8               takelock
+  #31 = Utf8               ()I
+  #32 = Utf8               StackMapTable
+  #33 = Class              #49            // deadlock/Deadlock1
+  #34 = Class              #44            // java/lang/Object
+  #35 = Class              #57            // java/lang/Throwable
+  #36 = Utf8               Exceptions
+  #37 = Class              #58            // java/lang/InterruptedException
+  #38 = Utf8               takelock2
+  #39 = Utf8               main
+  #40 = Utf8               ([Ljava/lang/String;)V
+  #41 = Utf8               SourceFile
+  #42 = Utf8               Deadlock1.java
+  #43 = NameAndType        #23:#24        // "<init>":()V
+  #44 = Utf8               java/lang/Object
+  #45 = NameAndType        #17:#18        // o:Ljava/lang/Object;
+  #46 = NameAndType        #19:#18        // o_primo:Ljava/lang/Object;
+  #47 = NameAndType        #20:#21        // alfred:I
+  #48 = NameAndType        #22:#21        // a:I
+  #49 = Utf8               deadlock/Deadlock1
+  #50 = Utf8
+  #51 = NameAndType        #23:#27        // "<init>":(Ljava/lang/String;Ljava/lang/String;)V
+  #52 = Utf8               deadlock/Deadlock1$1
+  #53 = NameAndType        #23:#59        // "<init>":(Ldeadlock/Deadlock1;)V
+  #54 = Class              #60            // java/lang/Thread
+  #55 = NameAndType        #61:#24        // start:()V
+  #56 = Utf8               deadlock/Deadlock1$2
+  #57 = Utf8               java/lang/Throwable
+  #58 = Utf8               java/lang/InterruptedException
+  #59 = Utf8               (Ldeadlock/Deadlock1;)V
+  #60 = Utf8               java/lang/Thread
+  #61 = Utf8               start
+{
+  int alfred;
+    descriptor: I
+    flags:
+
+  int a;
+    descriptor: I
+    flags:
+
+  public deadlock.Deadlock1();
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+      stack=3, locals=1, args_size=1
+         0: aload_0
+         1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+         4: aload_0
+         5: new           #2                  // class java/lang/Object
+         8: dup
+         9: invokespecial #1                  // Method java/lang/Object."<init>":()V
+        12: putfield      #3                  // Field o:Ljava/lang/Object;
+        15: aload_0
+        16: new           #2                  // class java/lang/Object
+        19: dup
+        20: invokespecial #1                  // Method java/lang/Object."<init>":()V
+        23: putfield      #4                  // Field o_primo:Ljava/lang/Object;
+        26: aload_0
+        27: iconst_0
+        28: putfield      #5                  // Field alfred:I
+        31: aload_0
+        32: aload_0
+        33: getfield      #5                  // Field alfred:I
+        36: putfield      #6                  // Field a:I
+        39: return
+      LineNumberTable:
+        line 12: 0
+        line 7: 4
+        line 8: 15
+        line 9: 26
+        line 10: 31
+        line 14: 39
+
+  public deadlock.Deadlock1(java.lang.String, java.lang.String);
+    descriptor: (Ljava/lang/String;Ljava/lang/String;)V
+    flags: ACC_PUBLIC
+    Code:
+      stack=3, locals=3, args_size=3
+         0: aload_0
+         1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+         4: aload_0
+         5: new           #2                  // class java/lang/Object
+         8: dup
+         9: invokespecial #1                  // Method java/lang/Object."<init>":()V
+        12: putfield      #3                  // Field o:Ljava/lang/Object;
+        15: aload_0
+        16: new           #2                  // class java/lang/Object
+        19: dup
+        20: invokespecial #1                  // Method java/lang/Object."<init>":()V
+        23: putfield      #4                  // Field o_primo:Ljava/lang/Object;
+        26: aload_0
+        27: iconst_0
+        28: putfield      #5                  // Field alfred:I
+        31: aload_0
+        32: aload_0
+        33: getfield      #5                  // Field alfred:I
+        36: putfield      #6                  // Field a:I
+        39: return
+      LineNumberTable:
+        line 15: 0
+        line 7: 4
+        line 8: 15
+        line 9: 26
+        line 10: 31
+        line 18: 39
+
+  public void p(java.lang.String, int, java.lang.String, char);
+    descriptor: (Ljava/lang/String;ILjava/lang/String;C)V
+    flags: ACC_PUBLIC
+    Code:
+      stack=0, locals=5, args_size=5
+         0: return
+      LineNumberTable:
+        line 20: 0
+
+  public int takelock() throws java.lang.InterruptedException;
+    descriptor: ()I
+    flags: ACC_PUBLIC
+    Code:
+      stack=2, locals=5, args_size=1
+         0: aload_0
+         1: getfield      #3                  // Field o:Ljava/lang/Object;
+         4: dup
+         5: astore_1
+         6: monitorenter
+         7: aload_0
+         8: getfield      #4                  // Field o_primo:Ljava/lang/Object;
+        11: dup
+        12: astore_2
+        13: monitorenter
+        14: aload_2
+        15: monitorexit
+        16: goto          24
+        19: astore_3
+        20: aload_2
+        21: monitorexit
+        22: aload_3
+        23: athrow
+        24: aload_1
+        25: monitorexit
+        26: goto          36
+        29: astore        4
+        31: aload_1
+        32: monitorexit
+        33: aload         4
+        35: athrow
+        36: iconst_0
+        37: ireturn
+      Exception table:
+         from    to  target type
+            14    16    19   any
+            19    22    19   any
+             7    26    29   any
+            29    33    29   any
+      LineNumberTable:
+        line 23: 0
+        line 27: 7
+        line 29: 14
+        line 30: 24
+        line 32: 36
+      StackMapTable: number_of_entries = 4
+        frame_type = 255 /* full_frame */
+          offset_delta = 19
+          locals = [ class deadlock/Deadlock1, class java/lang/Object, class java/lang/Object ]
+          stack = [ class java/lang/Throwable ]
+        frame_type = 250 /* chop */
+          offset_delta = 4
+        frame_type = 68 /* same_locals_1_stack_item */
+          stack = [ class java/lang/Throwable ]
+        frame_type = 250 /* chop */
+          offset_delta = 6
+    Exceptions:
+      throws java.lang.InterruptedException
+
+  public void takelock2() throws java.lang.InterruptedException;
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+      stack=2, locals=5, args_size=1
+         0: aload_0
+         1: getfield      #4                  // Field o_primo:Ljava/lang/Object;
+         4: dup
+         5: astore_1
+         6: monitorenter
+         7: aload_0
+         8: getfield      #3                  // Field o:Ljava/lang/Object;
+        11: dup
+        12: astore_2
+        13: monitorenter
+        14: aload_2
+        15: monitorexit
+        16: goto          24
+        19: astore_3
+        20: aload_2
+        21: monitorexit
+        22: aload_3
+        23: athrow
+        24: aload_1
+        25: monitorexit
+        26: goto          36
+        29: astore        4
+        31: aload_1
+        32: monitorexit
+        33: aload         4
+        35: athrow
+        36: return
+      Exception table:
+         from    to  target type
+            14    16    19   any
+            19    22    19   any
+             7    26    29   any
+            29    33    29   any
+      LineNumberTable:
+        line 36: 0
+        line 40: 7
+        line 42: 14
+        line 43: 24
+        line 44: 36
+      StackMapTable: number_of_entries = 4
+        frame_type = 255 /* full_frame */
+          offset_delta = 19
+          locals = [ class deadlock/Deadlock1, class java/lang/Object, class java/lang/Object ]
+          stack = [ class java/lang/Throwable ]
+        frame_type = 250 /* chop */
+          offset_delta = 4
+        frame_type = 68 /* same_locals_1_stack_item */
+          stack = [ class java/lang/Throwable ]
+        frame_type = 250 /* chop */
+          offset_delta = 6
+    Exceptions:
+      throws java.lang.InterruptedException
+
+  public static void main(java.lang.String[]) throws java.lang.InterruptedException;
+    descriptor: ([Ljava/lang/String;)V
+    flags: ACC_PUBLIC, ACC_STATIC
+    Code:
+      stack=4, locals=7, args_size=1
+         0: new           #7                  // class deadlock/Deadlock1
+         3: dup
+         4: invokespecial #8                  // Method "<init>":()V
+         7: astore_1
+         8: ldc           #9                  // String
+        10: astore_2
+        11: ldc           #9                  // String
+        13: astore_3
+        14: new           #7                  // class deadlock/Deadlock1
+        17: dup
+        18: aload_2
+        19: aload_3
+        20: invokespecial #10                 // Method "<init>":(Ljava/lang/String;Ljava/lang/String;)V
+        23: astore        4
+        25: new           #11                 // class deadlock/Deadlock1$1
+        28: dup
+        29: aload_1
+        30: invokespecial #12                 // Method deadlock/Deadlock1$1."<init>":(Ldeadlock/Deadlock1;)V
+        33: astore        5
+        35: aload         5
+        37: invokevirtual #13                 // Method java/lang/Thread.start:()V
+        40: new           #14                 // class deadlock/Deadlock1$2
+        43: dup
+        44: aload_1
+        45: invokespecial #15                 // Method deadlock/Deadlock1$2."<init>":(Ldeadlock/Deadlock1;)V
+        48: astore        6
+        50: aload         6
+        52: invokevirtual #13                 // Method java/lang/Thread.start:()V
+        55: return
+      LineNumberTable:
+        line 48: 0
+        line 49: 8
+        line 50: 11
+        line 51: 14
+        line 55: 25
+        line 68: 35
+        line 70: 40
+        line 83: 50
+        line 84: 55
+    Exceptions:
+      throws java.lang.InterruptedException
+}
+SourceFile: "Deadlock1.java"
+InnerClasses:
+     static #14; //class deadlock/Deadlock1$2
+     static #11; //class deadlock/Deadlock1$1

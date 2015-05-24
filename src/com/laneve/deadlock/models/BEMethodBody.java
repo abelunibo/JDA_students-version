@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.logging.Logger;
 
 import com.laneve.deadlock.exceptions.BEException;
+import com.laneve.deadlock.models.instructions.BEInvoke;
 import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.models.lam.LamSequence;
 import com.laneve.deadlock.type.Type; 
