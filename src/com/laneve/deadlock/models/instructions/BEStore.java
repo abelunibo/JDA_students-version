@@ -1,5 +1,4 @@
 package com.laneve.deadlock.models.instructions;
-
 import com.laneve.deadlock.exceptions.BEException;
 import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.Environment;
@@ -35,6 +34,19 @@ public class BEStore extends BEInstructionLine implements BEInstruction{
 		}else if(getName().contains("astore_")){
 			localVarIndex = getName().substring(getName().indexOf("_")+1, getName().length());
 		}
+
+		//TODO environment.popStack() potrebbe non esserci nulla sullo stack se 
+		//un eccezione a runtime ha inserito un oggetto eccezione e quindi staticamente
+		//sullo stack non c'e' nulla quindi l'astore che gestisce l'eccezione tenta di prendere
+		//qualcosa che c'e' solo a runtime BOOM !
+		
+		//TODO vedi se lo stack e' vuoto se e' questo il caso 
+		//TODO vedi se l'istruzione precedente e' un goto BEMEthodBody.getIstruzionePrecedente
+		//TODO predi getNat goto e salta all'istruzione specificata dal goto
+		
+//		environment.putLocalVar(localVarIndex,environment.popStack());
+//		Logger.logInfo(environment.getLocalVar().get(localVarIndex));
+		
 		  
 		try {
 			environment.putLocalVar(localVarIndex,environment.popStack());
