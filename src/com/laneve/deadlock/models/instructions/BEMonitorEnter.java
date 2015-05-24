@@ -21,7 +21,6 @@ public class BEMonitorEnter extends BEInstructionLine implements BEInstruction{
 		String lamZ = LamZT.getZhatBar(environment.getLocks());
 		String lamT = LamZT.getThat(environment.getQueuethreads());	
 		lzt.setLam(lamZ+" & "+lamT);
-//		Logger.logInfo(lzt.getLam());
 		changeEnvironment(environment);		
 		return lzt;
 	}
