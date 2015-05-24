@@ -173,7 +173,6 @@ public class Environment {
 		}
 	}
 	
-	
 	public String takeCpoolRefType(String ref) {
 		BEConstantAndInfo constantInfo = constantPool.getTableEntries().getTableEntry().get(ref);
 		ArrayList<String> a = constantInfo.getConstantAndInfo();

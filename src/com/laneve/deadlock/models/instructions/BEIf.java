@@ -28,11 +28,20 @@ public class BEIf extends BEInstructionLine implements BEInstruction{
 	@Override
 	public void changeEnvironment(Environment environment) {
 		
-		try {
-			environment.popStack();
-		} catch (BEException e) {
-			e.printStackTrace();
-			System.exit(1);
+		if(getName().contentEquals("cmp")){
+			try {
+				environment.popStack(2);
+			} catch (BEException e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
+		}else{
+			try {
+				environment.popStack();
+			} catch (BEException e) {
+				e.printStackTrace();
+				System.exit(1);	
+			}
 		}
 	}
 
