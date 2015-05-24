@@ -19,6 +19,7 @@ import com.laneve.deadlock.models.BEClassFile;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.visitor.BytecodeVisitor;
+import com.laneve.deadlock.utilities.MyFormatter;
 
 public class DeadlockAnalysis {
 
@@ -27,7 +28,11 @@ public class DeadlockAnalysis {
 		Logger rootLog = Logger.getLogger("");
 		rootLog.setLevel(Level.INFO);
 		Handler handler = rootLog.getHandlers()[0];
+<<<<<<< HEAD
 	//handler.setFormatter(new MyFormatter());
+=======
+		handler.setFormatter(new MyFormatter());
+>>>>>>> 4d02366ba9775c40730d834daaa80b5c0af2953c
 		
 		ArrayList<BEClassFile> classfiles = new ArrayList<BEClassFile>();
 		File folder = new File("bytecode");

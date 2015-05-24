@@ -22,7 +22,7 @@ public class Environment {
 	public Environment(BEConstantPool costantPool, String className) {
 		this.constantPool = costantPool;	
 		this.className = className;
-	} 
+	}
 
 	public String getClassName(){
 		return className;

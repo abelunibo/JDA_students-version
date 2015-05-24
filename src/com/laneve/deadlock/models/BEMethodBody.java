@@ -18,6 +18,7 @@ public class BEMethodBody extends BEBase{
 	HashMap<String, Integer> instructionMap;
 	BEInstructionLine instructionTemp;
 	Integer nextGoToInstruction = null;
+
 	private static Logger LOGGER = Logger.getLogger("");
 
 
@@ -74,6 +75,7 @@ public class BEMethodBody extends BEBase{
 	public LamBase generateLam(Environment environment) {
 		LamSequence l = new LamSequence();
 		environment.openScope(this);
+
 		for(int i = 0 ; i < instructions.size() ;i++){
 			if(!(nextGoToInstruction == null)){
 				i = nextGoToInstruction;
