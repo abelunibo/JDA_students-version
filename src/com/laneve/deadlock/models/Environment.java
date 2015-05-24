@@ -16,13 +16,23 @@ public class Environment {
 	String className;
 	LinkedList<Type>  operandStack, locks, queueThreads;
 	HashMap<String, Type> localVar;
+	BEMethodBody currentMethodBody;
 	
 
 	public Environment(BEConstantPool costantPool, String className) {
 		this.constantPool = costantPool;	
-		this.className=className;
+		this.className = className;
 	}
 
+	
+	public String getClassName(){
+		return className;
+	}
+	
+	public BEMethodBody getCurrentMethodBody(){
+		return currentMethodBody;
+	}
+	
 	public void openScope(BEMethodBody mb) {
 		
 		//inizializza le strutture
@@ -30,9 +40,10 @@ public class Environment {
 		locks = new LinkedList<Type>();
 		queueThreads = new LinkedList<Type>();
 		localVar = new HashMap<String, Type>();
-		
+		currentMethodBody=mb;
+				
 		if(mb.getMethodModifier() != null && 
-				mb.getMethodModifier().getModifier().contentEquals("synchronized")){ 
+				mb.getMethodModifier().getModifier().contains("synchronized")){ 
 			// se metodo e' synchronized  aggiungi il this ai lock
 			addLock(new TypeObject(className,0)); //TODO controlla //il this e' il primo parametro quindi e' indicizzato a 0
 		}
@@ -45,20 +56,33 @@ public class Environment {
 			e.printStackTrace();
 			System.exit(1);
 		}	
+		
+		int j=0;
+		
+		if(mb.getMethodModifier() != null && 
+				!mb.getMethodModifier().getModifier().contains("static")){ //non è un modificatore statico
+				//aggiungo il this in posizione 0 delle localVar
+				localVar.put("0", new TypeObject(className,j));
+				j++;
+		}
+		
 		for(int i=0;i<pars.size(); i++){
 			if(pars.get(i).getText().equals("int")){
-				localVar.put(String.valueOf(i), new TypeInt());
+				localVar.put(String.valueOf(j), new TypeInt());
 			}
 			else{
-				localVar.put(String.valueOf(i), new TypeObject(pars.get(i).getText(),i));
+				localVar.put(String.valueOf(j), new TypeObject(pars.get(i).getText(),j));
 			}
+			j++;
 		}
+		
 	}
 
 	public void closeScope() {
 		operandStack = null;
 		locks = null;
-		queueThreads = null;		
+		queueThreads = null;
+		currentMethodBody=null;
 	}
 
 	public BEConstantPool getConstantPool() {
@@ -151,6 +175,7 @@ public class Environment {
 	| 'NameAndType' ref':'ref
 	|
 	*/
+	
 	public String takeCpoolRef(String ref) {
 		BEConstantAndInfo constantInfo = constantPool.getTableEntries().getTableEntry().get(ref);
 		ArrayList<String> a = constantInfo.getConstantAndInfo();
@@ -161,6 +186,12 @@ public class Environment {
 		case "Methodref":
 			String mRef = a.get(1);
 			String classname = takeCpoolRef(mRef);
+		case "Fieldref":
+			String fRef = a.get(1);
+			String nameAdnTypeRef = a.get(2);
+			String classnameField = takeCpoolRef(fRef);
+			String nameAdnType = takeCpoolRef(nameAdnTypeRef);
+			return classnameField+'.'+nameAdnType;
 		case "NameAndType":
 			String methodNameRef = a.get(1);
 			String returnTypeRef = a.get(2);
@@ -189,6 +220,4 @@ public class Environment {
 		this.queueThreads=t;
 		
 	}
-	
-	
 }	

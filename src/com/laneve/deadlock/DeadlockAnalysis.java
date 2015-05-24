@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -20,6 +22,10 @@ import com.laneve.deadlock.visitor.BytecodeVisitor;
 public class DeadlockAnalysis {
 
 	public static void main(String[] args) throws IOException{
+		//root log configuration
+		Logger rootLog = Logger.getLogger("");
+		rootLog.setLevel(Level.INFO);
+		
 		ArrayList<BEClassFile> classfiles = new ArrayList<BEClassFile>();
 		File folder = new File("bytecode");
 		ArrayList<LamBase> lams = new ArrayList<LamBase>();

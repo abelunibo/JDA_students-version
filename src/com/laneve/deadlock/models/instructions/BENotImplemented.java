@@ -1,5 +1,6 @@
 package com.laneve.deadlock.models.instructions;
 
+import com.laneve.deadlock.exceptions.BEException;
 import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
@@ -18,13 +19,18 @@ public class BENotImplemented extends BEInstructionLine implements BEInstruction
 		String lamZ = LamZT.getZhatBar(environment.getLocks());
 		String lamT = LamZT.getThat(environment.getQueuethreads());	
 		lzt.setLam(lamZ+" & "+lamT);
-//		Logger.logInfo(lzt.getLam());
-		changeEnvironment(environment);
+		try {
+			changeEnvironment(environment);
+		} catch (BEException e) {
+			e.printStackTrace();
+		}
 		return lzt;
 	}
 
 	@Override
-	public void changeEnvironment(Environment environment) {
+	public void changeEnvironment(Environment environment) throws BEException{
+		
+		throw new BEException("Istruzione "+instructionName+" non gestita");
 	}
 
 

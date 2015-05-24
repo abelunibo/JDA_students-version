@@ -94,6 +94,13 @@ public interface BytecodeVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLoad(@NotNull BytecodeParser.LoadContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code Goto}
+	 * labeled alternative in {@link BytecodeParser#instruction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitGoto(@NotNull BytecodeParser.GotoContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link BytecodeParser#tableEntry}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -144,6 +151,13 @@ public interface BytecodeVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitTableEntries(@NotNull BytecodeParser.TableEntriesContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Get}
+	 * labeled alternative in {@link BytecodeParser#instruction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitGet(@NotNull BytecodeParser.GetContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link BytecodeParser#instructionLine}.
 	 * @param ctx the parse tree
@@ -302,6 +316,13 @@ public interface BytecodeVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitMethodName(@NotNull BytecodeParser.MethodNameContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Put}
+	 * labeled alternative in {@link BytecodeParser#instruction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPut(@NotNull BytecodeParser.PutContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link BytecodeParser#throws_}.
 	 * @param ctx the parse tree

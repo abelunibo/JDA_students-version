@@ -174,9 +174,9 @@ instruction
 	|  ASTORE #Store  
 	| 'athrow' #Athrow
 	| 'dup' #Dup
-	| 'getfield' #NotImplemented 
-	| 'getstatic'  #NotImplemented
-	| 'goto'  #NotImplemented //indirizzo per il goto e' dato come offset da sommare/sottrarre all'indirizzo nel program counter 
+	| 'getfield' #Get
+	| 'getstatic'  #Get
+	| 'goto'  #Goto //indirizzo per il goto e' dato come offset da sommare/sottrarre all'indirizzo nel program counter 
 	| 'iadd' #Operation
 	| 'iconst_m1'#Const
 	| 'iconst_0' #Const
@@ -222,8 +222,8 @@ instruction
 	| 'monitorexit' #Monitorexit
 	| 'new'  #New
 	| 'pop' #Pop
-	| 'putfield'  #NotImplemented
-	| 'putstatic' #NotImplemented
+	| 'putfield'  #Put
+	| 'putstatic' #Put
 	| 'anewarray' #NotImplemented // riguarda array (non dovremmo considerarla ma servono per parsare classe di esempio DeadlockFriend)
 	| 'aastore' #NotImplemented // riguarda array (non dovremmo considerarla ma servono per parsare classe di esempio DeadlockFriend)
 	| 'return' #Return

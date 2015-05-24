@@ -12,5 +12,15 @@ public class TypeInt extends Type {
 	public String getName() {
 		return name;
 	}
+
+	@Override
+	public Type dup(Integer dupInstructionIndex) {
+		return this;
+	}
+
+	@Override
+	public Type load(Integer loadInstructionIndex) {
+		return this;
+	}
 	
 }

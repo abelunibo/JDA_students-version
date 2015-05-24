@@ -2180,6 +2180,14 @@ public class BytecodeParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	public static class GotoContext extends InstructionContext {
+		public GotoContext(InstructionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitGoto(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 	public static class ReturnContext extends InstructionContext {
 		public ReturnContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
@@ -2222,6 +2230,14 @@ public class BytecodeParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	public static class PutContext extends InstructionContext {
+		public PutContext(InstructionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitPut(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 	public static class InvokeContext extends InstructionContext {
 		public InvokeContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
@@ -2243,6 +2259,14 @@ public class BytecodeParser extends Parser {
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitPop(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class GetContext extends InstructionContext {
+		public GetContext(InstructionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof BytecodeVisitor ) return ((BytecodeVisitor<? extends T>)visitor).visitGet(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2342,21 +2366,21 @@ public class BytecodeParser extends Parser {
 				}
 				break;
 			case T__6:
-				_localctx = new NotImplementedContext(_localctx);
+				_localctx = new GetContext(_localctx);
 				enterOuterAlt(_localctx, 9);
 				{
 				setState(380); match(T__6);
 				}
 				break;
 			case T__68:
-				_localctx = new NotImplementedContext(_localctx);
+				_localctx = new GetContext(_localctx);
 				enterOuterAlt(_localctx, 10);
 				{
 				setState(381); match(T__68);
 				}
 				break;
 			case T__20:
-				_localctx = new NotImplementedContext(_localctx);
+				_localctx = new GotoContext(_localctx);
 				enterOuterAlt(_localctx, 11);
 				{
 				setState(382); match(T__20);
@@ -2678,14 +2702,14 @@ public class BytecodeParser extends Parser {
 				}
 				break;
 			case T__63:
-				_localctx = new NotImplementedContext(_localctx);
+				_localctx = new PutContext(_localctx);
 				enterOuterAlt(_localctx, 57);
 				{
 				setState(428); match(T__63);
 				}
 				break;
 			case T__91:
-				_localctx = new NotImplementedContext(_localctx);
+				_localctx = new PutContext(_localctx);
 				enterOuterAlt(_localctx, 58);
 				{
 				setState(429); match(T__91);

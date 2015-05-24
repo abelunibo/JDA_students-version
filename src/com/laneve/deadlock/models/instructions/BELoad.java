@@ -4,7 +4,6 @@ import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.models.lam.LamZT;
-import com.laneve.deadlock.utilities.Logger;
 
 public class BELoad extends BEInstructionLine implements BEInstruction{
 	private String localVarIndex;
@@ -20,7 +19,6 @@ public class BELoad extends BEInstructionLine implements BEInstruction{
 		String lamZ = LamZT.getZhatBar(environment.getLocks());
 		String lamT = LamZT.getThat(environment.getQueuethreads());	
 		lzt.setLam(lamZ+" & "+lamT);
-//		Logger.logInfo(lzt.getLam());
 		changeEnvironment(environment);		
 		return lzt;
 	}
@@ -36,7 +34,10 @@ public class BELoad extends BEInstructionLine implements BEInstruction{
 		}else if(getName().contains("aload_")){
 			localVarIndex = getName().substring(getName().indexOf("_")+1, getName().length());
 		}
-		environment.pushStack(environment.getLocalVar().get(localVarIndex));
-//		Logger.logInfo(environment.getLocalVar().get(localVarIndex));
+		
+		String i = getIndex().substring(0,getIndex().indexOf(':'));	
+		int index = i.equals("0")?0:Integer.valueOf(i);
+		
+		environment.pushStack(environment.getLocalVar().get(localVarIndex).load(index));
 	}
 }
