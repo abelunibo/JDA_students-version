@@ -1,7 +1,7 @@
 package com.laneve.deadlock.models;
 
 import java.util.HashMap;
-
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.logging.Logger;
 
@@ -125,6 +125,7 @@ public class BEMethodBody extends BEBase{
 		
 			l.createSequence(instructions.get(i).generateLam(environment));
 			instructionTemp = instructions.get(i);
+		}
 
 		environment.closeScope();
 		return l;
