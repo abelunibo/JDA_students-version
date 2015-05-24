@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,7 +35,10 @@ public class DeadlockAnalysis {
 		Environment environment;
 		
 		for ( File fileEntry : folder.listFiles()){
-
+			
+			if(fileEntry.getName().contains("Deadlock")) continue;
+			if(fileEntry.getName().contains("Deadlock")) continue;
+		
 			FileInputStream in = new FileInputStream(fileEntry);
 			ANTLRInputStream input = new ANTLRInputStream(in);
 			BytecodeLexer lexer = new BytecodeLexer(input);
