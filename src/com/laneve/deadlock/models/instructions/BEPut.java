@@ -46,7 +46,8 @@ public class BEPut extends BEInstructionLine implements BEInstruction{
 			
 		}else if(getName().equals("putstatic")){
 			//non si può modificare il campo statico se non siamo nel blocco statico
-			if(environment.getCurrentMethodBody().getMethodHeader().getMethodDeclarator().getMethodName().contains("staticBlock?")){ 
+			
+			if(!(environment.getCurrentMethodBody().getMethodHeader().getMethodDeclarator().getMethodName().contains("staticBlock?"))){ 
 				throw new BEException("Non si possono modificare campi statici al di fuori del loro blocco statico");
 			}
 			try {
