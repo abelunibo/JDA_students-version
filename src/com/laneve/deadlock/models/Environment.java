@@ -102,7 +102,24 @@ public class Environment {
 		localVar.put(localVarIndex, val);
 		
 	}
-
+	
+	
+	/*
+	* ------------
+	* Entry della constant pool
+	* -------------
+	* 'Class' ref 
+	| 'Fieldref' ref'.'ref
+	| 'Methodref' ref'.'ref
+	| 'InterfaceMethodref' ref'.'ref
+	|  STRING ref
+	| 'Integer' num
+	| 'Float' DEC
+	| 'Long' num'l'
+	| 'Double' DEC
+	| 'NameAndType' ref':'ref
+	|
+	*/
 	public String takeCpoolRef(String ref) {
 		BEConstantAndInfo constantInfo = constantPool.getTableEntries().getTableEntry().get(ref);
 		ArrayList<String> a = constantInfo.getConstantAndInfo();
@@ -123,6 +140,13 @@ public class Environment {
 		default://"Utf8"
 			return a.get(1);
 		}
+	}
+	
+	
+	public String takeCpoolRefType(String ref) {
+		BEConstantAndInfo constantInfo = constantPool.getTableEntries().getTableEntry().get(ref);
+		ArrayList<String> a = constantInfo.getConstantAndInfo();
+		return a.get(0);
 	}
 
 	//TODO usata solo per debug
