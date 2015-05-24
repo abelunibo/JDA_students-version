@@ -20,11 +20,7 @@ public class BEMethodBody extends BEMethodDeclaration{
 	@Override
 	public LamBase generateLam(Environment environment) {
 		LamSequence l = new LamSequence();
-		environment.openScope();
-		if(getModifier() != null && 
-				getModifier().getModifier().contentEquals("synchronized"))
-			environment.addLock(new TypeObject(getClassName()));
-		
+		environment.openScope(getMethodDeclaration());
 		for(BEInstructionLine i : instructions)
 			l.createSequence(i.generateLam(environment)); 
 		environment.closeScope();

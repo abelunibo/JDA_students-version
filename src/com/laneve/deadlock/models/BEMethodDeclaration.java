@@ -8,9 +8,7 @@ public class BEMethodDeclaration extends BEClassFile{
 	BEMethodHeader methodHeader;
 	BEMethodBody methodBody;
 	
-	public BEMethodDeclaration() {
-		// TODO Auto-generated constructor stub
-	}
+	public BEMethodDeclaration() {}
 	
 	public BEMethodDeclaration(BEMethodModifier modifier,BEMethodHeader methodHeader,BEMethodBody methodBody) {
 		this.modifier = modifier;
@@ -28,6 +26,10 @@ public class BEMethodDeclaration extends BEClassFile{
 
 	public BEMethodBody getMethodBody() {
 		return methodBody;
+	}
+	
+	BEMethodDeclaration getMethodDeclaration(){
+		return this;
 	}
 
 	@Override

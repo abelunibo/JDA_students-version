@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import com.laneve.bytecode.parser.BytecodeParser.FormalParameterContext;
 import com.laneve.deadlock.exceptions.BEException;
 import com.laneve.deadlock.type.Type;
+import com.laneve.deadlock.type.TypeInt;
+import com.laneve.deadlock.type.TypeObject;
 
 public class Environment {
 	
@@ -17,11 +20,30 @@ public class Environment {
 		this.constantPool = costantPool;
 	}
 
-	public void openScope() {
+	public void openScope(BEMethodDeclaration md) {
+		
+		//inizializza le strutture
 		operandStack = new LinkedList<Type>();
 		locks = new LinkedList<Type>();
 		queueThreads = new LinkedList<Type>();
 		localVar = new HashMap<String, Type>();
+		
+		if(md.getModifier() != null && 
+				md.getModifier().getModifier().contentEquals("synchronized")){ 
+			// se metodo e' synchronized  aggiungi il this ai lock
+			addLock(new TypeObject(md.getClassName(),0)); //TODO controlla //il this e' il primo parametro quindi e' indicizzato a 0
+		}
+		
+		//setta i parametri nelle corrispondenti posizioni della localVar
+		ArrayList<FormalParameterContext> pars = md.getMethodHeader().getMethodDeclarator().getFormalParameters();		
+		for(int i=0;i<pars.size(); i++){
+			if(pars.get(i).getText().equals("int")){
+				localVar.put(String.valueOf(i), new TypeInt());
+			}
+			else{
+				localVar.put(String.valueOf(i), new TypeObject(pars.get(i).getText(),i));
+			}
+		}
 	}
 
 	public void closeScope() {
