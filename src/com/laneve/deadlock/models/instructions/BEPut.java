@@ -34,7 +34,7 @@ public class BEPut extends BEInstructionLine implements BEInstruction{
 		
 		if(getName().equals("putfield")){
 			//non si puo' modificare il campo della classe se non siamo nella sua init
-			if(!((TypeObject)(environment.getOperandStack().get(1))).getRawName().equals(environment.getClassName())){ 
+			if(!((TypeObject)(environment.getOperandStack().get(0))).getRawName().equals(environment.getClassName())){ 
 				throw new BEException("Non si possono modificare campi gia' inizializzati");
 			}
 			try {
