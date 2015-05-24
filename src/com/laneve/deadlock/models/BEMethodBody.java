@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 import com.laneve.deadlock.exceptions.BEException;
 import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.models.lam.LamSequence;
-import com.laneve.deadlock.type.Type;
+import com.laneve.deadlock.type.Type; 
 
 public class BEMethodBody extends BEBase{
 	LinkedList<BEInstructionLine> instructions;
