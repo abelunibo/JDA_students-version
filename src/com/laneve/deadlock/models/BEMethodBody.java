@@ -1,5 +1,6 @@
 package com.laneve.deadlock.models;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -9,13 +10,21 @@ import com.laneve.deadlock.models.lam.LamSequence;
 
 public class BEMethodBody extends BEBase{
 	LinkedList<BEInstructionLine> instructions;
-	BEMethodModifier methodModifier=null;
-	BEMethodHeader methodHeader=null;
+	BEMethodModifier methodModifier = null;
+	BEMethodHeader methodHeader = null;
+	HashMap<String, Integer> instructionMap;
+	BEInstructionLine instructionTemp;
+	Integer nextGoToInstruction = null;
 
-	//TODO istruzioneTemp = vecchia istruzione
 
-	public BEMethodBody(LinkedList<BEInstructionLine> instructions) {
+	public BEMethodBody(LinkedList<BEInstructionLine> instructions,
+			HashMap<String, Integer> instructionMap) {
 		this.instructions = instructions;
+		this.instructionMap = instructionMap;
+	}
+
+	public HashMap<String, Integer> getInstructionMap() {
+		return instructionMap;
 	}
 
 	public LinkedList<BEInstructionLine> getInstructions() {
@@ -45,41 +54,45 @@ public class BEMethodBody extends BEBase{
 		return methodModifier;
 	}
 
-	//TODO getIstruzionePrecedente 
-	//TODO setIstruzioneSuccessivaGoto
-
+	public BEInstructionLine getInstructionTemp() {
+		return instructionTemp;
+	}
+	
+	public void setNextGotoInstruction(Integer indexListTojump){
+			nextGoToInstruction = indexListTojump;
+	}
+	
+	public Integer getNextGotoInstruction(){
+		return nextGoToInstruction;
+	}
 
 	@Override
 	public LamBase generateLam(Environment environment) {
 		LamSequence l = new LamSequence();
 		environment.openScope(this);
-		//TODO for(int i = 0 ; i < instructions.size ;i++)
-		//TODO i = istruzionesuccessiva;
-		
-		for(BEInstructionLine i : instructions){
-			
-		 /*System.out.println(i.getName()+"--");
-			System.out.print("Stack--> "+ environment.getOperandStack().toString());
-			  
-			Iterator it = environment.getLocalVar().keySet().iterator();
-			  
-			System.out.print("\nLocalVar-> ");
-
-			while (it.hasNext()) {
-			   String key = it.next().toString();
-			   String value = environment.getLocalVar().get(key).getName();
-			   System.out.print(key + " " + value);
-			   System.out.print(" , ");
+		for(int i = 0 ; i < instructions.size() ;i++){
+			if(!(nextGoToInstruction == null)){
+				i = nextGoToInstruction;
+				nextGoToInstruction = null;
 			}
-			
-			System.out.println();*/
-			
-			l.createSequence(i.generateLam(environment));
-
+//			System.out.println(instructions.get(i).getName()+"--");
+//			System.out.print("Stack--> "+ environment.getOperandStack().toString());
+//			  
+//			Iterator it = environment.getLocalVar().keySet().iterator();
+//			  
+//			System.out.print("\nLocalVar-> ");
+//
+//			while (it.hasNext()) {
+//			   String key = it.next().toString();
+//			   String value = environment.getLocalVar().get(key).getName();
+//			   System.out.print(key + " " + value);
+//			   System.out.print(" , ");
+//			}
+//			System.out.println();
+			l.createSequence(instructions.get(i).generateLam(environment));
+			instructionTemp = instructions.get(i);
 		}
-		
 		environment.closeScope();
 		return l;
 	}
-	
 }

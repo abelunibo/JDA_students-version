@@ -1,5 +1,7 @@
 package com.laneve.deadlock.models.instructions;
 
+import java.util.logging.Logger;
+
 import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
@@ -26,7 +28,7 @@ public class BENew extends BEInstructionLine implements BEInstruction{
 
 	@Override
 	public void changeEnvironment(Environment environment) {
+		System.out.println(environment.takeCpoolRef(getRef()));
 		environment.pushStack(new TypeObject(environment.takeCpoolRef(getRef())));
-		//Logger.logInfo(environment.takeCpoolRef(getRef()));
 	}
 }

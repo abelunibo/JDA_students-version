@@ -11,37 +11,37 @@ import com.laneve.deadlock.type.TypeInt;
 import com.laneve.deadlock.type.TypeObject;
 
 public class Environment {
-	
+
 	BEConstantPool constantPool;
 	String className;
 	LinkedList<Type>  operandStack, locks, queueThreads;
 	HashMap<String, Type> localVar;
 	BEMethodBody currentMethodBody;
-	
+
 
 	public Environment(BEConstantPool costantPool, String className) {
 		this.constantPool = costantPool;	
 		this.className = className;
 	}
 
-	
+
 	public String getClassName(){
 		return className;
 	}
-	
+
 	public BEMethodBody getCurrentMethodBody(){
 		return currentMethodBody;
 	}
-	
+
 	public void openScope(BEMethodBody mb) {
-		
+
 		//inizializza le strutture
 		operandStack = new LinkedList<Type>();
 		locks = new LinkedList<Type>();
 		queueThreads = new LinkedList<Type>();
 		localVar = new HashMap<String, Type>();
 		currentMethodBody=mb;
-				
+
 		if(mb.getMethodModifier() != null && 
 				mb.getMethodModifier().getModifier().contains("synchronized")){ 
 			// se metodo e' synchronized  aggiungi il this ai lock
@@ -56,16 +56,16 @@ public class Environment {
 			e.printStackTrace();
 			System.exit(1);
 		}	
-		
+
 		int j=0;
-		
+
 		if(mb.getMethodModifier() != null && 
 				!mb.getMethodModifier().getModifier().contains("static")){ //non è un modificatore statico
-				//aggiungo il this in posizione 0 delle localVar
-				localVar.put("0", new TypeObject(className,j));
-				j++;
+			//aggiungo il this in posizione 0 delle localVar
+			localVar.put("0", new TypeObject(className,j));
+			j++;
 		}
-		
+
 		for(int i=0;i<pars.size(); i++){
 			if(pars.get(i).getText().equals("int")){
 				localVar.put(String.valueOf(j), new TypeInt());
@@ -75,7 +75,7 @@ public class Environment {
 			}
 			j++;
 		}
-		
+
 	}
 
 	public void closeScope() {
@@ -104,7 +104,7 @@ public class Environment {
 	public void addLock(Type lock){
 		this.locks.add(lock);
 	}
-	
+
 	public Type removeLock() throws BEException{
 		Type o = null;
 		if(!locks.isEmpty())
@@ -112,7 +112,7 @@ public class Environment {
 		//else throw new BEException("rimozione da pila dei lock vuota"); TODO rimetterlo
 		return o;
 	}
-	
+
 	public LinkedList<Type> getQueuethreads() {
 		return queueThreads;
 	}
@@ -122,17 +122,17 @@ public class Environment {
 		return localVar;
 	}
 
-	
+
 	//recupera il valore in cima allo stack senza rimuoverlo
 	public Type getTopStack() throws BEException{
 		Type o;
 		if(!operandStack.isEmpty())
 			o=operandStack.getLast();
 		else throw new BEException("recupero valore da operand stack vuoto");
-		
+
 		return o;
 	}
-	
+
 	public Type popStack() throws BEException {
 		Type o = null;
 		if(!operandStack.isEmpty())
@@ -155,15 +155,15 @@ public class Environment {
 
 	public void putLocalVar(String localVarIndex, Type val) {
 		localVar.put(localVarIndex, val);
-		
+
 	}
-	
-	
+
+
 	/*
-	* ------------
-	* Entry della constant pool
-	* -------------
-	* 'Class' ref 
+	 * ------------
+	 * Entry della constant pool
+	 * -------------
+	 * 'Class' ref 
 	| 'Fieldref' ref'.'ref
 	| 'Methodref' ref'.'ref
 	| 'InterfaceMethodref' ref'.'ref
@@ -174,8 +174,8 @@ public class Environment {
 	| 'Double' DEC
 	| 'NameAndType' ref':'ref
 	|
-	*/
-	
+	 */
+
 	public String takeCpoolRef(String ref) {
 		BEConstantAndInfo constantInfo = constantPool.getTableEntries().getTableEntry().get(ref);
 		ArrayList<String> a = constantInfo.getConstantAndInfo();
@@ -185,25 +185,59 @@ public class Environment {
 			return takeCpoolRef(cRef);
 		case "Methodref":
 			String mRef = a.get(1);
-			String classname = takeCpoolRef(mRef);
+			takeCpoolRef(mRef);
 		case "Fieldref":
 			String fRef = a.get(1);
 			String nameAdnTypeRef = a.get(2);
 			String classnameField = takeCpoolRef(fRef);
 			String nameAdnType = takeCpoolRef(nameAdnTypeRef);
-			return classnameField+'.'+nameAdnType;
+			//return classnameField+'.'+nameAdnType;
+			return nameAdnType + " " + classnameField;
 		case "NameAndType":
 			String methodNameRef = a.get(1);
 			String returnTypeRef = a.get(2);
 			String methodName = takeCpoolRef(methodNameRef);
 			String returnType = takeCpoolRef(returnTypeRef);
+			if(!(returnType.contentEquals("I")))
+				returnType = returnType.substring(0, returnType.length()-1);
 			//example "<init>":()V
-			return methodName+":"+returnType;
+			return returnType+" "+methodName;
 		default://"Utf8"
 			return a.get(1);
 		}
 	}
 	
+	public String takeCpoolRefMethod(String ref) {
+		BEConstantAndInfo constantInfo = constantPool.getTableEntries().getTableEntry().get(ref);
+		ArrayList<String> a = constantInfo.getConstantAndInfo();
+		switch (a.get(0)) {
+		case "Class":
+			String cRef = a.get(1);
+			return takeCpoolRefMethod(cRef);
+		case "Methodref":
+			String mRef = a.get(1);
+			takeCpoolRefMethod(mRef);
+		case "Fieldref":
+			String fRef = a.get(1);
+			String nameAdnTypeRef = a.get(2);
+			String classnameField = takeCpoolRefMethod(fRef);
+			String nameAdnType = takeCpoolRefMethod(nameAdnTypeRef);
+			return nameAdnType + " " + classnameField;
+		case "NameAndType":
+			String methodNameRef = a.get(1);
+			String returnTypeRef = a.get(2);
+			String methodName = takeCpoolRefMethod(methodNameRef);
+			String returnType = takeCpoolRefMethod(returnTypeRef);
+//			if(!(returnType.contentEquals("I")))
+//				returnType = returnType.substring(0, returnType.length()-1);
+			//example "<init>":()V
+			return returnType+" "+methodName;
+		default://"Utf8"
+			return a.get(1);
+		}
+	}
+
+
 	public String takeCpoolRefType(String ref) {
 		BEConstantAndInfo constantInfo = constantPool.getTableEntries().getTableEntry().get(ref);
 		ArrayList<String> a = constantInfo.getConstantAndInfo();
@@ -218,6 +252,6 @@ public class Environment {
 	//TODO usata solo per debug
 	public void setQueuethreads(LinkedList<Type> t) {
 		this.queueThreads=t;
-		
+
 	}
 }	

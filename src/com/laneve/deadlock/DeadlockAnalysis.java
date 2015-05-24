@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,6 +19,7 @@ import com.laneve.deadlock.models.BEClassFile;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.visitor.BytecodeVisitor;
+import com.laneve.deadlock.utilities.MyFormatter;
 
 public class DeadlockAnalysis {
 
@@ -24,6 +27,8 @@ public class DeadlockAnalysis {
 		//root log configuration
 		Logger rootLog = Logger.getLogger("");
 		rootLog.setLevel(Level.INFO);
+		Handler handler = rootLog.getHandlers()[0];
+		handler.setFormatter(new MyFormatter());
 		
 		ArrayList<BEClassFile> classfiles = new ArrayList<BEClassFile>();
 		File folder = new File("bytecode");

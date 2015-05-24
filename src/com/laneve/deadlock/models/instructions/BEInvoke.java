@@ -36,22 +36,18 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 		String parameters = "";
 		int numParameters=0;
 
-		if(getName().contentEquals("invokespecial")){
-			//Logger.logInfo(environment.takeCpoolRef(getRef()));
-			
-			String signature = environment.takeCpoolRef(getRef());
+		if(getName().contentEquals("invokespecial")){			
+			String signature = environment.takeCpoolRefMethod(getRef());
 			int openP = signature.indexOf("(");
 			int closedP = signature.indexOf(")");
 			parameters =  signature.substring(openP+1, closedP);
 			numParameters=0;
 			if(parameters.contains(";")){
-				//Logger.logInfo(parameters);
 				for (int i = 0; i < parameters.length(); i++) {
 					if (parameters.charAt(i) == ';') {
 						numParameters++;
 					}
 				}
-				//Logger.logInfo(String.valueOf(numParameters));
 			}
 		}
 		else if(getName().contentEquals("invokevirtual")){
