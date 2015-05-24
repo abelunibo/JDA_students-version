@@ -5,7 +5,6 @@ import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.models.lam.LamZT;
-import com.laneve.deadlock.utilities.Logger;
 
 public class BEIf extends BEInstructionLine implements BEInstruction{
 
@@ -28,11 +27,20 @@ public class BEIf extends BEInstructionLine implements BEInstruction{
 	@Override
 	public void changeEnvironment(Environment environment) {
 		
-		try {
-			environment.popStack();
-		} catch (BEException e) {
-			e.printStackTrace();
-			System.exit(1);
+		if(getName().contentEquals("cmp")){
+			try {
+				environment.popStack(2);
+			} catch (BEException e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
+		}else{
+			try {
+				environment.popStack();
+			} catch (BEException e) {
+				e.printStackTrace();
+				System.exit(1);	
+			}
 		}
 	}
 

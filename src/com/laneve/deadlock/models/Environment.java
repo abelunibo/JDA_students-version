@@ -20,7 +20,7 @@ public class Environment {
 
 	public Environment(BEConstantPool costantPool, String className) {
 		this.constantPool = costantPool;	
-		this.className=className;
+		this.className = className;
 	}
 
 	public void openScope(BEMethodBody mb) {
@@ -165,7 +165,7 @@ public class Environment {
 			String methodNameRef = a.get(1);
 			String returnTypeRef = a.get(2);
 			String methodName = takeCpoolRef(methodNameRef);
-			String returnType = takeCpoolRef(methodNameRef);
+			String returnType = takeCpoolRef(returnTypeRef);
 			//example "<init>":()V
 			return methodName+":"+returnType;
 			
@@ -173,7 +173,6 @@ public class Environment {
 			return a.get(1);
 		}
 	}
-	
 	
 	public String takeCpoolRefType(String ref) {
 		BEConstantAndInfo constantInfo = constantPool.getTableEntries().getTableEntry().get(ref);
@@ -191,6 +190,4 @@ public class Environment {
 		this.queueThreads=t;
 		
 	}
-	
-	
 }	

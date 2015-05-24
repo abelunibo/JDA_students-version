@@ -35,6 +35,4 @@ public class BEMethodDeclaration extends BEBase{
 		return methodBody.generateLam(environment);
 	}
 
-	
-
 }
