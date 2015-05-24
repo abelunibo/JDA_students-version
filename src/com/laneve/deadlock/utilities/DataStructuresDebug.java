@@ -3,10 +3,12 @@ package com.laneve.deadlock.utilities;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.logging.Logger;
 
 import com.laneve.bytecode.parser.BytecodeParser.FormalParameterContext;
 import com.laneve.deadlock.models.BEClassFile;
 import com.laneve.deadlock.models.BEConstantAndInfo;
+import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.BEMethodDeclaration;
 import com.laneve.deadlock.models.BEMethodHeader;
 import com.laneve.deadlock.models.BETableEntries;
@@ -48,9 +50,10 @@ public class DataStructuresDebug {
 				}
 				System.out.println("\n" +m.getKey().getSignature()+" "+parameters);
 				
-//				for(BEInstructionLine i :  m.getValue().getMethodBody().getInstructions()){
-//					Logger.logInfo(i.getIndex()+" "+i.getName()+" "+i.getNat()+" "+i.getNumber()+" "+i.getRef());
-//				}
+				for(BEInstructionLine i :  m.getValue().getMethodBody().getInstructions()){
+					System.out.println(i.getIndex()+" "+i.getName()+" "+i.getNat()+" "+i.getNumber()+" "+i.getRef());
+
+				}
 			}
 		}
 		

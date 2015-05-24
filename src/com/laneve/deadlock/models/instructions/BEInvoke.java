@@ -10,7 +10,6 @@ import com.laneve.deadlock.models.lam.LamZT;
 public class BEInvoke extends BEInstructionLine implements BEInstruction{
 	private String signature;
 	private static Logger LOGGER = Logger.getLogger(BEInvoke.class.getSimpleName());
-	private static Logger LOGGER = Logger.getLogger(BEInvoke.class.getSimpleName());
 	
 	public BEInvoke(String text) {
 		instructionName = text;
@@ -50,6 +49,8 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 				//Logger.logInfo(String.valueOf(numParameters));
 			}
 
+			LOGGER.info(environment.takeCpoolRef(getRef()));
+			
 		}
 		else if(getName().contentEquals("invokevirtual")){
 
