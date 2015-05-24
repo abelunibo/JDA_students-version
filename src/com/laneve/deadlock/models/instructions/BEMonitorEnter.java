@@ -6,7 +6,6 @@ import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.type.TypeObject;
 import com.laneve.deadlock.models.lam.LamZT;
-import com.laneve.deadlock.utilities.Logger;
 
 public class BEMonitorEnter extends BEInstructionLine implements BEInstruction{
 

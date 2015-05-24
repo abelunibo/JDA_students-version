@@ -17,7 +17,7 @@ public class DataStructuresDebug {
 
 	public static void printDataStructures(ArrayList<BEClassFile> classfiles){
 		for(BEClassFile cf : classfiles){
-			Logger.logInfo("\n\n ---- file: "+ cf.getClassName()+" ----- \n");
+			System.out.println("\n\n ---- file: "+ cf.getClassName()+" ----- \n");
 			BETableEntries tb = cf.getCostantPool().getTableEntries();
 			HashMap<String, BEConstantAndInfo> t = tb.getTableEntry();
 			for(Entry<String, BEConstantAndInfo> entry : t.entrySet()){
@@ -29,17 +29,17 @@ public class DataStructuresDebug {
 				for(String c : cs){
 					debug += " "+c;
 				}
-				Logger.logInfo(debug);
+				System.out.println(debug);
 			}
 		}
 	}
 
 	public static void printDataMethods(ArrayList<BEClassFile> classfiles) {
 		
-		Logger.logInfo("\n\n***********************************************");
+		System.out.println("\n\n***********************************************");
 		
 		for(BEClassFile cf : classfiles){			
-			Logger.logInfo("\n\n ---- file: "+ cf.getClassName()+" ----- \n");
+			System.out.println("\n\n ---- file: "+ cf.getClassName()+" ----- \n");
 			HashMap<BEMethodHeader, BEMethodDeclaration> methodDeclaration = cf.getMethods();
 			for(Entry<BEMethodHeader, BEMethodDeclaration> m : methodDeclaration.entrySet()){
 				ArrayList<FormalParameterContext> formalparameters = m.getKey().getMethodDeclarator().getFormalParameters();
@@ -47,16 +47,16 @@ public class DataStructuresDebug {
 				for(FormalParameterContext f : formalparameters){
 					parameters += '('+f.getText()+" "+')';
 				}
-				Logger.logInfo("\n" +m.getKey().getSignature()+" "+parameters);
+				System.out.println("\n" +m.getKey().getSignature()+" "+parameters);
 				
 				for(BEInstructionLine i :  m.getValue().getMethodBody().getInstructions()){
-					Logger.logInfo(i.getIndex()+" "+i.getName()+" "+i.getNat()+" "+i.getNumber()+" "+i.getRef());
+					System.out.println(i.getIndex()+" "+i.getName()+" "+i.getNat()+" "+i.getNumber()+" "+i.getRef());
 
 				}
 			}
 		}
 		
-		Logger.logInfo("\n***********************************************");
+		System.out.println("\n***********************************************");
 	}
 
 	public static void printGenerateLams(ArrayList<LamBase> lams) {

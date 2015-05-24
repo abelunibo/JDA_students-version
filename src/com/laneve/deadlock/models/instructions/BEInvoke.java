@@ -1,13 +1,15 @@
 package com.laneve.deadlock.models.instructions;
 
+import java.util.logging.Logger;
+
 import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.models.lam.LamZT;
-import com.laneve.deadlock.utilities.Logger;
 
 public class BEInvoke extends BEInstructionLine implements BEInstruction{
 	private String signature;
+	private static Logger LOGGER = Logger.getLogger(BEInvoke.class.getSimpleName());
 	
 	public BEInvoke(String text) {
 		instructionName = text;
@@ -28,7 +30,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 	@Override
 	public void changeEnvironment(Environment environment) {
 		if(getName().contentEquals("invokespecial")){
-			Logger.logInfo(environment.takeCpoolRef(getRef()));
+			LOGGER.info(environment.takeCpoolRef(getRef()));
 			
 		}
 		else if(getName().contentEquals("invokevirtual")){
