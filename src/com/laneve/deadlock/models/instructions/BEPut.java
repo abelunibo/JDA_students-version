@@ -34,7 +34,7 @@ public class BEPut extends BEInstructionLine implements BEInstruction{
 		
 		if(getName().equals("putfield")){
 			//non si puo' modificare il campo della classe se non siamo nella sua init
-			if(!((TypeObject)(environment.getOperandStack().get(1))).getRawName().equals(environment.getClassName())){ 
+			if(!((TypeObject)(environment.getOperandStack().get(0))).getRawName().equals(environment.getClassName())){ 
 				throw new BEException("Non si possono modificare campi gia' inizializzati");
 			}
 			try {
@@ -46,7 +46,8 @@ public class BEPut extends BEInstructionLine implements BEInstruction{
 			
 		}else if(getName().equals("putstatic")){
 			//non si può modificare il campo statico se non siamo nel blocco statico
-			if(environment.getCurrentMethodBody().getMethodHeader().getMethodDeclarator().getMethodName().contains("staticBlock?")){ 
+			
+			if(!(environment.getCurrentMethodBody().getMethodHeader().getMethodDeclarator().getMethodName().contains("staticBlock?"))){ 
 				throw new BEException("Non si possono modificare campi statici al di fuori del loro blocco statico");
 			}
 			try {
