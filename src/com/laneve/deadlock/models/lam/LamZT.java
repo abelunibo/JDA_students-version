@@ -4,16 +4,10 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
-import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.type.Type;
-import com.laneve.deadlock.type.TypeObject;
-
-import com.laneve.deadlock.models.Environment;
 
 public class LamZT extends LamBase{
 	String lam;
-	LinkedList<String> z = new LinkedList<String>();
-	LinkedList<String> t = new LinkedList<String>();
 	
 	public String getLam() {
 		return lam;
@@ -85,27 +79,6 @@ public class LamZT extends LamBase{
 	@Override
 	public void semplify(LamBase lam) {
 	
-	}
-	
-	public static void addDebugZT(Environment environment){
-		LinkedList<Type> z = new LinkedList<Type>();
-		z.add(new TypeObject("a"));
-		z.add(new TypeObject("b"));
-		z.add(new TypeObject("c"));
-		z.add(new TypeObject("b")); 
-		z.add(new TypeObject("d"));
-		z.add(new TypeObject("c"));
-		z.add(new TypeObject("c"));
-		z.add(new TypeObject("a"));
-		z.add(new TypeObject("e"));
-		z.add(new TypeObject("c")); //l'ultimo lock preso e' in fondo alla lista
-	
-		LinkedList<Type> t = new LinkedList<Type>();
-		t.add(new TypeObject("p"));
-		t.add(new TypeObject("q"));
-		t.add(new TypeObject("r"));
-		environment.setLocks(z);
-		environment.setQueuethreads(t);
 	}
 	
 }

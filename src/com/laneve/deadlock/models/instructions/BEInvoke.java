@@ -22,7 +22,6 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 	@Override
 	public LamBase generateLam(Environment environment) {
 		LamBase lzt = new LamZT();		
-		LamZT.addDebugZT(environment);
 		String lamZ = LamZT.getZhatBar(environment.getLocks());
 		String lamT = LamZT.getThat(environment.getQueuethreads());
 		changeEnvironment(environment);
