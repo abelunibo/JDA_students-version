@@ -37,7 +37,7 @@ public class TypeObject extends Type{
 	}
 		
 	public void setIndex(Integer index) throws BEException{
-		if(index!=null) throw new BEException("Non puoi riassegnare un indice ad un tipo");
+		if(this.index!=null) throw new BEException("Non puoi riassegnare un indice ad un tipo");
 		this.index=index;
 	}
 	
