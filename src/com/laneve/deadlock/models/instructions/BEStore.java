@@ -1,5 +1,6 @@
 package com.laneve.deadlock.models.instructions;
 import java.util.logging.Logger;
+
 import com.laneve.deadlock.exceptions.BEException;
 import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.Environment;
@@ -47,10 +48,10 @@ public class BEStore extends BEInstructionLine implements BEInstruction{
 			
 			if(environment.getOperandStack().isEmpty()){
 				if(environment.getCurrentMethodBody().getInstructionTemp().getName().equals("goto")){
-					String tmp = environment.getCurrentMethodBody().getInstructionTemp().getIndex();
-					String indexTojump = tmp.substring(0, tmp.length()-1);
-					Integer indexListTojump = environment.getCurrentMethodBody().getInstructionMap().get(indexTojump);
+					String indexToJump = environment.getCurrentMethodBody().getInstructionTemp().getNat();
+					Integer indexListTojump = environment.getCurrentMethodBody().getInstructionMap().get(indexToJump);
 					environment.getCurrentMethodBody().setNextGotoInstruction(indexListTojump);
+
 				}
 
 			}else

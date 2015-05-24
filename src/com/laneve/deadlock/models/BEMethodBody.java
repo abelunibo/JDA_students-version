@@ -75,8 +75,9 @@ public class BEMethodBody extends BEBase{
 		LamSequence l = new LamSequence();
 		environment.openScope(this);
 
-		for(int i = 0 ; i < instructions.size() ;i++){
-			if(!(nextGoToInstruction == null)){
+		for(int i = 0 ; i < instructions.size() ;i++){			
+			
+			if(nextGoToInstruction != null){
 				i = nextGoToInstruction;
 				nextGoToInstruction = null;
 			}
