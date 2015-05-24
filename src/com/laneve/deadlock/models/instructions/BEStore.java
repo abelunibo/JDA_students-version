@@ -36,7 +36,7 @@ public class BEStore extends BEInstructionLine implements BEInstruction{
 		}
 
 		//TODO environment.popStack() potrebbe non esserci nulla sullo stack se 
-		//un eccezione a runtime ha inserito un oggetto eccezione e quindi staticamente
+		//un'eccezione a runtime ha inserito un oggetto eccezione e quindi staticamente
 		//sullo stack non c'e' nulla quindi l'astore che gestisce l'eccezione tenta di prendere
 		//qualcosa che c'e' solo a runtime BOOM !
 
@@ -46,8 +46,9 @@ public class BEStore extends BEInstructionLine implements BEInstruction{
 		try {
 			
 			if(environment.getOperandStack().isEmpty()){
-				if(environment.getCurrentMethodBody().getInstructionTemp().getName() == "goto"){
-					String indexTojump = environment.getCurrentMethodBody().getInstructionTemp().getNumber();
+				if(environment.getCurrentMethodBody().getInstructionTemp().getName().equals("goto")){
+					String tmp = environment.getCurrentMethodBody().getInstructionTemp().getIndex();
+					String indexTojump = tmp.substring(0, tmp.length()-1);
 					Integer indexListTojump = environment.getCurrentMethodBody().getInstructionMap().get(indexTojump);
 					environment.getCurrentMethodBody().setNextGotoInstruction(indexListTojump);
 				}

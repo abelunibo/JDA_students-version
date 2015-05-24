@@ -123,7 +123,9 @@ public class BEMethodBody extends BEBase{
 				LOGGER.info("QueueThreads:\t ["+vars+"]\n");
 		
 			l.createSequence(instructions.get(i).generateLam(environment));
+			
 			instructionTemp = instructions.get(i);
+
 		}
 
 		environment.closeScope();
