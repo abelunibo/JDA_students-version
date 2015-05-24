@@ -24,7 +24,6 @@ public class Environment {
 		this.className = className;
 	}
 
-
 	public String getClassName(){
 		return className;
 	}
