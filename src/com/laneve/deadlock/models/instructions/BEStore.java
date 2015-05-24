@@ -44,9 +44,7 @@ public class BEStore extends BEInstructionLine implements BEInstruction{
 		//TODO vedi se l'istruzione precedente e' un goto BEMEthodBody.getIstruzionePrecedente
 		//TODO predi getNat goto e salta all'istruzione specificata dal goto
 		try {
-			environment.putLocalVar(localVarIndex,environment.popStack());
-
-
+			
 			if(environment.getOperandStack().isEmpty()){
 				if(environment.getCurrentMethodBody().getInstructionTemp().getName() == "goto"){
 					String indexTojump = environment.getCurrentMethodBody().getInstructionTemp().getNumber();
@@ -56,6 +54,7 @@ public class BEStore extends BEInstructionLine implements BEInstruction{
 
 			}else
 				environment.putLocalVar(localVarIndex,environment.popStack());
+			
 		} catch (BEException e) {
 			e.printStackTrace();
 		}
