@@ -20,7 +20,7 @@ import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.visitor.BytecodeVisitor;
 import com.laneve.deadlock.utilities.MyFormatter;
 
-public class DeadlockAnalysis { 
+public class DeadlockAnalysis {
 
 	public static void main(String[] args) throws IOException{
 		//root log configuration
