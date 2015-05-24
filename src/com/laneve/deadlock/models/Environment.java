@@ -23,7 +23,6 @@ public class Environment {
 		this.constantPool = costantPool;	
 		this.className = className;
 	}
-
 	
 	public String getClassName(){
 		return className;
