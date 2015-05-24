@@ -33,15 +33,17 @@ public class Environment {
 			// se metodo e' synchronized  aggiungi il this ai lock
 			addLock(new TypeObject(md.getClassName(),0)); //TODO controlla //il this e' il primo parametro quindi e' indicizzato a 0
 		}
-		
-		//setta i parametri nelle corrispondenti posizioni della localVar
-		ArrayList<FormalParameterContext> pars = md.getMethodHeader().getMethodDeclarator().getFormalParameters();		
-		for(int i=0;i<pars.size(); i++){
-			if(pars.get(i).getText().equals("int")){
-				localVar.put(String.valueOf(i), new TypeInt());
-			}
-			else{
-				localVar.put(String.valueOf(i), new TypeObject(pars.get(i).getText(),i));
+
+		if(md.getMethodHeader()!=null){
+			//setta i parametri nelle corrispondenti posizioni della localVar
+			ArrayList<FormalParameterContext> pars = md.getMethodHeader().getMethodDeclarator().getFormalParameters();		
+			for(int i=0;i<pars.size(); i++){
+				if(pars.get(i).getText().equals("int")){
+					localVar.put(String.valueOf(i), new TypeInt());
+				}
+				else{
+					localVar.put(String.valueOf(i), new TypeObject(pars.get(i).getText(),i));
+				}
 			}
 		}
 	}
