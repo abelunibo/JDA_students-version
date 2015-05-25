@@ -37,6 +37,8 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 
 		if(getName().contentEquals("invokespecial")){
 			String signature = environment.takeCpoolRef(getRef());
+			String superClass = signature.substring(signature.lastIndexOf(" ")+1);
+			TypeObject ob=null;
 			int openP = signature.indexOf("(");
 			int closedP = signature.indexOf(")");
 			parameters =  signature.substring(openP+1, closedP);
@@ -48,25 +50,31 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 					}
 				}
 			}
-			else{
-				try{
-					for(int i = 0; i<numParameters; i++){
-						a.insert(0,environment.popStack().getName()+",");
-					}
-					a.insert(0,"(");
-					obThis = environment.popStack().getName();
-					a.insert(1,obThis +",");
-					a.deleteCharAt(a.length()-1);
-					a.insert(a.length(),")");
-					a.insert(0," <init> ");
-				} catch (BEException e) {
-					e.printStackTrace();
-					System.exit(1);
+			try{
+				for(int i = 0; i<numParameters; i++){
+					a.insert(0,environment.popStack().getName()+",");
 				}
+				a.insert(0,"(");
+				
+				ob= (TypeObject) environment.popStack();
+				obThis =ob.getName();
+				if(!ob.getRawName().equals(superClass)) //superclasse
+					a.insert(1,superClass +",");
+				else 
+					a.insert(1,obThis +",");
+				a.deleteCharAt(a.length()-1);
+				a.insert(a.length(),")");
+				a.insert(0," <init> ");
+			} catch (BEException e) {
+				e.printStackTrace();
+				System.exit(1);
 			}
-
-			obThis = "(v " + obThis + ")";
-
+			
+			
+			
+			if(!ob.getRawName().equals(superClass)) //superclasse
+				obThis = "(v " + obThis + ")";
+///
 			this.lamEnd= obThis + a.toString();
 
 		}
@@ -115,24 +123,23 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 							numParameters++;
 						}
 					}
-				}else{
-
-					try{
-						for(int i = 0; i<numParameters; i++){
-							a.insert(0,environment.popStack().getName()+",");
-						}
-						a.insert(0,"(");
-						obThis = environment.popStack().getName();
-						a.insert(1,obThis+",");
-						a.deleteCharAt(a.length()-1);
-						a.insert(a.length(),")");
-						a.insert(0, mName);
-					} catch (BEException e) {
-						e.printStackTrace();
-						System.exit(1);
-					}
-
 				}
+
+				try{
+					for(int i = 0; i<numParameters; i++){
+						a.insert(0,environment.popStack().getName()+",");
+					}
+					a.insert(0,"(");
+					obThis = environment.popStack().getName();
+					a.insert(1,obThis+",");
+					a.deleteCharAt(a.length()-1);
+					a.insert(a.length(),")");
+					a.insert(0, mName);
+				} catch (BEException e) {
+					e.printStackTrace();
+					System.exit(1);
+				}
+
 
 				this.lamEnd= a.toString();
 
@@ -176,21 +183,21 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 					}
 				}
 				
-			}else{
+			}
 
-				try{
-					for(int i = 0; i<numParameters; i++){
-						a.insert(0,environment.popStack().getName()+",");
-					}
-					a.insert(0,"(");
-					a.insert(a.length(),")");
-					a.insert(0,className+"."+mName);
-				} catch (BEException e) {
-					e.printStackTrace();
-					System.exit(1);
+			try{
+				for(int i = 0; i<numParameters; i++){
+					a.insert(0,environment.popStack().getName()+",");
 				}
+				a.insert(0,"(");
+				a.insert(a.length(),")");
+				a.insert(0,className+"."+mName);
+			} catch (BEException e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
 
-			}		
+				
 			// non devo recuperare alcun oggetto this su cui viene invocato il metodo perchè è static
 
 			this.lamEnd = obThis + a.toString();
