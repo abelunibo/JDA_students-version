@@ -105,7 +105,7 @@ public class BEMethodBody extends BEBase{
 				LOGGER.info("Stack:\t\t ["+vars+"]");
 				  
 				/* print LocalVar */
-				Iterator it = environment.getLocalVar().keySet().iterator();
+				Iterator<String> it = environment.getLocalVar().keySet().iterator();
 				vars = "";
 				while (it.hasNext()) {
 				   String key = it.next().toString();

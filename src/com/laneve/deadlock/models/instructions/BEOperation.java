@@ -5,7 +5,6 @@ import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.models.lam.LamZT;
-import com.laneve.deadlock.type.Type;
 import com.laneve.deadlock.type.TypeInt;
 
 public class BEOperation extends BEInstructionLine implements BEInstruction{
