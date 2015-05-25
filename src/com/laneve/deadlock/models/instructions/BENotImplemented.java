@@ -19,7 +19,7 @@ public class BENotImplemented extends BEInstructionLine implements BEInstruction
 		String lamT = LamZT.getThat(environment.getQueuethreads());	
 		lzt.setLam(lamZ+" & "+lamT);
 		try {
-			changeEnvironment(environment);
+			updateEnvironment(environment);
 		} catch (BEException e) {
 			e.printStackTrace();
 		}
@@ -27,7 +27,7 @@ public class BENotImplemented extends BEInstructionLine implements BEInstruction
 	}
 
 	@Override
-	public void changeEnvironment(Environment environment) throws BEException{
+	public void updateEnvironment(Environment environment) throws BEException{
 		throw new BEException("Istruzione "+instructionName+" non gestita");
 	}
 

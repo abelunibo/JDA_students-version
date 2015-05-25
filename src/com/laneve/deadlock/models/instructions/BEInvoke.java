@@ -21,7 +21,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 		LamBase lzt = new LamZT();		
 		String lamZ = LamZT.getZhatBar(environment.getLocks());
 		String lamT = LamZT.getThat(environment.getQueuethreads());
-		changeEnvironment(environment);
+		updateEnvironment(environment);
 		if(!lamEnd.isEmpty())
 			lamEnd= " & "+lamEnd;
 		lzt.setLam(lamZ+" & "+lamT+ lamEnd);
@@ -29,7 +29,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 	}
 
 	@Override
-	public void changeEnvironment(Environment environment) {
+	public void updateEnvironment(Environment environment) {
 		String parameters = "";
 		int numParameters=0;
 	    StringBuffer a = new StringBuffer();
@@ -64,8 +64,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 				}
 					
 			}
-			
-			
+						
 			obThis = "(v " + obThis + ")";
 			
 			this.lamEnd= obThis + a.toString();

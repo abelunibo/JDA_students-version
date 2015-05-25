@@ -21,12 +21,12 @@ public class BENew extends BEInstructionLine implements BEInstruction{
 		String lamT = LamZT.getThat(environment.getQueuethreads());	
 		lzt.setLam(lamZ+" & "+lamT);
 //		Logger.logInfo(lzt.getLam());
-		changeEnvironment(environment);		
+		updateEnvironment(environment);		
 		return lzt;
 	}
 
 	@Override
-	public void changeEnvironment(Environment environment) {
+	public void updateEnvironment(Environment environment) {
 		environment.pushStack(new TypeObject(environment.takeCpoolRef(getRef())));
 	}
 }

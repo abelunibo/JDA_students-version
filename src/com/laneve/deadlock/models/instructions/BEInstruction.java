@@ -4,5 +4,5 @@ import com.laneve.deadlock.exceptions.BEException;
 import com.laneve.deadlock.models.Environment;
 
 public interface BEInstruction {
-	void changeEnvironment(Environment environment) throws BEException;
+	void updateEnvironment(Environment environment) throws BEException;
 }

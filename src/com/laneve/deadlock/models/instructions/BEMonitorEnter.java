@@ -20,12 +20,12 @@ public class BEMonitorEnter extends BEInstructionLine implements BEInstruction{
 		String lamZ = LamZT.getZhatBar(environment.getLocks());
 		String lamT = LamZT.getThat(environment.getQueuethreads());	
 		lzt.setLam(lamZ+" & "+lamT);
-		changeEnvironment(environment);		
+		updateEnvironment(environment);		
 		return lzt;
 	}
 
 	@Override
-	public void changeEnvironment(Environment environment) {
+	public void updateEnvironment(Environment environment) {
 		TypeObject topStack=null;
 		try {
 			topStack = (TypeObject) environment.popStack();

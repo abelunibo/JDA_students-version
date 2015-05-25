@@ -51,6 +51,7 @@ public class DeadlockAnalysis {
 			lams.add(cf.generateLam(environment));
 		}
 		
+		
 		//DataStructuresDebug.printDataStructures(classfiles);
 		//DataStructuresDebug.printDataMethods(classfiles);
 		//DataStructuresDebug.printGenerateLams(lams);

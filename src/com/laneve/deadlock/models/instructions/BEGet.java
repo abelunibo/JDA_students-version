@@ -20,12 +20,12 @@ public class BEGet extends BEInstructionLine implements BEInstruction{
 		String lamZ = LamZT.getZhatBar(environment.getLocks());
 		String lamT = LamZT.getThat(environment.getQueuethreads());	
 		lzt.setLam(lamZ+" & "+lamT);
-		changeEnvironment(environment);		
+		updateEnvironment(environment);		
 		return lzt;
 	}
 
 	@Override
-	public void changeEnvironment(Environment environment){
+	public void updateEnvironment(Environment environment){
 		String getfieldRef = environment.takeCpoolRef(getRef());
 		String fieldType = getfieldRef.substring(0, getfieldRef.indexOf(" "));
 		String fieldName = getfieldRef.substring(getfieldRef.indexOf(" ")+1, getfieldRef.lastIndexOf(" "));

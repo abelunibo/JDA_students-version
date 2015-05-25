@@ -21,7 +21,7 @@ public class BEPut extends BEInstructionLine implements BEInstruction{
 		lzt.setLam(lamZ+" & "+lamT);
 	//	Logger.logInfo(lzt.getLam());
 		try {
-			changeEnvironment(environment);
+			updateEnvironment(environment);
 		} catch (BEException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -30,7 +30,7 @@ public class BEPut extends BEInstructionLine implements BEInstruction{
 	}
 
 	@Override
-	public void changeEnvironment(Environment environment) throws BEException {
+	public void updateEnvironment(Environment environment) throws BEException {
 		
 		if(getName().equals("putfield")){
 			//non si puo' modificare il campo della classe se non siamo nella sua init

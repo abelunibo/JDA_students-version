@@ -123,7 +123,12 @@ public class BEMethodBody extends BEBase{
 					vars = vars.substring(0, vars.length()-2);
 				LOGGER.info("QueueThreads:\t ["+vars+"]\n");
 		
-			l.createSequence(instructions.get(i).generateLam(environment));
+				LamBase lb= instructions.get(i).generateLam(environment);
+			
+				l.createSequence(lb);
+			
+			/* print instruction's lam */
+			LOGGER.info("Lam:\t ["+lb.getLam()+"]\n");
 			
 			instructionTemp = instructions.get(i);
 

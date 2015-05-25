@@ -56,7 +56,7 @@ public class LamZT extends LamBase{
 	
 	public static String getZhatBar(LinkedList<Type> z){
 
-		return z!=null && z.size()>0?getZhat(getZbar(z)):null;
+		return z!=null && z.size()>0?getZhat(getZbar(z)):"0";
 	}
 	
 	

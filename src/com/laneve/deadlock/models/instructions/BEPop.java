@@ -19,12 +19,12 @@ public class BEPop extends BEInstructionLine implements BEInstruction{
 		String lamT = LamZT.getThat(environment.getQueuethreads());	
 		lzt.setLam(lamZ+" & "+lamT);
 	//	Logger.logInfo(lzt.getLam());
-		changeEnvironment(environment);		
+		updateEnvironment(environment);		
 		return lzt;
 	}
 
 	@Override
-	public void changeEnvironment(Environment environment) {
+	public void updateEnvironment(Environment environment) {
 		try {
 			environment.popStack();
 		} catch (BEException e) {
