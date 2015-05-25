@@ -58,9 +58,9 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 				
 				ob= (TypeObject) environment.popStack();
 				obThis =ob.getName();
-				if(!ob.getRawName().equals(superClass)) //superclasse
+				if(!ob.getRawName().equals(superClass)) // siamo nell'init della superclasse
 					a.insert(1,superClass +",");
-				else 
+				else //chiama init della mia classe
 					a.insert(1,obThis +",");
 				a.deleteCharAt(a.length()-1);
 				a.insert(a.length(),")");
@@ -71,14 +71,13 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 			}
 			
 			
-			
-			if(ob.getRawName().equals(superClass)){ //superclasse
+			if(ob.getRawName().equals(superClass)){ //è il nostro init
 				obThis = "(v " + obThis + ")";
 				this.lamEnd= obThis + a.toString();
-				
-			} else
+			} else { //è l'init della superclasse
 				this.lamEnd= a.toString();
-
+			}
+			
 
 		}
 		else if(getName().contentEquals("invokevirtual")){
