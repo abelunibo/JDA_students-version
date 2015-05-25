@@ -2,6 +2,7 @@ package com.laneve.deadlock.models;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.logging.Logger;
 
 import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.models.lam.LamSequence;
@@ -11,6 +12,8 @@ public class BEClassFile extends BEBase{
 	String className;
 	BEConstantPool costantPool;
 	HashMap<BEMethodHeader, BEMethodDeclaration> methods = new HashMap<BEMethodHeader, BEMethodDeclaration>();
+	
+	private static Logger LOGGER = Logger.getLogger("");
 
 	public BEClassFile(String className,BEConstantPool costantPool) {
 		super();
@@ -43,8 +46,19 @@ public class BEClassFile extends BEBase{
 		LamSequence l = new LamSequence();
 		for(Entry<BEMethodHeader, BEMethodDeclaration> m : methods.entrySet()){
 			BEMethodDeclaration methodDeclaration = m.getValue();
-			l.createSequence(methodDeclaration.generateLam(environment));
+			LamBase lam = methodDeclaration.generateLam(environment);
+			LOGGER.info("-------------------------------------------------------------------------------\n");
+			LOGGER.info("Method Lam:\t"+lam.getLam()+"\n");
+			l.createSequence(lam);
+			
+			LOGGER.info("-------------------------------------------------------------------------------\n");
+			LOGGER.info(" FINE metodo "+ m.getKey().getMethodDeclarator().getMethodName() +"\t\t|\tclasse " +
+						environment.getClassName()+"\n");
+			LOGGER.info("-------------------------------------------------------------------------------\n");
 		}
+		
+
+		
 		return l;
 	}
 }
