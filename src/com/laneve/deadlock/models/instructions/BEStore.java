@@ -1,5 +1,4 @@
 package com.laneve.deadlock.models.instructions;
-import java.util.logging.Logger;
 
 import com.laneve.deadlock.exceptions.BEException;
 import com.laneve.deadlock.models.BEInstructionLine;

@@ -72,10 +72,13 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 			
 			
 			
-			if(!ob.getRawName().equals(superClass)) //superclasse
+			if(ob.getRawName().equals(superClass)){ //superclasse
 				obThis = "(v " + obThis + ")";
-///
-			this.lamEnd= obThis + a.toString();
+				this.lamEnd= obThis + a.toString();
+				
+			} else
+				this.lamEnd= a.toString();
+
 
 		}
 		else if(getName().contentEquals("invokevirtual")){
