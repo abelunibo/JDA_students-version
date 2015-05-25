@@ -42,7 +42,7 @@ public class BEGet extends BEInstructionLine implements BEInstruction{
 					e.printStackTrace();
 					System.exit(1);
 				}
-
+				fieldType = fieldType.replace("L", "");
 				environment.pushStack(new TypeObject(new TypeObject(fieldType), fieldName, o));
 			}
 			else environment.pushStack(new TypeInt());
