@@ -58,7 +58,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 					a.insert(1,obThis +",");
 					a.deleteCharAt(a.length()-1);
 					a.insert(a.length(),")");
-					a.insert(0,"<init> ");
+					a.insert(0," <init> ");
 				} catch (BEException e) {
 					e.printStackTrace();
 					System.exit(1);
@@ -115,6 +115,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 							numParameters++;
 						}
 					}
+				}else{
 
 					try{
 						for(int i = 0; i<numParameters; i++){
@@ -174,6 +175,8 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 						numParameters++;
 					}
 				}
+				
+			}else{
 
 				try{
 					for(int i = 0; i<numParameters; i++){

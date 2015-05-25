@@ -1,7 +1,7 @@
 package com.laneve.deadlock.models.lam;
 
 public class LamSequence extends LamBase {
-	public String lam;
+	public String lam="";
 	
 	public String getLam() {
 		return lam;

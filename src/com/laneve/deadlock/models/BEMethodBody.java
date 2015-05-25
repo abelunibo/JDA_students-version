@@ -139,20 +139,11 @@ public class BEMethodBody extends BEBase{
 				l.createSequence(lb);
 			
 			/* print instruction's lam */
-			LOGGER.info("Lam:\t ["+lb.getLam()+"]\n");
+			LOGGER.info("Lam:\t\t ["+lb.getLam()+"]");
 			
 			instructionTemp = instructions.get(i);
 
 		}
-		
-		LOGGER.info("-------------------------------------------------------------------------------\n");
-		try {
-			LOGGER.info(" FINE metodo "+ getMethodHeader().getMethodDeclarator().getMethodName() +"\t|\tclasse " +
-					environment.getClassName()+"\n");
-		} catch (BEException e) {
-			e.printStackTrace();
-		}
-		LOGGER.info("-------------------------------------------------------------------------------\n");
 
 		environment.closeScope();
 		return l;
