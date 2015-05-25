@@ -206,6 +206,8 @@ public class Environment {
 			String returnType = takeCpoolRef(returnTypeRef);
 			if(!(returnType.contentEquals("I")))
 				returnType = returnType.substring(0, returnType.length()-1);
+
+			//example "<init>":()V
 			return returnType+" "+methodName;
 		default://"Utf8"
 			return a.get(1);
