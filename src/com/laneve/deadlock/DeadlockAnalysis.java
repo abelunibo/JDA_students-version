@@ -39,7 +39,7 @@ public class DeadlockAnalysis {
 			//if(fileEntry.getName().contains("Pippo")) continue;
 			if(fileEntry.getName().contains("Deadlock")) continue;
 			
-			
+
 			FileInputStream in = new FileInputStream(fileEntry);
 			ANTLRInputStream input = new ANTLRInputStream(in);
 			BytecodeLexer lexer = new BytecodeLexer(input);
