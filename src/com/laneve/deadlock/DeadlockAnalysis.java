@@ -38,7 +38,6 @@ public class DeadlockAnalysis {
 			//if(fileEntry.getName().contains("Pluto")) continue;
 			//if(fileEntry.getName().contains("Pippo")) continue;
 			if(fileEntry.getName().contains("Deadlock")) continue;
-			
 
 			FileInputStream in = new FileInputStream(fileEntry);
 			ANTLRInputStream input = new ANTLRInputStream(in);
@@ -55,6 +54,6 @@ public class DeadlockAnalysis {
 			environment = new Environment(cf.getCostantPool(),cf.getClassName());
 			lams.add(cf.generateLam(environment));
 		}
-		
+
 	}
 }
