@@ -207,43 +207,13 @@ public class Environment {
 			if(!(returnType.contentEquals("I")))
 				returnType = returnType.substring(0, returnType.length()-1);
 			//example "<init>":()V
+			System.out.println(returnType+" "+methodName);
 			return returnType+" "+methodName;
 		default://"Utf8"
 			return a.get(1);
 		}
 	}
 	
-	public String takeCpoolRefMethod(String ref) {
-		BEConstantAndInfo constantInfo = constantPool.getTableEntries().getTableEntry().get(ref);
-		ArrayList<String> a = constantInfo.getConstantAndInfo();
-		switch (a.get(0)) {
-		case "Class":
-			String cRef = a.get(1);
-			return takeCpoolRefMethod(cRef);
-		case "Methodref":
-			String mRef = a.get(1);
-			takeCpoolRefMethod(mRef);
-		case "Fieldref":
-			String fRef = a.get(1);
-			String nameAdnTypeRef = a.get(2);
-			String classnameField = takeCpoolRefMethod(fRef);
-			String nameAdnType = takeCpoolRefMethod(nameAdnTypeRef);
-			return nameAdnType + " " + classnameField;
-		case "NameAndType":
-			String methodNameRef = a.get(1);
-			String returnTypeRef = a.get(2);
-			String methodName = takeCpoolRefMethod(methodNameRef);
-			String returnType = takeCpoolRefMethod(returnTypeRef);
-//			if(!(returnType.contentEquals("I")))
-//				returnType = returnType.substring(0, returnType.length()-1);
-			//example "<init>":()V
-			return returnType+" "+methodName;
-		default://"Utf8"
-			return a.get(1);
-		}
-	}
-
-
 	public String takeCpoolRefType(String ref) {
 		BEConstantAndInfo constantInfo = constantPool.getTableEntries().getTableEntry().get(ref);
 		ArrayList<String> a = constantInfo.getConstantAndInfo();
