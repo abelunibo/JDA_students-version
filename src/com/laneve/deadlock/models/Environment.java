@@ -2,6 +2,7 @@ package com.laneve.deadlock.models;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
 import com.laneve.bytecode.parser.BytecodeParser.FormalParameterContext;
@@ -11,19 +12,23 @@ import com.laneve.deadlock.type.TypeInt;
 import com.laneve.deadlock.type.TypeObject;
 
 public class Environment {
-
 	BEConstantPool constantPool;
 	String className;
 	LinkedList<Type>  operandStack, locks, queueThreads;
 	HashMap<String, Type> localVar; //TODO potrebbe essere un arraylist
 	BEMethodBody currentMethodBody;
+	private LinkedHashMap<String, LinkedHashMap<String, String>> fields;
 
-
-	public Environment(BEConstantPool costantPool, String className) {
+	public Environment(LinkedHashMap<String, LinkedHashMap<String, String>> fields,
+			BEConstantPool costantPool, String className) {
 		this.constantPool = costantPool;	
 		this.className = className;
+		this.fields = fields;
 	}
-
+	
+	public LinkedHashMap<String, LinkedHashMap<String, String>> getFields() {
+		return fields;
+	}
 	public String getClassName(){
 		return className;
 	}

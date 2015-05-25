@@ -1,11 +1,15 @@
 package com.laneve.deadlock.models.instructions;
 
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import com.laneve.deadlock.exceptions.BEException;
 import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.models.lam.LamZT;
+import com.laneve.deadlock.type.Type;
 import com.laneve.deadlock.type.TypeInt;
 import com.laneve.deadlock.type.TypeObject;
 
@@ -51,13 +55,40 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 				}
 			}
 			try{
+
 				for(int i = 0; i<numParameters; i++){
-					a.insert(0,environment.popStack().getName()+",");
+					Type type = environment.popStack();
+					String fieldParam = "";
+					if(!type.isInt()){
+						//System.out.println(((TypeObject)type).getRawName());
+						LinkedHashMap<String, LinkedHashMap<String, String>> field = environment.getFields();
+						String name = ((TypeObject)type).getRawName();
+						LinkedHashMap<String, String> fieldNameAndTypes = field.get(((TypeObject)type).getRawName());
+						//TODO da cambiare in funzione ricorsiva che prende la profondita come parametro
+						if(fieldNameAndTypes != null){
+							for (Map.Entry<String, String> f : fieldNameAndTypes.entrySet()){
+								String fieldType = f.getValue();
+								fieldParam += fieldType+"£"+f.getKey()+"£"+type.getName()+",";
+								if(!type.isInt()){
+									LinkedHashMap<String, String> fieldNameAndTypes2 = field.get(fieldType);
+									if(fieldNameAndTypes2 != null){
+										for (Map.Entry<String, String> f2 : fieldNameAndTypes2.entrySet()){
+											String fieldType2 = f2.getValue();
+											fieldParam += fieldType2+"£"+f2.getKey()+"£"+fieldType;
+											System.out.println(fieldParam);
+
+										}
+									}
+								}
+							}
+						}
+					}
+					a.insert(0,type.getName()+","+fieldParam);
 				}
+
 				a.insert(0,"(");
-				
 				ob= (TypeObject) environment.popStack();
-				obThis =ob.getName();
+				obThis = ob.getName();
 				if(!ob.getRawName().equals(superClass)) // siamo nell'init della superclasse
 					a.insert(1,superClass +",");
 				else //chiama init della mia classe
@@ -69,15 +100,15 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 				e.printStackTrace();
 				System.exit(1);
 			}
-			
-			
+
+
 			if(ob.getRawName().equals(superClass)){ //è il nostro init
 				obThis = "(v " + obThis + ")";
 				this.lamEnd= obThis + a.toString();
 			} else { //è l'init della superclasse
 				this.lamEnd= a.toString();
 			}
-			
+
 
 		}
 		else if(getName().contentEquals("invokevirtual")){
@@ -184,7 +215,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 						numParameters++;
 					}
 				}
-				
+
 			}
 
 			try{
@@ -199,7 +230,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 				System.exit(1);
 			}
 
-				
+
 			// non devo recuperare alcun oggetto this su cui viene invocato il metodo perchè è static
 
 			this.lamEnd = obThis + a.toString();

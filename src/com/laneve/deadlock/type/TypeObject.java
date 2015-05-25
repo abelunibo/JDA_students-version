@@ -82,6 +82,9 @@ public class TypeObject extends Type{
 	
 	//ritorna il nome raw del tipo
 	public String getRawName() {
+		if(isField){
+			return name.substring(0, name.indexOf("£"));
+		}
 		return name;
 	}
 	

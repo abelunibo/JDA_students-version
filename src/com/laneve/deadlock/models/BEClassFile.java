@@ -13,7 +13,7 @@ public class BEClassFile extends BEBase{
 	BEConstantPool costantPool;
 	HashMap<BEMethodHeader, BEMethodDeclaration> methods = new HashMap<BEMethodHeader, BEMethodDeclaration>();
 	
-	private static Logger LOGGER = Logger.getLogger("");
+	//private static Logger LOGGER = Logger.getLogger("");
 
 	public BEClassFile(String className,BEConstantPool costantPool) {
 		super();
@@ -47,14 +47,14 @@ public class BEClassFile extends BEBase{
 		for(Entry<BEMethodHeader, BEMethodDeclaration> m : methods.entrySet()){
 			BEMethodDeclaration methodDeclaration = m.getValue();
 			LamBase lam = methodDeclaration.generateLam(environment);
-			LOGGER.info("-------------------------------------------------------------------------------\n");
-			LOGGER.info("Method Lam:\t"+lam.getLam()+"\n");
-			l.createSequence(lam);
-			
-			LOGGER.info("-------------------------------------------------------------------------------\n");
-			LOGGER.info(" FINE metodo "+ m.getKey().getMethodDeclarator().getMethodName() +"\t\t|\tclasse " +
-						environment.getClassName()+"\n");
-			LOGGER.info("-------------------------------------------------------------------------------\n");
+//			LOGGER.info("-------------------------------------------------------------------------------\n");
+//			LOGGER.info("Method Lam:\t"+lam.getLam()+"\n");
+//			l.createSequence(lam);
+//			
+//			LOGGER.info("-------------------------------------------------------------------------------\n");
+//			LOGGER.info(" FINE metodo "+ m.getKey().getMethodDeclarator().getMethodName() +"\t\t|\tclasse " +
+//						environment.getClassName()+"\n");
+//			LOGGER.info("-------------------------------------------------------------------------------\n");
 		}
 		
 

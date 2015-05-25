@@ -75,15 +75,15 @@ public class BEMethodBody extends BEBase{
 		LamSequence l = new LamSequence();
 		environment.openScope(this);
 
-		try {
-			LOGGER.info("-------------------------------------------------------------------------------\n");
-			LOGGER.info(" INIZIO metodo "+ getMethodHeader().getMethodDeclarator().getMethodName() +"\t|\tclasse " +
-					environment.getClassName()+"\n");
-			LOGGER.info("-------------------------------------------------------------------------------\n");
+//		try {
+//			LOGGER.info("-------------------------------------------------------------------------------\n");
+//			LOGGER.info(" INIZIO metodo "+ getMethodHeader().getMethodDeclarator().getMethodName() +"\t|\tclasse " +
+//					environment.getClassName()+"\n");
+//			LOGGER.info("-------------------------------------------------------------------------------\n");
 
-		} catch (BEException e) {
-			e.printStackTrace();
-		}
+//		} catch (BEException e) {
+//			e.printStackTrace();
+//		}
 		
 		for(int i = 0 ; i < instructions.size() ;i++){			
 
@@ -93,53 +93,53 @@ public class BEMethodBody extends BEBase{
 				nextGoToInstruction = null;
 			}
 			
-				LOGGER.info("----------------"+ instructions.get(i).getName() +"----------------\n");
-
-				/* print Stack */
-				String vars = "";
-				for(Type obj : environment.getOperandStack()){
-					vars = vars.concat(obj.getName() + ", ");
-				}
-				if(!vars.equals(""))
-					vars = vars.substring(0, vars.length()-2);
-				LOGGER.info("Stack:\t\t ["+vars+"]");
-				  
-				/* print LocalVar */
-				Iterator<String> it = environment.getLocalVar().keySet().iterator();
-				vars = "";
-				while (it.hasNext()) {
-				   String key = it.next().toString();
-				   String value = environment.getLocalVar().get(key).getName();
-				   vars = vars.concat(key + " -> " + value.toString() +", ");
-				}
-				if(!vars.equals(""))
-					vars = vars.substring(0, vars.length()-2);
-				LOGGER.info("LocalVar:\t\t ["+ vars+"]");
-				
-				/* print Locks */
-				vars = "";
-				for(Type obj : environment.getLocks()){
-					vars = vars.concat(obj.getName() + ", ");
-				}
-				if(!vars.equals(""))
-					vars = vars.substring(0, vars.length()-2);
-				LOGGER.info("Locks:\t\t ["+vars+"]");
-				
-				/* print  queueThreads*/
-				vars = "";
-				for(Type obj : environment.getQueuethreads()){
-					vars = vars.concat(obj.getName() + ", ");
-				}
-				if(!vars.equals(""))
-					vars = vars.substring(0, vars.length()-2);
-				LOGGER.info("QueueThreads:\t ["+vars+"]\n");
+//				LOGGER.info("----------------"+ instructions.get(i).getName() +"----------------\n");
+//
+//				/* print Stack */
+//				String vars = "";
+//				for(Type obj : environment.getOperandStack()){
+//					vars = vars.concat(obj.getName() + ", ");
+//				}
+//				if(!vars.equals(""))
+//					vars = vars.substring(0, vars.length()-2);
+//				LOGGER.info("Stack:\t\t ["+vars+"]");
+//				  
+//				/* print LocalVar */
+//				Iterator<String> it = environment.getLocalVar().keySet().iterator();
+//				vars = "";
+//				while (it.hasNext()) {
+//				   String key = it.next().toString();
+//				   String value = environment.getLocalVar().get(key).getName();
+//				   vars = vars.concat(key + " -> " + value.toString() +", ");
+//				}
+//				if(!vars.equals(""))
+//					vars = vars.substring(0, vars.length()-2);
+//				LOGGER.info("LocalVar:\t\t ["+ vars+"]");
+//				
+//				/* print Locks */
+//				vars = "";
+//				for(Type obj : environment.getLocks()){
+//					vars = vars.concat(obj.getName() + ", ");
+//				}
+//				if(!vars.equals(""))
+//					vars = vars.substring(0, vars.length()-2);
+//				LOGGER.info("Locks:\t\t ["+vars+"]");
+//				
+//				/* print  queueThreads*/
+//				vars = "";
+//				for(Type obj : environment.getQueuethreads()){
+//					vars = vars.concat(obj.getName() + ", ");
+//				}
+//				if(!vars.equals(""))
+//					vars = vars.substring(0, vars.length()-2);
+//				LOGGER.info("QueueThreads:\t ["+vars+"]\n");
 		
 				LamBase lb= instructions.get(i).generateLam(environment);
 			
 				l.createSequence(lb);
 			
 			/* print instruction's lam */
-			LOGGER.info("Lam:\t\t ["+lb.getLam()+"]");
+	//		LOGGER.info("Lam:\t\t ["+lb.getLam()+"]");
 			
 			instructionTemp = instructions.get(i);
 
