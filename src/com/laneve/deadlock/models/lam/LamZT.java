@@ -62,9 +62,9 @@ public class LamZT extends LamBase{
 	
 	/* Calcola T cappello */
 	public static String getThat(LinkedList<Type> t){
-	
+			
 		String tHat = "";
-		if(t!=null && t.size()>1){
+		if(t!=null && t.size()>0){
 		
 			tHat+= "run("+t.get(0).getName()+")";
 			

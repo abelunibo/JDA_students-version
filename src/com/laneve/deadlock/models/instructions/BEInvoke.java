@@ -72,9 +72,12 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 		}
 		else if(getName().contentEquals("invokevirtual")){
 			
+			
 			String signature = environment.takeCpoolRef(getRef());
 			
-			if(signature.equals("()V join java/lang/Thread")){ //invokevirtual start
+			
+			if(signature.equals("() start java/lang/Thread")){ //invokevirtual start
+
 				try {
 					environment.addThread(environment.popStack());
 				} catch (BEException e) {
@@ -83,8 +86,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 				}
 			} //fine start
 			
-			else if(signature.equals("()V start java/lang/Thread")){ //invokevirtual join
-				
+			else if(signature.equals("() join java/lang/Thread")){ //invokevirtual join
 				TypeObject tName=null;
 				try {
 					 tName=(TypeObject) environment.popStack();

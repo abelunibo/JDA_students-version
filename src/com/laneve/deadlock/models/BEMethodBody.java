@@ -75,15 +75,26 @@ public class BEMethodBody extends BEBase{
 		LamSequence l = new LamSequence();
 		environment.openScope(this);
 
+		try {
+			LOGGER.info("-------------------------------------------------------------------------------\n");
+			LOGGER.info(" INIZIO metodo "+ getMethodHeader().getMethodDeclarator().getMethodName() +"\t|\tclasse " +
+					environment.getClassName()+"\n");
+			LOGGER.info("-------------------------------------------------------------------------------\n");
+
+		} catch (BEException e) {
+			e.printStackTrace();
+		}
+		
 		for(int i = 0 ; i < instructions.size() ;i++){			
+
 			
 			if(nextGoToInstruction != null){
 				i = nextGoToInstruction;
 				nextGoToInstruction = null;
 			}
-				
+			
 				LOGGER.info("----------------"+ instructions.get(i).getName() +"----------------\n");
-				
+
 				/* print Stack */
 				String vars = "";
 				for(Type obj : environment.getOperandStack()){
@@ -133,6 +144,15 @@ public class BEMethodBody extends BEBase{
 			instructionTemp = instructions.get(i);
 
 		}
+		
+		LOGGER.info("-------------------------------------------------------------------------------\n");
+		try {
+			LOGGER.info(" FINE metodo "+ getMethodHeader().getMethodDeclarator().getMethodName() +"\t|\tclasse " +
+					environment.getClassName()+"\n");
+		} catch (BEException e) {
+			e.printStackTrace();
+		}
+		LOGGER.info("-------------------------------------------------------------------------------\n");
 
 		environment.closeScope();
 		return l;
