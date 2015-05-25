@@ -3,7 +3,6 @@ package com.laneve.deadlock.utilities;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
-import java.util.logging.Logger;
 
 import com.laneve.bytecode.parser.BytecodeParser.FormalParameterContext;
 import com.laneve.deadlock.models.BEClassFile;
