@@ -1,5 +1,6 @@
 package com.laneve.deadlock.models.instructions;
 
+import com.laneve.deadlock.models.BEConstantPool;
 import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
@@ -32,11 +33,11 @@ public class BEConst extends BEInstructionLine implements BEInstruction{
 		}else if(getName().equals("aconst_null")){
 			environment.pushStack(new TypeObject("null"));
 		}else if(getName().contains("ldc")){
-			String cpType = environment.takeCpoolRefType(getRef());
+			String cpType = BEConstantPool.takeCpoolRefType(environment.getConstantPool(),getRef());
 			if(cpType.equals("Integer"))
 				environment.pushStack(new TypeInt());
 			else
-				environment.pushStack(new TypeObject(environment.takeCpoolRef(getRef())));
+				environment.pushStack(new TypeObject(BEConstantPool.takeCpoolRef(environment.getConstantPool(),getRef())));
 		}
 	}
 

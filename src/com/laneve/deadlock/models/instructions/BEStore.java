@@ -35,14 +35,14 @@ public class BEStore extends BEInstructionLine implements BEInstruction{
 			localVarIndex = getName().substring(getName().indexOf("_")+1, getName().length());
 		}
 
-		//TODO environment.popStack() potrebbe non esserci nulla sullo stack se 
-		//un'eccezione a runtime ha inserito un oggetto eccezione e quindi staticamente
-		//sullo stack non c'e' nulla quindi l'astore che gestisce l'eccezione tenta di prendere
-		//qualcosa che c'e' solo a runtime BOOM !
+		//environment.popStack(): ora potrebbe non esserci nulla sullo stack ma a runtime se avviene un'eccezione 
+		//sullo stack ci sara' un oggetto eccezione. Quindi staticamente
+		//sullo stack non c'e' nulla e l'astore che gestisce l'eccezione tenta di prendere
+		//qualcosa che c'e' solo a runtime e BOOM !
 
-		//TODO vedi se lo stack e' vuoto se e' questo il caso 
-		//TODO vedi se l'istruzione precedente e' un goto BEMEthodBody.getIstruzionePrecedente
-		//TODO predi getNat goto e salta all'istruzione specificata dal goto
+		//vedi se lo stack e' vuoto se e' questo il caso 
+		//vedi se l'istruzione precedente e' un goto BEMEthodBody.getIstruzionePrecedente
+		//prendi getNat() del goto e salta all'istruzione specificata dal goto
 		try {
 			
 			if(environment.getOperandStack().isEmpty()){

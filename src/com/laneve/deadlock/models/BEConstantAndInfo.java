@@ -19,7 +19,6 @@ public class BEConstantAndInfo extends BEBase{
 
 	@Override
 	public LamBase generateLam(Environment environment) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

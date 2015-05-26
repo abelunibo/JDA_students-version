@@ -15,7 +15,7 @@ public class Environment {
 	BEConstantPool constantPool;
 	String className;
 	LinkedList<Type>  operandStack, locks, queueThreads;
-	HashMap<String, Type> localVar; //TODO potrebbe essere un arraylist
+	HashMap<String, Type> localVar; //TODO sarebbe piu' conforme alle specifiche se fosse un arraylist
 	BEMethodBody currentMethodBody;
 	private LinkedHashMap<String, LinkedHashMap<String, String>> fields;
 
@@ -49,7 +49,7 @@ public class Environment {
 		if(mb.getMethodModifier() != null && 
 				mb.getMethodModifier().getModifier().contains("synchronized")){ 
 			// se metodo e' synchronized  aggiungi il this ai lock
-			addLock(new TypeObject(className,0)); //TODO controlla //il this e' il primo parametro quindi e' indicizzato a 0
+			addLock(new TypeObject(className,0));  //il this e' il primo parametro quindi e' indicizzato a 0
 		}
 
 		//setta i parametri nelle corrispondenti posizioni della localVar
@@ -169,60 +169,6 @@ public class Environment {
 
 	}
 
-
-	/*
-	 * ------------
-	 * Entry della constant pool
-	 * -------------
-	 * 'Class' ref 
-	| 'Fieldref' ref'.'ref
-	| 'Methodref' ref'.'ref
-	| 'InterfaceMethodref' ref'.'ref
-	|  STRING ref
-	| 'Integer' num
-	| 'Float' DEC
-	| 'Long' num'l'
-	| 'Double' DEC
-	| 'NameAndType' ref':'ref
-	|
-	 */
-
-	public String takeCpoolRef(String ref) {
-		BEConstantAndInfo constantInfo = constantPool.getTableEntries().getTableEntry().get(ref);
-		ArrayList<String> a = constantInfo.getConstantAndInfo();
-		switch (a.get(0)) {
-		case "Class":
-			String cRef = a.get(1);
-			return takeCpoolRef(cRef);
-		case "Methodref":
-			String mRef = a.get(1);
-			takeCpoolRef(mRef);
-		case "Fieldref":
-			String fRef = a.get(1);
-			String nameAndTypeRef = a.get(2);
-			String classnameField = takeCpoolRef(fRef);
-			String nameAndType = takeCpoolRef(nameAndTypeRef);
-			//return classnameField+'.'+nameAdnType;
-			return nameAndType + " " + classnameField;
-		case "NameAndType":
-			String methodNameRef = a.get(1);
-			String returnTypeRef = a.get(2);
-			String methodName = takeCpoolRef(methodNameRef);
-			String returnType = takeCpoolRef(returnTypeRef);
-			if(!(returnType.contentEquals("I")))
-				returnType = returnType.substring(0, returnType.length()-1);
-			//example "<init>":()V
-			return returnType+" "+methodName;
-		default://"Utf8"
-			return a.get(1);
-		}
-	}
-	
-	public String takeCpoolRefType(String ref) {
-		BEConstantAndInfo constantInfo = constantPool.getTableEntries().getTableEntry().get(ref);
-		ArrayList<String> a = constantInfo.getConstantAndInfo();
-		return a.get(0);
-	}
 
 	//TODO usata solo per debug
 	public void setLocks(LinkedList<Type> z) {

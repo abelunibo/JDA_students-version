@@ -1,6 +1,7 @@
 package com.laneve.deadlock.models.instructions;
 
 import com.laneve.deadlock.exceptions.BEException;
+import com.laneve.deadlock.models.BEConstantPool;
 import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
@@ -26,11 +27,13 @@ public class BEGet extends BEInstructionLine implements BEInstruction{
 
 	@Override
 	public void updateEnvironment(Environment environment){
-		String getfieldRef = environment.takeCpoolRef(getRef());
+		String getfieldRef = BEConstantPool.takeCpoolRef(environment.getConstantPool(),getRef());
 		String fieldType = getfieldRef.substring(0, getfieldRef.indexOf(" "));
 		String fieldName = getfieldRef.substring(getfieldRef.indexOf(" ")+1, getfieldRef.lastIndexOf(" "));
 		String fieldObjectType = getfieldRef.substring(getfieldRef.lastIndexOf(" ")+1);
 		String firstLetter = getfieldRef.substring(0, 1);
+		
+		System.out.println(fieldType);
 
 		if(getName().equals("getfield")){
 			if(firstLetter.contentEquals("L")){

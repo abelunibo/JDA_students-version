@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.laneve.deadlock.exceptions.BEException;
+import com.laneve.deadlock.models.BEConstantPool;
 import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
@@ -40,7 +41,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 		String obThis= "";
 
 		if(getName().contentEquals("invokespecial")){
-			String signature = environment.takeCpoolRef(getRef());
+			String signature = BEConstantPool.takeCpoolRef(environment.getConstantPool(),getRef());
 			String superClass = signature.substring(signature.lastIndexOf(" ")+1);
 			TypeObject ob=null;
 			int openP = signature.indexOf("(");
@@ -58,7 +59,8 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 
 				for(int i = 0; i<numParameters; i++){
 					Type type = environment.popStack();
-					String fieldParam = "";
+					a.insert(0,type.getName()+","); //rimuovere questa riga se si scommenta parte sotto
+					/*String fieldParam = "";
 					if(!type.isInt()){
 						//System.out.println(((TypeObject)type).getRawName());
 						LinkedHashMap<String, LinkedHashMap<String, String>> field = environment.getFields();
@@ -83,7 +85,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 							}
 						}
 					}
-					a.insert(0,type.getName()+","+fieldParam);
+					a.insert(0,type.getName()+","+fieldParam);*/
 				}
 
 				a.insert(0,"(");
@@ -114,7 +116,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 		else if(getName().contentEquals("invokevirtual")){
 
 
-			String signature = environment.takeCpoolRef(getRef());
+			String signature = BEConstantPool.takeCpoolRef(environment.getConstantPool(),getRef());
 
 
 			if(signature.equals("() start java/lang/Thread")){ //invokevirtual start
@@ -200,7 +202,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 		}
 		else if(getName().contentEquals("invokestatic")){
 
-			String signature = environment.takeCpoolRef(getRef());
+			String signature = BEConstantPool.takeCpoolRef(environment.getConstantPool(),getRef());
 
 			int openP = signature.indexOf("(");
 			int closedP = signature.indexOf(")");
