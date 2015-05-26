@@ -27,12 +27,12 @@ import com.laneve.deadlock.utilities.MyFormatter;
 import com.laneve.deadlock.visitor.BytecodeVisitor;
 
 public class DeadlockAnalysis {
-
 	public static void main(String[] args) throws IOException{
 		//root log configuration
 
 		Logger rootLog = Logger.getLogger("");
-		rootLog.setLevel(Level.INFO);
+		rootLog.setLevel(Level.ALL);
+
 		Handler handler = rootLog.getHandlers()[0];
 		handler.setFormatter(new MyFormatter());
 
@@ -46,8 +46,7 @@ public class DeadlockAnalysis {
 
 		for ( File fileEntry : folder.listFiles()){
 
-			//if(fileEntry.getName().contains("Pluto")) continue;
-			//if(fileEntry.getName().contains("Pippo")) continue;
+//			if(!fileEntry.getName().contains("Esempio")) continue;
 			if(fileEntry.getName().contains("Deadlock")) continue;
 
 			FileInputStream in = new FileInputStream(fileEntry);
