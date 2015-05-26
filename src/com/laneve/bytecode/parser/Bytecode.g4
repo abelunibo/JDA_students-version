@@ -21,7 +21,7 @@ classModifier
 	;
 	
 innerClass
-	: 'InnerClasses:' (('static' ('= '|ref|'of')+ | ref) ';')+
+	: 'InnerClasses:' (('static'|'public' ('= '|ref|'of')+ | ref) ';')+
 	;
 
 
@@ -306,6 +306,7 @@ DESCRIPTOR: 'descriptor:'  ~[\r\n]* {skip();};
 
 //after "Code:"
 
+
 EXCEPTIONTABLE: 'Exception table:'  '\r'? '\n'{skip();};
 FROMTO: 'from' ' '+ 'to' ' '+ 'target' ' '+ 'type' '\r'? '\n'{skip();};
 FROMTONUMBERS: NAT [' '|'/t']+ NAT [' '|'/t']+ NAT [' '|'/t']+ [a-z]+  '\r'? '\n'{skip();};
@@ -325,6 +326,8 @@ THROWS: 'throws ' [A-Z|a-z|'.']+  '\r'? '\n'{skip();};
 //INNER: 'InnerClasses:'  '\r'? '\n'{skip(); System.out.println("skippato INNERCLASS");};
 //INNERCLASSESREF: REFNUM';' {skip(); System.out.println("skippato INNERCLASSREF");};
 //STATICINNERCLASS: 'static #'[0-9]+ ~[\r\n]* {skip(); System.out.println("skippato STATICINNERCLASS");};
+//STATICINNERCLASS2: 'public #'[0-9]+ ~[\r\n]* {skip(); System.out.println("skippato STATICINNERCLASS");};
+
 
 //general skip
 
