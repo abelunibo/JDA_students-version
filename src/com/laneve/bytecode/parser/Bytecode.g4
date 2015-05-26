@@ -21,7 +21,7 @@ classModifier
 	;
 	
 innerClass
-	: 'InnerClasses:' (('static'|'public' ('= '|ref|'of')+ | ref) ';')+
+	: 'InnerClasses:' ((('static'|'public') ('= '|ref|'of')+ | ref) ';')+
 	;
 
 

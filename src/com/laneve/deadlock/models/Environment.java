@@ -18,14 +18,21 @@ public class Environment {
 	HashMap<String, Type> localVar; //TODO sarebbe piu' conforme alle specifiche se fosse un arraylist
 	BEMethodBody currentMethodBody;
 	private LinkedHashMap<String, LinkedHashMap<String, String>> fields;
+	private LinkedHashMap<String, String> method;
 
-	public Environment(LinkedHashMap<String, LinkedHashMap<String, String>> fields,
+	public Environment(LinkedHashMap<String, String> method,
+			LinkedHashMap<String, LinkedHashMap<String, String>> fields,
 			BEConstantPool costantPool, String className) {
+		this.method = method;
 		this.constantPool = costantPool;	
 		this.className = className;
-		this.fields = fields;
+		this.fields = fields;	
 	}
-	
+
+	public LinkedHashMap<String, String> getMethod() {
+		return method;
+	}
+
 	public LinkedHashMap<String, LinkedHashMap<String, String>> getFields() {
 		return fields;
 	}
@@ -124,7 +131,7 @@ public class Environment {
 	public void addThread(Type t){
 		queueThreads.add(t);
 	}
-	
+
 	public void removeThread(Type t){
 		queueThreads.remove(t);
 	}

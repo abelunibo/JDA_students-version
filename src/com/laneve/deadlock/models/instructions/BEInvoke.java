@@ -59,17 +59,21 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 
 				for(int i = 0; i<numParameters; i++){
 					Type type = environment.popStack();
+
 					a.insert(0,type.getName()+","); //rimuovere questa riga se si scommenta parte sotto
 					/*String fieldParam = "";
 					if(!type.isInt()){
+
 						//System.out.println(((TypeObject)type).getRawName());
 						LinkedHashMap<String, LinkedHashMap<String, String>> field = environment.getFields();
+					//	System.out.println(field);
+
 						String name = ((TypeObject)type).getRawName();
 						LinkedHashMap<String, String> fieldNameAndTypes = field.get(((TypeObject)type).getRawName());
 						//TODO da cambiare in funzione ricorsiva che prende la profondita come parametro
 						if(fieldNameAndTypes != null){
 							for (Map.Entry<String, String> f : fieldNameAndTypes.entrySet()){
-								String fieldType = f.getValue();
+								String fieldType = f.getValue().substring(1);
 								fieldParam += fieldType+"£"+f.getKey()+"£"+type.getName()+",";
 								if(!type.isInt()){
 									LinkedHashMap<String, String> fieldNameAndTypes2 = field.get(fieldType);
@@ -77,8 +81,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 										for (Map.Entry<String, String> f2 : fieldNameAndTypes2.entrySet()){
 											String fieldType2 = f2.getValue();
 											fieldParam += fieldType2+"£"+f2.getKey()+"£"+fieldType;
-											System.out.println(fieldParam);
-
+											//System.out.println(fieldParam);
 										}
 									}
 								}

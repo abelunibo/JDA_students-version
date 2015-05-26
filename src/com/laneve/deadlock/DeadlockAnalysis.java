@@ -25,12 +25,12 @@ import com.laneve.deadlock.utilities.MyFormatter;
 import com.laneve.deadlock.visitor.BytecodeVisitor;
 
 public class DeadlockAnalysis {
-
 	public static void main(String[] args) throws IOException{
 		//root log configuration
 
 		Logger rootLog = Logger.getLogger("");
-		rootLog.setLevel(Level.INFO);
+		rootLog.setLevel(Level.ALL);
+
 		Handler handler = rootLog.getHandlers()[0];
 		handler.setFormatter(new MyFormatter());
 
@@ -39,11 +39,12 @@ public class DeadlockAnalysis {
 		ArrayList<LamBase> lams = new ArrayList<LamBase>();
 		Environment environment;
 		LinkedHashMap<String, LinkedHashMap<String, String>> fields = new LinkedHashMap<String, LinkedHashMap<String,String>>(); 
+		LinkedHashMap<String, String> method = new LinkedHashMap<String, String>(); 
+
 
 		for ( File fileEntry : folder.listFiles()){
 
-			//if(fileEntry.getName().contains("Pluto")) continue;
-			//if(fileEntry.getName().contains("Pippo")) continue;
+//			if(!fileEntry.getName().contains("Esempio")) continue;
 			if(fileEntry.getName().contains("Deadlock")) continue;
 
 			FileInputStream in = new FileInputStream(fileEntry);
@@ -76,9 +77,33 @@ public class DeadlockAnalysis {
 			}
 			fields.put(className, fieldNameAndTypes);
 		}
+		
+		for(BEClassFile cf : classfiles){
+			String className="";
+			String nameAndType="";
+			String methodName = "";
+			String type="";
+			String methodNameAndTypes = "";
+			HashMap<String, BEConstantAndInfo> tableEntries = cf.getCostantPool().getTableEntries().getTableEntry();
+			for (Map.Entry<String, BEConstantAndInfo> entry : tableEntries.entrySet()){
+				ArrayList<String> a = entry.getValue().getConstantAndInfo();
+				if(a.get(0).contentEquals("Methodref")){
+					className = BEConstantPool.takeCpoolRef( cf.getCostantPool(), a.get(1));
+					nameAndType = BEConstantPool.takeCpoolRef( cf.getCostantPool(), a.get(2));
+					type = nameAndType.substring(0, nameAndType.indexOf(" "));
+					methodName = nameAndType.substring(nameAndType.lastIndexOf(" ")+1);
+					//System.out.println(className+"."+methodName);
+					//System.out.println(className+"."+methodName+""+type);
+					//TODO questa mappa mi serve per prendere i riferimenti dei metodi nell'invoke
+					//e aggiungere i parametri ricorsivamente
+					methodNameAndTypes = className+"."+methodName+""+type;
+				}
+			}
+			method.put(className, methodNameAndTypes);
+		}
 
 		for(BEClassFile cf : classfiles){
-			environment = new Environment(fields , cf.getCostantPool(),cf.getClassName());
+			environment = new Environment(method,fields , cf.getCostantPool(),cf.getClassName());
 			lams.add(cf.generateLam(environment));
 		}
 
