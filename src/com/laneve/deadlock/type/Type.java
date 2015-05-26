@@ -1,12 +1,13 @@
 package com.laneve.deadlock.type;
 
 public abstract class Type {
-
-	String name; 
-	boolean isInt=false;
+			
+	String className=""; // nome della classe del tipo
+	
+	boolean isInt=false; 	// true per interi
 	
 	public Type(String name){
-		this.name = name;		
+		this.className = name;		
 	}
 	
 	public boolean isInt(){
@@ -15,10 +16,8 @@ public abstract class Type {
 
 	public abstract String getName();
 	
-	// ritorna una copia del tipo eseguita con una dup 
-	public abstract Type dup(Integer dupInstructionIndex);
-	
-	//ritorna il tipo caricato con una load
-	public abstract Type load(Integer loadInstructionIndex);
+	// assegna un indice ad un tipo e restituiscilo
+	public abstract Type assignIndex();
 
+	
 }

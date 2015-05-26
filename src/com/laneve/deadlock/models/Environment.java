@@ -17,16 +17,22 @@ public class Environment {
 	LinkedList<Type>  operandStack, locks, queueThreads;
 	HashMap<String, Type> localVar; //TODO sarebbe piu' conforme alle specifiche se fosse un arraylist
 	BEMethodBody currentMethodBody;
-	private LinkedHashMap<String, LinkedHashMap<String, String>> fields;
+	private LinkedHashMap<String, LinkedHashMap<String, Type>> fields;
+	private LinkedHashMap<String, String> method;
 
-	public Environment(LinkedHashMap<String, LinkedHashMap<String, String>> fields,
+	public Environment(LinkedHashMap<String, String> method, LinkedHashMap<String, LinkedHashMap<String, Type>> fields,
 			BEConstantPool costantPool, String className) {
+		this.method = method;
 		this.constantPool = costantPool;	
 		this.className = className;
 		this.fields = fields;
 	}
 	
-	public LinkedHashMap<String, LinkedHashMap<String, String>> getFields() {
+	public LinkedHashMap<String, String> getMethod() {
+		return method;
+	}
+	
+	public LinkedHashMap<String, LinkedHashMap<String, Type>> getFields() {
 		return fields;
 	}
 	public String getClassName(){
@@ -45,11 +51,12 @@ public class Environment {
 		queueThreads = new LinkedList<Type>();
 		localVar = new HashMap<String, Type>();
 		currentMethodBody=mb;
+		TypeObject t=new TypeObject(className,fields); //il this del metodo
 
 		if(mb.getMethodModifier() != null && 
 				mb.getMethodModifier().getModifier().contains("synchronized")){ 
 			// se metodo e' synchronized  aggiungi il this ai lock
-			addLock(new TypeObject(className,0));  //il this e' il primo parametro quindi e' indicizzato a 0
+			addLock(t);  
 		}
 
 		//setta i parametri nelle corrispondenti posizioni della localVar
@@ -66,16 +73,16 @@ public class Environment {
 		if(mb.getMethodModifier() != null && 
 				!mb.getMethodModifier().getModifier().contains("static")){ //non è un modificatore statico
 			//aggiungo il this in posizione 0 delle localVar
-			localVar.put("0", new TypeObject(className,j));
+			localVar.put("0", t);
 			j++;
 		}
 
 		for(int i=0;i<pars.size(); i++){
-			if(pars.get(i).getText().equals("int")){
+			if(pars.get(i).getText().equals("int")){ //TODO controlla se giusto questo int
 				localVar.put(String.valueOf(j), new TypeInt());
 			}
 			else{
-				localVar.put(String.valueOf(j), new TypeObject(pars.get(i).getText(),j));
+				localVar.put(String.valueOf(j), new TypeObject(pars.get(i).getText(),fields));
 			}
 			j++;
 		}

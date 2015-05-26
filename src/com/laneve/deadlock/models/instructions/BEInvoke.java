@@ -1,8 +1,6 @@
 package com.laneve.deadlock.models.instructions;
 
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import com.laneve.deadlock.exceptions.BEException;
 import com.laneve.deadlock.models.BEConstantPool;
@@ -190,8 +188,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 
 				String resultTypeClass = signature.substring(index+1,signature.indexOf(" "));
 
-				environment.pushStack(new TypeObject(resultTypeClass,
-						Integer.valueOf(getIndex().substring(0,resultTypeClass.length()-1))));
+				environment.pushStack(new TypeObject(resultTypeClass,environment.getFields()));
 
 			}
 			else if(resultType.equals("I")){
@@ -249,8 +246,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 
 				String resultTypeClass = signature.substring(index+1,signature.indexOf(" "));
 
-				environment.pushStack(new TypeObject(resultTypeClass,
-						Integer.valueOf(getIndex().substring(0,resultTypeClass.length()-1))));
+				environment.pushStack(new TypeObject(resultTypeClass,environment.getFields()));
 
 			}
 			else if(resultType.equals("I")){

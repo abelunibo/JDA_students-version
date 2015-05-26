@@ -31,13 +31,14 @@ public class BEConst extends BEInstructionLine implements BEInstruction{
 		if(getName().contains("iconst_") || getName().equals("bipush")){
 			environment.pushStack(new TypeInt());
 		}else if(getName().equals("aconst_null")){
-			environment.pushStack(new TypeObject("null"));
+			environment.pushStack(new TypeObject());
 		}else if(getName().contains("ldc")){
 			String cpType = BEConstantPool.takeCpoolRefType(environment.getConstantPool(),getRef());
 			if(cpType.equals("Integer"))
 				environment.pushStack(new TypeInt());
 			else
-				environment.pushStack(new TypeObject(BEConstantPool.takeCpoolRef(environment.getConstantPool(),getRef())));
+				environment.pushStack(new TypeObject(BEConstantPool.takeCpoolRef(environment.getConstantPool(),getRef()),
+						environment.getFields())); //TODO controlla il getRef()
 		}
 	}
 

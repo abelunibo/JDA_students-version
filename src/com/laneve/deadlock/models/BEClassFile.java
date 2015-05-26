@@ -10,6 +10,7 @@ import com.laneve.deadlock.exceptions.BEException;
 
 public class BEClassFile extends BEBase{
 	String className;
+	
 	BEConstantPool costantPool;
 	HashMap<BEMethodHeader, BEMethodDeclaration> methods = new HashMap<BEMethodHeader, BEMethodDeclaration>();
 	

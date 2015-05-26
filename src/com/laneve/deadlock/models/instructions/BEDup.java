@@ -26,7 +26,7 @@ public class BEDup extends BEInstructionLine implements BEInstruction{
 	public void updateEnvironment(Environment environment) {
 		String index = getIndex().substring(0,getIndex().indexOf(':'));
 		try {
-			environment.pushStack(environment.getTopStack().dup(Integer.valueOf(index)));
+			environment.pushStack(environment.getTopStack().assignIndex());
 		} catch (BEException e) {
 			e.printStackTrace();
 			System.exit(1);

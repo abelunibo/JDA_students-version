@@ -1,26 +1,23 @@
 package com.laneve.deadlock.type;
 
+/** Tipo intero */
 public class TypeInt extends Type {
 
 	//costruttore per il tipo degli interi
 	public TypeInt(){
 		super("INT");
-		isInt=true;
+		isInt=true; //e' un tipo intero
 	}
 
 	@Override
 	public String getName() {
-		return name;
+		return className;
 	}
 
 	@Override
-	public Type dup(Integer dupInstructionIndex) {
-		return this;
+	public TypeInt assignIndex() {
+		return this; // un intero non ha alcun indice
 	}
 
-	@Override
-	public Type load(Integer loadInstructionIndex) {
-		return this;
-	}
 	
 }
