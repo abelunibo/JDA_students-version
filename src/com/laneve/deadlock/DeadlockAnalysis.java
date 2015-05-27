@@ -60,8 +60,8 @@ public class DeadlockAnalysis {
 
 		for ( File fileEntry : folder.listFiles()){
 
-//			if(!fileEntry.getName().contains("Esempio")) continue;
-			if(fileEntry.getName().contains("Deadlock")) continue;
+			if(!fileEntry.getName().contains("Const")) continue;
+//			if(fileEntry.getName().contains("Deadlock")) continue;
 
 			FileInputStream in = new FileInputStream(fileEntry);
 			ANTLRInputStream input = new ANTLRInputStream(in);

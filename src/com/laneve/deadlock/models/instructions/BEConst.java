@@ -41,5 +41,5 @@ public class BEConst extends BEInstructionLine implements BEInstruction{
 						environment.getFields())); //TODO controlla il getRef()
 		}
 	}
-
+	
 }
