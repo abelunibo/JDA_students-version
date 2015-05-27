@@ -34,9 +34,6 @@ public class BELoad extends BEInstructionLine implements BEInstruction{
 			localVarIndex = getName().substring(getName().indexOf("_")+1, getName().length());
 		}
 		
-		String i = getIndex().substring(0,getIndex().indexOf(':'));	
-		int index = i.equals("0")?0:Integer.valueOf(i);
-		
-		environment.pushStack(environment.getLocalVar().get(localVarIndex).load(index));
+		environment.pushStack(environment.getLocalVar().get(localVarIndex)); //il tipo nelle variabili locali e' già indicizzato
 	}
 }

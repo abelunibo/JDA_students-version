@@ -7,7 +7,7 @@ import java.util.Set;
 import com.laneve.deadlock.type.Type;
 
 public class LamZT extends LamBase{
-	String lam;
+	String lam="";
 	
 	public String getLam() {
 		return lam;

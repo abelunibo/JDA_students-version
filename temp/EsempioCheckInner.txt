@@ -1,0 +1,49 @@
+Classfile /Users/t6o/Desktop/laneve/workspace/deadlock/src/deadlock/Esempio.class
+  Last modified May 26, 2015; size 362 bytes
+  MD5 checksum 19c9e7fc0c2704f88eb97bb195a94a2c
+  Compiled from "Esempio.java"
+public class deadlock.Esempio
+  minor version: 0
+  major version: 52
+  flags: ACC_PUBLIC, ACC_SUPER
+Constant pool:
+   #1 = Methodref          #3.#17         // java/lang/Object."<init>":()V
+   #2 = Class              #18            // deadlock/Esempio
+   #3 = Class              #19            // java/lang/Object
+   #4 = Class              #20            // deadlock/Esempio$Pluto
+   #5 = Utf8               Pluto
+   #6 = Utf8               InnerClasses
+   #7 = Class              #21            // deadlock/Esempio$Esempio1
+   #8 = Utf8               Esempio1
+   #9 = Class              #22            // deadlock/Esempio$Pippo
+  #10 = Utf8               Pippo
+  #11 = Utf8               <init>
+  #12 = Utf8               ()V
+  #13 = Utf8               Code
+  #14 = Utf8               LineNumberTable
+  #15 = Utf8               SourceFile
+  #16 = Utf8               Esempio.java
+  #17 = NameAndType        #11:#12        // "<init>":()V
+  #18 = Utf8               deadlock/Esempio
+  #19 = Utf8               java/lang/Object
+  #20 = Utf8               deadlock/Esempio$Pluto
+  #21 = Utf8               deadlock/Esempio$Esempio1
+  #22 = Utf8               deadlock/Esempio$Pippo
+{
+  public deadlock.Esempio();
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+         4: return
+      LineNumberTable:
+        line 3: 0
+        line 10: 4
+}
+SourceFile: "Esempio.java"
+InnerClasses:
+     public #5= #4 of #2; //Pluto=class deadlock/Esempio$Pluto of class deadlock/Esempio
+     public #8= #7 of #2; //Esempio1=class deadlock/Esempio$Esempio1 of class deadlock/Esempio
+     public #10= #9 of #2; //Pippo=class deadlock/Esempio$Pippo of class deadlock/Esempio
