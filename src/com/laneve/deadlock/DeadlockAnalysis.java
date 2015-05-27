@@ -22,6 +22,7 @@ import com.laneve.deadlock.models.BEConstantPool;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.type.Type;
+import com.laneve.deadlock.type.TypeInt;
 import com.laneve.deadlock.type.TypeObject;
 import com.laneve.deadlock.utilities.MyFormatter;
 import com.laneve.deadlock.visitor.BytecodeVisitor;
@@ -42,7 +43,7 @@ public class DeadlockAnalysis {
 		ArrayList<LamBase> lams = new ArrayList<LamBase>(); //insieme delle Lam
 		Environment environment;
 		LinkedHashMap<String, LinkedHashMap<String, Type>> fields = new LinkedHashMap<String, LinkedHashMap<String,Type>>(); 
-		LinkedHashMap<String, String> method = new LinkedHashMap<String, String>(); 
+		//LinkedHashMap<String, String> method = new LinkedHashMap<String, String>(); 
 
 		for ( File fileEntry : folder.listFiles()){
 
@@ -74,13 +75,33 @@ public class DeadlockAnalysis {
 					nameAndType = BEConstantPool.takeCpoolRef( cf.getCostantPool(), a.get(2));
 					type = nameAndType.substring(0, nameAndType.indexOf(" "));
 					fieldName = nameAndType.substring(nameAndType.lastIndexOf(" ")+1);
-					fieldNameAndTypes.put(fieldName, TypeObject.getRawTypeObject(className));
+					//System.out.println(className+ " "+ type+ " "+fieldName);
+					if(type.trim().startsWith("L")){
+						type=type.substring(1);
+						fieldNameAndTypes.put(fieldName, TypeObject.getRawTypeObject(type));
+					}
+					else
+						fieldNameAndTypes.put(fieldName, new TypeInt());
 				}
 			}
 			fields.put(className, fieldNameAndTypes);
 		}
 		
-		for(BEClassFile cf : classfiles){
+		/* for(Map.Entry<String, LinkedHashMap<String, Type>> entry : fields.entrySet()){
+
+		    	System.out.println("-----" + entry.getKey());
+		    	
+			    for(Map.Entry<String, Type> entry2 : entry.getValue().entrySet()){
+
+			    	if(entry2.getValue().isInt())
+			    		System.out.println(entry2.getKey() + " "+ entry2.getValue().getName());
+			    	else
+			    		System.out.println(entry2.getKey() + " "+ ((TypeObject)entry2.getValue()).getName());
+
+			    	
+			    }
+		 }*/
+	/*	for(BEClassFile cf : classfiles){
 			String className="";
 			String nameAndType="";
 			String methodName = "";
@@ -102,10 +123,10 @@ public class DeadlockAnalysis {
 				}
 			}
 			method.put(className, methodNameAndTypes);
-		}
+		}*/
 		
 		for(BEClassFile cf : classfiles){
-			environment = new Environment(method,fields , cf.getCostantPool(),cf.getClassName());
+			environment = new Environment(fields , cf.getCostantPool(),cf.getClassName());
 			lams.add(cf.generateLam(environment));
 		}
 

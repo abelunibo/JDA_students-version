@@ -23,9 +23,9 @@ public class Debug {
 		LinkedHashMap<String, Type> pippoFields= new LinkedHashMap<String, Type>();
 		Type t1 = new TypeInt();
 		pippoFields.put("C", t1); //campo C di tipo INT della classe Pippo
-		Type t2 = new TypeObject("Pluto", fields);
+		Type t2 =  TypeObject.getRawTypeObject ("Pluto");
 		pippoFields.put("D", t2); //campo D di tipo Pluto della classe Pippo
-		Type t3 = new TypeObject("Micky", fields);
+		Type t3 =  TypeObject.getRawTypeObject("Micky");
 		pippoFields.put("E", t3); //campo E di tipo Micky della classe Pippo
 		Type t4 = new TypeInt();
 		pippoFields.put("F", t4); //campo F di tipo INT della classe Pippo
@@ -39,11 +39,11 @@ public class Debug {
 		LinkedHashMap<String, Type> plutoFields= new LinkedHashMap<String, Type>();
 		Type t5 = new TypeInt();
 		plutoFields.put("o", t5); 
-		Type t6 = new TypeObject("Luca", fields);
+		Type t6 =  TypeObject.getRawTypeObject("Luca");
 		plutoFields.put("p", t6); 
-		Type t7 = new TypeObject("Mario", fields);
+		Type t7 =  TypeObject.getRawTypeObject("Mario");
 		plutoFields.put("q", t7); 
-		Type t8 = new TypeObject("Jack", fields);
+		Type t8 =  TypeObject.getRawTypeObject("Jack");
 		plutoFields.put("r", t8);
 		
 		fields.put("Pluto", plutoFields);
@@ -51,13 +51,13 @@ public class Debug {
 		
 		/* classe Topolino */
 		LinkedHashMap<String, Type> topolinoFields= new LinkedHashMap<String, Type>();
-		Type t9 = new TypeObject("Hulk", fields);
+		Type t9 = TypeObject.getRawTypeObject("Hulk");
 		topolinoFields.put("m", t9); 
-		Type t10 = new TypeObject("Tessy", fields);
+		Type t10 =  TypeObject.getRawTypeObject("Tessy");
 		topolinoFields.put("qwe", t10); 
-		Type t11 = new TypeObject("Micky", fields);
+		Type t11 =  TypeObject.getRawTypeObject("Micky");
 		topolinoFields.put("pud", t11);
-		Type t12 = new TypeObject("Titti", fields);
+		Type t12 =  TypeObject.getRawTypeObject("Titti");
 		topolinoFields.put("x", t12);
 		
 		fields.put("Topolino", topolinoFields);
@@ -65,13 +65,13 @@ public class Debug {
 		
 		/* classe Jack */
 		LinkedHashMap<String, Type> jackFields= new LinkedHashMap<String, Type>();
-		Type t13 = new TypeObject("Mark", fields);
+		Type t13 =  TypeObject.getRawTypeObject("Mark");
 		jackFields.put("m", t9); 
-		Type t14 = new TypeObject("Jain", fields);
+		Type t14 =  TypeObject.getRawTypeObject("Jain");
 		jackFields.put("qwe", t10); 
-		Type t15 = new TypeObject("Lucas", fields);
+		Type t15 =  TypeObject.getRawTypeObject("Lucas");
 		topolinoFields.put("pud", t11);
-		Type t16 = new TypeObject("Patrik", fields);
+		Type t16 =  TypeObject.getRawTypeObject("Patrik");
 		jackFields.put("x", t12);
 		
 		fields.put("Jack", jackFields);
@@ -88,7 +88,7 @@ public class Debug {
 		    	if(entry2.getValue().isInt())
 		    		System.out.println(entry2.getKey() + " "+ entry2.getValue().getName());
 		    	else
-		    		System.out.println(entry2.getKey() + " "+ ((TypeObject)entry2.getValue()).getRawName());
+		    		System.out.println(entry2.getKey() + " "+ (entry2.getValue()).getName());
 
 		    	
 		    }

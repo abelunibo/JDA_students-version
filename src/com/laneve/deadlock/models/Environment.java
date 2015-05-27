@@ -18,19 +18,19 @@ public class Environment {
 	HashMap<String, Type> localVar; //TODO sarebbe piu' conforme alle specifiche se fosse un arraylist
 	BEMethodBody currentMethodBody;
 	private LinkedHashMap<String, LinkedHashMap<String, Type>> fields;
+	private LinkedHashMap<String, String> methods;
 
-	private LinkedHashMap<String, String> method;
-
-	public Environment(LinkedHashMap<String, String> method, LinkedHashMap<String, LinkedHashMap<String, Type>> fields,
+	
+	public Environment(LinkedHashMap<String, LinkedHashMap<String, Type>> fields,
 			BEConstantPool costantPool, String className) {
-		this.method = method;
 		this.constantPool = costantPool;	
 		this.className = className;
 		this.fields = fields;	
+		this.methods= new LinkedHashMap<String, String>();
 	}
 	
 	public LinkedHashMap<String, String> getMethod() {
-		return method;
+		return methods;
 	}
 	
 	public LinkedHashMap<String, LinkedHashMap<String, Type>> getFields() {
@@ -68,6 +68,16 @@ public class Environment {
 			e.printStackTrace();
 			System.exit(1);
 		}	
+		
+	/*	try {
+			System.out.print(mb.getMethodHeader().getMethodDeclarator().getMethodName()+" (");
+			for(int i=0;i<pars.size(); i++){
+				System.out.print(pars.get(i).getText() + ",");
+			}
+			System.out.println(")");
+		} catch (BEException e) {
+			e.printStackTrace();
+		}*/
 
 		int j=0;
 
