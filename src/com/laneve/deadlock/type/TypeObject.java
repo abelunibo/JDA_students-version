@@ -73,6 +73,8 @@ public class TypeObject extends Type{
 			final LinkedHashMap<String,LinkedHashMap<String,Type>> fields, int depth){
 
 		if (depth==0) return; //termina ricorsione
+		String asd = startType.getRawName();
+		LinkedHashMap<String, Type> adaf = fields.get(startType.getRawName());
 
 		if(fields.get(startType.getRawName())!=null){ //abbiamo la classe nella nostra mappa
 						
@@ -91,9 +93,7 @@ public class TypeObject extends Type{
 					} 
 					entry.setValue(t);
 				}
-				
 			}
-			
 			startType.fieldsRecord=typeFields; // tra i campi vi sono salvati anche quelli di tipo INT
 
 		}

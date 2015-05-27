@@ -22,6 +22,9 @@ import com.laneve.deadlock.models.BEConstantAndInfo;
 import com.laneve.deadlock.models.BEConstantPool;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
+import com.laneve.deadlock.type.Type;
+import com.laneve.deadlock.type.TypeInt;
+import com.laneve.deadlock.type.TypeObject;
 import com.laneve.deadlock.utilities.ConsoleFormatter;
 import com.laneve.deadlock.utilities.LamsFileFormatter;
 import com.laneve.deadlock.visitor.BytecodeVisitor;
@@ -72,10 +75,7 @@ public class DeadlockAnalysis {
 		}
 
 		for(BEClassFile cf : classfiles){ //creiamo dalla constant Pool la mappa <NomeClasse, <nomeCampo, tipoCampo>>
-			String className="";
-			String nameAndType="";
-			String fieldName = "";
-			String type="";
+			String className="",nameAndType="",fieldName = "",type="";
 			LinkedHashMap<String, Type> fieldNameAndTypes = new LinkedHashMap<String, Type>();;
 			HashMap<String, BEConstantAndInfo> tableEntries = cf.getCostantPool().getTableEntries().getTableEntry();
 			for (Map.Entry<String, BEConstantAndInfo> entry : tableEntries.entrySet()){
@@ -85,7 +85,6 @@ public class DeadlockAnalysis {
 					nameAndType = BEConstantPool.takeCpoolRef( cf.getCostantPool(), a.get(2));
 					type = nameAndType.substring(0, nameAndType.indexOf(" "));
 					fieldName = nameAndType.substring(nameAndType.lastIndexOf(" ")+1);
-					//System.out.println(className+ " "+ type+ " "+fieldName);
 					if(type.trim().startsWith("L")){
 						type=type.substring(1);
 						fieldNameAndTypes.put(fieldName, TypeObject.getRawTypeObject(type));
@@ -96,7 +95,6 @@ public class DeadlockAnalysis {
 			}
 			fields.put(className, fieldNameAndTypes);
 		}
-		
 		/* for(Map.Entry<String, LinkedHashMap<String, Type>> entry : fields.entrySet()){
 
 		    	System.out.println("-----" + entry.getKey());

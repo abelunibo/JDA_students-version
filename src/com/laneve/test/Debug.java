@@ -1,10 +1,7 @@
 package com.laneve.test;
 
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.Set;
 
 import com.laneve.deadlock.type.Type;
 import com.laneve.deadlock.type.TypeInt;
