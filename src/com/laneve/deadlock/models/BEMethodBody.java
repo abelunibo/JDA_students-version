@@ -9,6 +9,7 @@ import com.laneve.deadlock.exceptions.BEException;
 import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.models.lam.LamSequence;
 import com.laneve.deadlock.type.Type;
+import com.laneve.deadlock.type.TypeObject;
 
 
 public class BEMethodBody extends BEBase{
@@ -83,17 +84,6 @@ public class BEMethodBody extends BEBase{
 					environment.getClassName()+"\n");
 			LOGGER.info("-------------------------------------------------------------------------------\n");
 			
-			String toPrint = getMethodHeader().getMethodDeclarator().getMethodName();
-			String sig = methodHeader.getSignature();
-
-			toPrint = toPrint.concat("("+ environment.getClassName()+"[0]"+", ");
-			if(sig.contains("("))
-				toPrint = toPrint.concat(
-							sig.substring(sig.indexOf("(")+1, sig.indexOf(")")-1));
-			else
-				toPrint = toPrint.replace(", ","");
-			toPrint = toPrint.concat(")");
-			FILELOGGER.info(toPrint +" ---> ");
 		} catch (BEException e) {
 			e.printStackTrace();
 		}
@@ -157,6 +147,9 @@ public class BEMethodBody extends BEBase{
 			instructionTemp = instructions.get(i);
 
 		}
+		
+		String toPrint = environment.getCurrentMethodLAMSignature();
+		FILELOGGER.info(toPrint +" = ");
 
 		environment.closeScope();
 		return l;

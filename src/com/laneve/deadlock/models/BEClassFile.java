@@ -19,7 +19,11 @@ public class BEClassFile extends BEBase{
 
 	public BEClassFile(String className,BEConstantPool costantPool) {
 		super();
-		this.className = className;
+		// prendo il className in questo modo perchè la sua 
+		// dichiarazione nella constantPool utilizza / dentro il nome
+		// come separatore packageAndClassName invece di .
+		// in questo modo il className è sempre lo stesso all'interno del programma
+		this.className = className.replace(".", "/");
 		this.costantPool = costantPool;
 	}
 	

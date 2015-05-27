@@ -27,7 +27,7 @@ public class BENew extends BEInstructionLine implements BEInstruction{
 	@Override
 	public void updateEnvironment(Environment environment) {
 		environment.pushStack(new TypeObject(BEConstantPool.takeCpoolRef(environment.getConstantPool(), getRef()), 
-				environment.getFields()));
+				environment.getFields(),false));
 				
 	}
 }

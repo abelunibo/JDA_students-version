@@ -38,7 +38,7 @@ public class BEConst extends BEInstructionLine implements BEInstruction{
 				environment.pushStack(new TypeInt());
 			else
 				environment.pushStack(new TypeObject(BEConstantPool.takeCpoolRef(environment.getConstantPool(),getRef()),
-						environment.getFields())); //TODO controlla il getRef()
+						environment.getFields(),true));
 		}
 	}
 

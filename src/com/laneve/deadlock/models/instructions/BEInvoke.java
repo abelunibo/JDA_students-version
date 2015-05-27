@@ -98,7 +98,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 					a.insert(1,obThis +",");
 				a.deleteCharAt(a.length()-1);
 				a.insert(a.length(),")");
-				a.insert(0," <init> ");
+				a.insert(0," "+environment.getClassName().toUpperCase());
 			} catch (BEException e) {
 				e.printStackTrace();
 				System.exit(1);
@@ -170,7 +170,11 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 					a.insert(1,obThis+",");
 					a.deleteCharAt(a.length()-1);
 					a.insert(a.length(),")");
-					a.insert(0, mName);
+					mName.replaceAll(".", "/");
+					if(!mName.contains("/")){
+						mName= environment.getClassName() + "/" +mName;
+					}
+					a.insert(0, mName.toUpperCase());
 				} catch (BEException e) {
 					e.printStackTrace();
 					System.exit(1);
@@ -191,7 +195,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 
 				String resultTypeClass = signature.substring(index+1,signature.indexOf(" "));
 
-				environment.pushStack(new TypeObject(resultTypeClass,environment.getFields()));
+				environment.pushStack(new TypeObject(resultTypeClass,environment.getFields(),false));
 
 			}
 			else if(resultType.equals("I")){
@@ -226,7 +230,11 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 				}
 				a.insert(0,"(");
 				a.insert(a.length(),")");
-				a.insert(0,className+"."+mName);
+				mName.replaceAll(".", "/");
+				if(!mName.contains("/")){
+					mName= environment.getClassName() + "/" +mName;
+				}
+				a.insert(0,mName.toUpperCase());
 			} catch (BEException e) {
 				e.printStackTrace();
 				System.exit(1);
@@ -249,7 +257,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 
 				String resultTypeClass = signature.substring(index+1,signature.indexOf(" "));
 
-				environment.pushStack(new TypeObject(resultTypeClass,environment.getFields()));
+				environment.pushStack(new TypeObject(resultTypeClass,environment.getFields(),false));
 
 			}
 			else if(resultType.equals("I")){

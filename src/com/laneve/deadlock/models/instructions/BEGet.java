@@ -30,7 +30,7 @@ public class BEGet extends BEInstructionLine implements BEInstruction{
 		String getfieldRef = BEConstantPool.takeCpoolRef(environment.getConstantPool(),getRef());
 		String fieldType = getfieldRef.substring(0, getfieldRef.indexOf(" "));
 		String fieldName = getfieldRef.substring(getfieldRef.indexOf(" ")+1, getfieldRef.lastIndexOf(" "));
-		String fieldObjectType = getfieldRef.substring(getfieldRef.lastIndexOf(" ")+1);
+		//String fieldObjectType = getfieldRef.substring(getfieldRef.lastIndexOf(" ")+1);
 		String firstLetter = getfieldRef.substring(0, 1);
 
 		if(getName().equals("getfield")){
@@ -53,7 +53,7 @@ public class BEGet extends BEInstructionLine implements BEInstruction{
 			if(firstLetter.contentEquals("L")){
 				fieldType = fieldType.substring(1); //rimuovi la L iniziale nella signature
 				//TODO per la classe devo creare un oggetto per ogni classe? e qui recuperare quel riferimento?
-				environment.pushStack(new TypeObject(fieldType,environment.getFields()));
+				environment.pushStack(new TypeObject(fieldType,environment.getFields(),true));
 			}
 			else environment.pushStack(new TypeInt());
 		}

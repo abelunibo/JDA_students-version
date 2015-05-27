@@ -15,10 +15,12 @@ public class Environment {
 	BEConstantPool constantPool;
 	String className;
 	LinkedList<Type>  operandStack, locks, queueThreads;
-	HashMap<String, Type> localVar; //TODO sarebbe piu' conforme alle specifiche se fosse un arraylist
+	LinkedHashMap<String, Type> localVar; 
 	BEMethodBody currentMethodBody;
 	private LinkedHashMap<String, LinkedHashMap<String, Type>> fields;
-	private LinkedHashMap<String, String> methods;
+	
+	//Teniamo traccia di come è state tipata la signature del metodo
+	private String currentMethodsLAMSignature;
 
 	
 	public Environment(LinkedHashMap<String, LinkedHashMap<String, Type>> fields,
@@ -26,11 +28,6 @@ public class Environment {
 		this.constantPool = costantPool;	
 		this.className = className;
 		this.fields = fields;	
-		this.methods= new LinkedHashMap<String, String>();
-	}
-	
-	public LinkedHashMap<String, String> getMethod() {
-		return methods;
 	}
 	
 	public LinkedHashMap<String, LinkedHashMap<String, Type>> getFields() {
@@ -50,13 +47,26 @@ public class Environment {
 		operandStack = new LinkedList<Type>();
 		locks = new LinkedList<Type>();
 		queueThreads = new LinkedList<Type>();
-		localVar = new HashMap<String, Type>();
+		localVar = new LinkedHashMap<String, Type>();
 		currentMethodBody=mb;
-		TypeObject t=new TypeObject(className,fields); //il this del metodo
 
+		ArrayList<Type> aType= new ArrayList<Type>();
+		
+		TypeObject t=new TypeObject(className,fields,true); //il this del metodo
+		aType.add(t);
+		
+		//recupero il nome del metodo
+		String methodName="";
+		try {
+			methodName = mb.getMethodHeader().getMethodDeclarator().getMethodName();
+		} catch (BEException e1) {
+			e1.printStackTrace();
+		}
+		
+		//controllo se metodo synchronized
 		if(mb.getMethodModifier() != null && 
 				mb.getMethodModifier().getModifier().contains("synchronized")){ 
-			// se metodo e' synchronized  aggiungi il this ai lock
+			// se metodo e' synchronized  aggiungi il tipo del this ai lock
 			addLock(t);  
 		}
 
@@ -67,44 +77,76 @@ public class Environment {
 		} catch (BEException e) {
 			e.printStackTrace();
 			System.exit(1);
-		}	
-		
-	/*	try {
-			System.out.print(mb.getMethodHeader().getMethodDeclarator().getMethodName()+" (");
-			for(int i=0;i<pars.size(); i++){
-				System.out.print(pars.get(i).getText() + ",");
-			}
-			System.out.println(")");
-		} catch (BEException e) {
-			e.printStackTrace();
-		}*/
+		}
 
 		int j=0;
 
 		if(mb.getMethodModifier() != null && 
-				!mb.getMethodModifier().getModifier().contains("static")){ //non è un modificatore statico
+				!mb.getMethodModifier().getModifier().contains("static")){ //non ha un modificatore statico
 			//aggiungo il this in posizione 0 delle localVar
 			localVar.put("0", t);
 			j++;
 		}
 
 		for(int i=0;i<pars.size(); i++){
-			if(pars.get(i).getText().equals("int")){ //TODO controlla se giusto questo int
-				localVar.put(String.valueOf(j), new TypeInt());
+			Type t1=null;
+			if(pars.get(i).getText().equals("int")){
+				t1=new TypeInt();
+				localVar.put(String.valueOf(j),t1);
 			}
 			else{
-				localVar.put(String.valueOf(j), new TypeObject(pars.get(i).getText(),fields));
+				t1= new TypeObject(pars.get(i).getText(),fields,true);
+				localVar.put(String.valueOf(j), t1);
 			}
+			
+			aType.add(t1);
+			
 			j++;
 		}
+		
+		
+		//creo la signature per la LAM del metodo
+		
+		String mName=methodName;
+		if(!methodName.contains(".") && !methodName.contains("/") && !methodName.equals("main")) //il metodo main deve essere unico
+			mName=className+"."+mName;
+	
+		String mSignature=mName.toUpperCase() + "(";
+		
+		int k=0;
+		
+		for(int i =0; i<aType.size() ;i++){
+		
+			if(aType.get(i).isInt()) //i tipi interi non li mettiamo nella signature dei metodi
+				continue;
+			else{
+				mSignature+=TypeObject.flattenedFields(((TypeObject)aType.get(i)), "", "")+", ";
+				k++;
+			}
+		}
 
+		if(j>0)
+			mSignature = mSignature.substring(0, mSignature.lastIndexOf(",")); //rimuovo l'ultima virgola
+		mSignature+=")";
+
+		currentMethodsLAMSignature = mSignature;
+		System.out.println(mSignature);
 	}
 
+	
 	public void closeScope() {
 		operandStack = null;
 		locks = null;
 		queueThreads = null;
 		currentMethodBody=null;
+		currentMethodsLAMSignature=null;
+	}
+	
+	
+	public String getCurrentMethodLAMSignature(){
+		
+		return currentMethodsLAMSignature;
+		
 	}
 
 	public BEConstantPool getConstantPool() {

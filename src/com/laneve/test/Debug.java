@@ -1,10 +1,7 @@
 package com.laneve.test;
 
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.Set;
 
 import com.laneve.deadlock.type.Type;
 import com.laneve.deadlock.type.TypeInt;
@@ -66,13 +63,13 @@ public class Debug {
 		/* classe Jack */
 		LinkedHashMap<String, Type> jackFields= new LinkedHashMap<String, Type>();
 		Type t13 =  TypeObject.getRawTypeObject("Mark");
-		jackFields.put("m", t9); 
+		jackFields.put("m", t13); 
 		Type t14 =  TypeObject.getRawTypeObject("Jain");
-		jackFields.put("qwe", t10); 
+		jackFields.put("qwe", t14); 
 		Type t15 =  TypeObject.getRawTypeObject("Lucas");
-		topolinoFields.put("pud", t11);
+		jackFields.put("pud", t15);
 		Type t16 =  TypeObject.getRawTypeObject("Patrik");
-		jackFields.put("x", t12);
+		jackFields.put("x", t16);
 		
 		fields.put("Jack", jackFields);
 		
@@ -85,11 +82,7 @@ public class Debug {
 	    	
 		    for(Map.Entry<String, Type> entry2 : entry.getValue().entrySet()){
 
-		    	if(entry2.getValue().isInt())
-		    		System.out.println(entry2.getKey() + " "+ entry2.getValue().getName());
-		    	else
 		    		System.out.println(entry2.getKey() + " "+ (entry2.getValue()).getName());
-
 		    	
 		    }
 	    	
@@ -98,20 +91,25 @@ public class Debug {
 	    }
 	   
 	    //nessuna ricorsione sui campi
-		Type t20 = new TypeObject("Jack", fields);	
+		TypeObject t20 = new TypeObject("Jack", fields,true);	
 		System.out.println(t20.getName());
 		
 		//ricorsione sui campi fino profondità 1
-		Type t21 = new TypeObject("Pluto", fields);	
+		TypeObject t21 = new TypeObject("Pluto", fields,true);
 		System.out.println(t21.getName());
 		
 		//ricorsione sui campi fino profondità 2 //funziona se si imposta DEPTH=3 in TypeObject
-		Type t22 = new TypeObject("Pippo", fields);	
+		Type t22 = new TypeObject("Pippo", fields,true);	
 		System.out.println(t22.getName());
 
-		//campi appiattirti
-		System.out.println(TypeObject.flattenedFields((TypeObject)t22,""));
-				
+		//campi appiattiti
+		System.out.println(TypeObject.flattenedFields((TypeObject)t22,"",""));
+		
+		//campo inizializzato a bottom
+		TypeObject t23 = new TypeObject("Pluto", fields,false);
+		System.out.println(t23.getName());
+		System.out.println(TypeObject.flattenedFields((TypeObject)t23,"",""));
+
 	}
 	
 	/*public static LinkedList<Type> getZbar(LinkedList<Type> z){

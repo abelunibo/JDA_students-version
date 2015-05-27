@@ -59,6 +59,8 @@ public class BEConstantPool extends BEBase{
 				returnType = returnType.substring(0, returnType.length()-1);
 			//returnType = returnType.substring(1);
 			return returnType+" "+methodName;
+		case "String":
+			return "java/lang/String";
 		default://"Utf8"
 			return a.get(1);
 		}

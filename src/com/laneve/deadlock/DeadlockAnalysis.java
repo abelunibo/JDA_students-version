@@ -22,6 +22,9 @@ import com.laneve.deadlock.models.BEConstantAndInfo;
 import com.laneve.deadlock.models.BEConstantPool;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
+import com.laneve.deadlock.type.Type;
+import com.laneve.deadlock.type.TypeInt;
+import com.laneve.deadlock.type.TypeObject;
 import com.laneve.deadlock.utilities.ConsoleFormatter;
 import com.laneve.deadlock.utilities.LamsFileFormatter;
 import com.laneve.deadlock.visitor.BytecodeVisitor;
@@ -58,7 +61,7 @@ public class DeadlockAnalysis {
 		for ( File fileEntry : folder.listFiles()){
 
 //			if(!fileEntry.getName().contains("Esempio")) continue;
-			if(fileEntry.getName().contains("Deadlock")) continue;
+	//		if(fileEntry.getName().contains("Deadlock")) continue;
 
 			FileInputStream in = new FileInputStream(fileEntry);
 			ANTLRInputStream input = new ANTLRInputStream(in);
@@ -72,10 +75,7 @@ public class DeadlockAnalysis {
 		}
 
 		for(BEClassFile cf : classfiles){ //creiamo dalla constant Pool la mappa <NomeClasse, <nomeCampo, tipoCampo>>
-			String className="";
-			String nameAndType="";
-			String fieldName = "";
-			String type="";
+			String className="",nameAndType="",fieldName = "",type="";
 			LinkedHashMap<String, Type> fieldNameAndTypes = new LinkedHashMap<String, Type>();;
 			HashMap<String, BEConstantAndInfo> tableEntries = cf.getCostantPool().getTableEntries().getTableEntry();
 			for (Map.Entry<String, BEConstantAndInfo> entry : tableEntries.entrySet()){
