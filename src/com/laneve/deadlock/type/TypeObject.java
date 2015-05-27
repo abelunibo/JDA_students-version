@@ -99,9 +99,8 @@ public class TypeObject extends Type{
 					
 					entry.setValue(t);
 				}
-				
 			}
-		    
+
 			startType.fieldsRecord=typeFields; // tra i campi vi sono salvati anche quelli di tipo INT
 
 		}

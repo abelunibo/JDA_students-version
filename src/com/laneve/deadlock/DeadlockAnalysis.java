@@ -85,7 +85,6 @@ public class DeadlockAnalysis {
 					nameAndType = BEConstantPool.takeCpoolRef( cf.getCostantPool(), a.get(2));
 					type = nameAndType.substring(0, nameAndType.indexOf(" "));
 					fieldName = nameAndType.substring(nameAndType.lastIndexOf(" ")+1);
-					//System.out.println(className+ " "+ type+ " "+fieldName);
 					if(type.trim().startsWith("L")){
 						type=type.substring(1);
 						fieldNameAndTypes.put(fieldName, TypeObject.getRawTypeObject(type));
@@ -96,7 +95,6 @@ public class DeadlockAnalysis {
 			}
 			fields.put(className, fieldNameAndTypes);
 		}
-		
 		/* for(Map.Entry<String, LinkedHashMap<String, Type>> entry : fields.entrySet()){
 
 		    	System.out.println("-----" + entry.getKey());
