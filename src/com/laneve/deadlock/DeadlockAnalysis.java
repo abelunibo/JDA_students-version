@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,18 +22,29 @@ import com.laneve.deadlock.models.BEConstantAndInfo;
 import com.laneve.deadlock.models.BEConstantPool;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
-import com.laneve.deadlock.utilities.MyFormatter;
+import com.laneve.deadlock.utilities.ConsoleFormatter;
+import com.laneve.deadlock.utilities.LamsFileFormatter;
 import com.laneve.deadlock.visitor.BytecodeVisitor;
 
 public class DeadlockAnalysis {
+	
+	private static Logger FILELOGGER = Logger.getLogger("lams_log");
 
 	public static void main(String[] args) throws IOException{
-		//root log configuration
-
+		
+		/* log configuration */
 		Logger rootLog = Logger.getLogger("");
 		rootLog.setLevel(Level.INFO);
 		Handler handler = rootLog.getHandlers()[0];
-		handler.setFormatter(new MyFormatter());
+		handler.setFormatter(new ConsoleFormatter());
+		
+		FILELOGGER.setLevel(Level.INFO);
+		FileHandler hand;
+		hand = new FileHandler("lams_log_file.txt");
+		hand.setFormatter(new LamsFileFormatter());
+		Handler console = rootLog.getHandlers()[0];
+		FILELOGGER.removeHandler(console);
+		FILELOGGER.addHandler(hand);
 
 		ArrayList<BEClassFile> classfiles = new ArrayList<BEClassFile>();
 		File folder = new File("bytecode");

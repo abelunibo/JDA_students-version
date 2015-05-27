@@ -14,6 +14,7 @@ public class BEClassFile extends BEBase{
 	HashMap<BEMethodHeader, BEMethodDeclaration> methods = new HashMap<BEMethodHeader, BEMethodDeclaration>();
 	
 	private static Logger LOGGER = Logger.getLogger("");
+	private static Logger FILELOGGER = Logger.getLogger("lams_log");
 
 	public BEClassFile(String className,BEConstantPool costantPool) {
 		super();
@@ -49,6 +50,7 @@ public class BEClassFile extends BEBase{
 			LamBase lam = methodDeclaration.generateLam(environment);
 			LOGGER.info("-------------------------------------------------------------------------------\n");
 			LOGGER.info("Method Lam:\t"+lam.getLam()+"\n");
+			FILELOGGER.info(lam.getLam()+"\n");
 			l.createSequence(lam);
 			
 			LOGGER.info("-------------------------------------------------------------------------------\n");

@@ -1,20 +1,14 @@
 package com.laneve.deadlock.utilities;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
-public class MyFormatter extends Formatter {
-    //
-    // Create a DateFormat to format the logger timestamp.
-    //
-    private static final DateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss.SSS");
+public class LamsFileFormatter extends Formatter {
     
     @Override
     public String format(LogRecord record) {
-    	return  record.getLevel() + ": " + record.getMessage() + "\n";
+    	return  record.getMessage();
     }
  
     public String getHead(Handler h) {

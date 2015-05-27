@@ -10,6 +10,7 @@ import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.models.lam.LamSequence;
 import com.laneve.deadlock.type.Type;
 
+
 public class BEMethodBody extends BEBase{
 	LinkedList<BEInstructionLine> instructions;
 	BEMethodModifier methodModifier = null;
@@ -19,6 +20,7 @@ public class BEMethodBody extends BEBase{
 	Integer nextGoToInstruction = null;
 
 	private static Logger LOGGER = Logger.getLogger("");
+	private static Logger FILELOGGER = Logger.getLogger("lams_log");
 
 
 	public BEMethodBody(LinkedList<BEInstructionLine> instructions,
@@ -74,13 +76,24 @@ public class BEMethodBody extends BEBase{
 	public LamBase generateLam(Environment environment) {
 		LamSequence l = new LamSequence();
 		environment.openScope(this);
-
+		
 		try {
 			LOGGER.info("-------------------------------------------------------------------------------\n");
 			LOGGER.info(" INIZIO metodo "+ getMethodHeader().getMethodDeclarator().getMethodName() +"\t|\tclasse " +
 					environment.getClassName()+"\n");
 			LOGGER.info("-------------------------------------------------------------------------------\n");
+			
+			String toPrint = getMethodHeader().getMethodDeclarator().getMethodName();
+			String sig = methodHeader.getSignature();
 
+			toPrint = toPrint.concat("("+ environment.getClassName()+"[0]"+", ");
+			if(sig.contains("("))
+				toPrint = toPrint.concat(
+							sig.substring(sig.indexOf("(")+1, sig.indexOf(")")-1));
+			else
+				toPrint = toPrint.replace(", ","");
+			toPrint = toPrint.concat(")");
+			FILELOGGER.info(toPrint +" ---> ");
 		} catch (BEException e) {
 			e.printStackTrace();
 		}

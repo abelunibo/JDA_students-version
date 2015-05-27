@@ -33,7 +33,7 @@ public class BEGet extends BEInstructionLine implements BEInstruction{
 		String fieldObjectType = getfieldRef.substring(getfieldRef.lastIndexOf(" ")+1);
 		String firstLetter = getfieldRef.substring(0, 1);
 		
-		System.out.println(fieldType);
+		//System.out.println(fieldType);
 
 		if(getName().equals("getfield")){
 			if(firstLetter.contentEquals("L")){
