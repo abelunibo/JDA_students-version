@@ -1,6 +1,5 @@
 package com.laneve.deadlock.type;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -95,24 +94,22 @@ public class TypeObject extends Type{
 				
 			}
 			
-			startType.fieldsRecord=typeFields; // ho trovato dei tipi su cui andare ricorsivamente
+			startType.fieldsRecord=typeFields; // tra i campi vi sono salvati anche quelli di tipo INT
 
 		}
 		
 	}
 	
 	
-	// ritorna la stringa che rappresenta il nostro tipo comprensivo di parametri
-		private String typeAndFields(TypeObject t, int depth){		
-		
-			if(depth==0) return t.getIndexName();
-			
+	// ritorna la stringa che rappresenta il tipo t comprensivo dei campi visitati ricorsivamente
+		private static String typeAndFields(TypeObject t, int depth){		
+					
 				String s = t.getIndexName();
 				if(!t.getFieldsRecord().isEmpty()){
 					s+="[";
 					for(Map.Entry<String, Type> entry : t.getFieldsRecord().entrySet()){
 						s+=entry.getKey()+ " : "; //nome campo
-						if(entry.getValue().isInt()) s+= "INT, ";
+						if(entry.getValue().isInt()) continue; //evito gli INT
 						else{	
 							s+= typeAndFields(((TypeObject)entry.getValue()),depth-1)+", " ;	
 						}
@@ -123,6 +120,29 @@ public class TypeObject extends Type{
 				
 				return s;
 		}
+		
+		
+		// ritorna una stringa che rappresenta la vista appiattita dei campi dell'oggetto di tipo t
+		public static String flattenedFields(TypeObject t, String separator){		
+			
+				if (separator == ""){
+					separator = ">"; //separatore di defalut
+				}
+				
+				String s = t.getIndexName() +", ";
+				if(!t.getFieldsRecord().isEmpty()){
+					for(Map.Entry<String, Type> entry : t.getFieldsRecord().entrySet()){
+						if(entry.getValue().isInt()) continue; //evito gli INT
+						else{
+							s+= t.getIndexName()+separator+flattenedFields(((TypeObject)entry.getValue()),separator)+", " ;	
+						}
+					}
+				}
+				s= s.substring(0, s.lastIndexOf(",")); //rimuovo l'ultima virgola
+				
+				return s;
+		}
+	
 	
 	/* setta il tipo di un campo di questo oggetto (possibile solo se si assegna lo stesso tipo) */
 	public void setFieldType(String fieldName, Type fieldType) throws BEException{

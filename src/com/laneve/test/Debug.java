@@ -109,6 +109,8 @@ public class Debug {
 		Type t22 = new TypeObject("Pippo", fields);	
 		System.out.println(t22.getName());
 
+		//campi appiattirti
+		System.out.println(TypeObject.flattenedFields((TypeObject)t22,""));
 				
 	}
 	
