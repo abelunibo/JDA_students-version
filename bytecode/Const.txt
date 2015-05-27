@@ -1,0 +1,112 @@
+Classfile /Users/t6o/Desktop/laneve/workspace/deadlock/src/deadlock/Const/Const.class
+  Last modified May 27, 2015; size 751 bytes
+  MD5 checksum b1d086fb1b7c37fe3dc4296ac2fa8498
+  Compiled from "Const.java"
+public class deadlock.Const
+  minor version: 0
+  major version: 52
+  flags: ACC_PUBLIC, ACC_SUPER
+Constant pool:
+   #1 = Methodref          #9.#31         // java/lang/Object."<init>":()V
+   #2 = Fieldref           #32.#33        // java/lang/System.out:Ljava/io/PrintStream;
+   #3 = Class              #34            // deadlock/Const
+   #4 = String             #35            // CIAO
+   #5 = Methodref          #36.#37        // java/io/PrintStream.println:(Ljava/lang/String;)V
+   #6 = Class              #38            // deadlock/Const$Pippo
+   #7 = Methodref          #6.#31         // deadlock/Const$Pippo."<init>":()V
+   #8 = Fieldref           #3.#39         // deadlock/Const.p:Ldeadlock/Const$Pippo;
+   #9 = Class              #40            // java/lang/Object
+  #10 = Utf8               Pippo
+  #11 = Utf8               InnerClasses
+  #12 = Utf8               STRINGA
+  #13 = Utf8               Ljava/lang/String;
+  #14 = Utf8               ConstantValue
+  #15 = Utf8               INT
+  #16 = Utf8               I
+  #17 = Integer            0
+  #18 = Utf8               p
+  #19 = Utf8               Ldeadlock/Const$Pippo;
+  #20 = Utf8               <init>
+  #21 = Utf8               ()V
+  #22 = Utf8               Code
+  #23 = Utf8               LineNumberTable
+  #24 = Utf8               main
+  #25 = Utf8               ([Ljava/lang/String;)V
+  #26 = Utf8               Exceptions
+  #27 = Class              #41            // java/lang/InterruptedException
+  #28 = Utf8               <clinit>
+  #29 = Utf8               SourceFile
+  #30 = Utf8               Const.java
+  #31 = NameAndType        #20:#21        // "<init>":()V
+  #32 = Class              #42            // java/lang/System
+  #33 = NameAndType        #43:#44        // out:Ljava/io/PrintStream;
+  #34 = Utf8               deadlock/Const
+  #35 = Utf8               CIAO
+  #36 = Class              #45            // java/io/PrintStream
+  #37 = NameAndType        #46:#47        // println:(Ljava/lang/String;)V
+  #38 = Utf8               deadlock/Const$Pippo
+  #39 = NameAndType        #18:#19        // p:Ldeadlock/Const$Pippo;
+  #40 = Utf8               java/lang/Object
+  #41 = Utf8               java/lang/InterruptedException
+  #42 = Utf8               java/lang/System
+  #43 = Utf8               out
+  #44 = Utf8               Ljava/io/PrintStream;
+  #45 = Utf8               java/io/PrintStream
+  #46 = Utf8               println
+  #47 = Utf8               (Ljava/lang/String;)V
+{
+  static final java.lang.String STRINGA;
+    descriptor: Ljava/lang/String;
+    flags: ACC_STATIC, ACC_FINAL
+    ConstantValue: String CIAO
+
+  static final int INT;
+    descriptor: I
+    flags: ACC_STATIC, ACC_FINAL
+    ConstantValue: int 0
+
+  static final deadlock.Const$Pippo p;
+    descriptor: Ldeadlock/Const$Pippo;
+    flags: ACC_STATIC, ACC_FINAL
+
+  public deadlock.Const();
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+         4: return
+      LineNumberTable:
+        line 3: 0
+        line 9: 4
+
+  public static void main(java.lang.String[]) throws java.lang.InterruptedException;
+    descriptor: ([Ljava/lang/String;)V
+    flags: ACC_PUBLIC, ACC_STATIC
+    Code:
+      stack=2, locals=1, args_size=1
+         0: getstatic     #2                  // Field java/lang/System.out:Ljava/io/PrintStream;
+         3: ldc           #4                  // String CIAO
+         5: invokevirtual #5                  // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+         8: return
+      LineNumberTable:
+        line 14: 0
+        line 15: 8
+    Exceptions:
+      throws java.lang.InterruptedException
+
+  static {};
+    descriptor: ()V
+    flags: ACC_STATIC
+    Code:
+      stack=2, locals=0, args_size=0
+         0: new           #6                  // class deadlock/Const$Pippo
+         3: dup
+         4: invokespecial #7                  // Method deadlock/Const$Pippo."<init>":()V
+         7: putstatic     #8                  // Field p:Ldeadlock/Const$Pippo;
+        10: return
+      LineNumberTable:
+        line 7: 0
+}
+SourceFile: "Const.java"

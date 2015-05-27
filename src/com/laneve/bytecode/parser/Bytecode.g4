@@ -300,6 +300,8 @@ MINOR: 'minor version: ' [0-9]+  '\r'? '\n'{skip();};
 MAJOR: 'major version: ' [0-9]+  '\r'? '\n'{skip();};
 // ci si puo' trovare nella situazione in cui dopo 'flags:' non c'e' nulla (non so perche' ma e' capitato)
 FLAGS: 'flags:' [ A-Z|'_'|',']*  '\r'? '\n'{skip();};
+CONSTANTVALUE: 'ConstantValue:' [ A-Z|a-z|0-9]* {skip();};
+
 
 //before "Code:"
 DESCRIPTOR: 'descriptor:'  ~[\r\n]* {skip();};
