@@ -15,27 +15,39 @@ public class TypeObject extends Type{
 	/* specifica la profondità di ricorsione sui campi nell'espansione dei tipi */
 	static final private int DEPTH = 2;
 	
-	Integer index = null; //indice null se oggetto non ha index
+	Integer index = null; //indice (null se oggetto non ha index)
 	
-	boolean FLATTEN=true;
+	// specifica se i campi devono essere appiattiti nell'invocazione di metodo
+	// se è false i campi degli vengono mostrati tra parentesi quadre 
+	// se e' true i campi vengono mostrati appiattiti cioe' a pari livello dell'oggetto che li contiene
+	boolean FLATTEN=true; 
 	
 	TypeObject parent = null; //se sono un campo tengo traccia del mio tipo padre
-	String fieldName = null; //se sono un campo so il mio nome;
+	String fieldName = null; //se sono un campo so il mio nome
 	
 	//ogni tipo oggetto ha un insieme di campi che hanno un nome e un tipo
 	LinkedHashMap <String,Type> fieldsRecord=null; 
+		
+	//viene tenuto un puntatore alla mappa globale dei campi se il tipo di un campo dovra' andare
+	//ad esempio a generarsi i suoi sottocampi in futuro
+	final LinkedHashMap<String,LinkedHashMap<String,String>> fields;
 	
-	//tipo che non puo' essere indicizzato e la cui stampa non includera' i campi
-	private boolean isRawTypeObject = false;
+	// tipo che identifica il tipo classe
+	// ne esiste uno per ogni classe del programma
+	// non puo' essere indicizzato
+	// i suoi campi possono essere settati
+	private boolean isClassType= false;
 	
 	// costruttore di default per i tipi oggetto
 	// il primo parametro e' il nome della classe del tipo da creare (senza indice, preso dalla constantPool al momento della new)
-	// il secondo parametro è la mappa che conosce i campi di una classe
-	public TypeObject(String className, LinkedHashMap<String,LinkedHashMap<String,Type>> fields, boolean initializedFields){
+	// il secondo parametro è la mappa che conosce i campi per i tipi definiti nelle classi bytecode
+	// il terzo parametro specifica se i campi vanno inizializzati a valori fittizi (true) oppure a bottom (false)
+	public TypeObject(String className, LinkedHashMap<String,LinkedHashMap<String,String>> fields, boolean initializedFields){
 		super(className);
+		this.fields=fields;
 		fieldsRecord = new LinkedHashMap <String,Type>();
-				try { //setto il suo indice fittizio
-					setIndex();
+				try { //setto il suo indice
+					assignIndex();
 				} catch (BEException e) { // non si puo' mai verificare, il tipo e' appena stato creato --> non ha ancora un indice
 					e.printStackTrace();
 				}
@@ -44,77 +56,186 @@ public class TypeObject extends Type{
 				else
 					setFieldsRecursion(this, fields, DEPTH, false);
 	}
+
 	
-	
-	//costruttore per gli oggetti corrispondenti alle classi (un oggetto per classe)
-	public TypeObject(String className, LinkedHashMap<String,LinkedHashMap<String,Type>> fields){
-		super(className);
-		fieldsRecord = new LinkedHashMap <String,Type>();
-		setFieldsRecursion(this, fields, DEPTH, true);
-	}
-	
-	/** Crea un oggetto di tipo NULL*/
+	/** Crea un oggetto per la costante null (usato con istruzione aconst_null) */
 	public TypeObject(){
 		super("NULL");
-		fieldsRecord = new LinkedHashMap <String,Type>(); //evita problemi di null pointer
+		this.fields=null;
+		fieldsRecord = new LinkedHashMap <String,Type>(); //evita problemi di null pointer (il controllo avviene con isEmpty())
 	}
 	
 	
-	// usato solo da metodo getRawTypeObject
-	private TypeObject(String className){
+	//costruttore per gli oggetti corrispondenti alle classi (un oggetto per classe) 
+	// non ha alcun indice associato ma ha dei campi che invece sono indicizzabili
+	public TypeObject(String className, LinkedHashMap<String,LinkedHashMap<String,String>> fields){
 		super(className);
 		fieldsRecord = new LinkedHashMap <String,Type>();
-		isRawTypeObject=true;
+		isClassType=true;
+		this.fields=fields;
+		setFieldsRecursion(this, fields, DEPTH, false);
+	}
+
+	// ritorna un indice fresh
+	static int getFreshIndex(){
+		return indexCounter++;
+	}
+
+	//recupera il tipo di un campo
+	public Type getFieldType(String fieldName) {
+		return fieldsRecord.get(fieldName);
 	}
 	
-	/* ritorna un oggetto che non ha campi e non puo' essere indicizzato
-	 * senza andare ricorsivamente a generarne i campi
-	 * (usato unicamente per la costruzione della mappa fields in com.laneve.deadlock.DeadlockAnalysis) */
-	public static TypeObject getRawTypeObject(String className){
-		TypeObject t = new TypeObject(className);
-		return t;
+	//ritorna l'indice di questo tipo o null se questo tipo non è indicizzato
+	public Integer getIndex(){
+		return this.index;
 	}
 	
+	//recupera la mappa dei campi di questo oggetto
 	private LinkedHashMap <String,Type> getFieldsRecord(){
 		return fieldsRecord;
 	}
 	
+	
+	/* setta il tipo di un campo di questo oggetto (possibile solo se si assegna lo stesso tipo
+	 * o se il campo non era stato inizializzato) */
+	public void setFieldType(String fieldName, Type fieldType) throws BEException{
+		if(!fieldType.isInt() && this.fieldsRecord.get(fieldName)!=null &&
+				!this.fieldsRecord.get(fieldName).equals((TypeObject)fieldType))
+			throw new BEException("Non puoi modificare un campo gia' inizializzato");
+		else if (fieldType != null && !fieldType.isInt()){
+			this.fieldsRecord.put(fieldName, fieldType);
+		}
+		//altrimenti non devo fare niente (i campi INT sono da subito settati a INT e mai a bottom)
+	}
+
+	
+	//restituisce l'oggetto con l'indice appena assegnato
+	@Override
+	public TypeObject assignIndex() throws BEException{
+		
+		if(this.index!=null) throw new BEException("Non puoi riassegnare un indice ad un tipo");
+		else{
+			if(!isClassType) // i tipi classe non possono avere un indice associato (ma si possono indicizzare i loro campi)
+				this.index=TypeObject.getFreshIndex();
+		}
+		return this;
+	}
+	
+	
+	//ritorna il nome base della classe del tipo senza indici associati
+	public String getClassName() {
+		return className;
+	}
+	
+	
+	// controlla se è un tipo classe
+	public boolean isClassType() {
+		return isClassType;
+	}
+
+
+	// ritorna il nome del tipo comprensivo di indice (usato per i campi mostrati dentro le parentesi [])
+	// il nome del campo a cui e' associato non viene stampato
+	public String getIndexName() {
+		String s=this.className;
+		if(index!=null)
+			s+= index;
+		return s;
+	}
+	
+	//ritorna il nome del tipo comprensivo di indice e nomi dei tipi genitori
+	// (usato quando i campi devono essere mostrati appiattiti per continuare a capire di chi e' il campo)
+	public String getFlattenName(){
+	
+		String s="";
+		
+		if(fieldName!=null)
+			s+=fieldName;
+		
+		s+= getIndexName();
+		
+		TypeObject p= parent;
+		if(p!=null){
+			s=p.getFlattenName()+s;
+		}
+		
+		return s;
+	}
+	
+	
+	@Override
+	public String getName(){
+		String s="";
+				
+		if(FLATTEN){ //voglio i campi appiattiti per la compatibilita' con il tool DF4ABS
+			s= getFlattenName(); //se e' il tipo principale questo mi ritornera' l'indexName del tipo
+								//altrimenti mi ritornerà tipiGenitori+nomeCampo+TipoCampo
+			return s+=flattenedFields(this, "", ""); //...e di seguito i tipi dei suoi campi separati da ','
+			
+		}else{ //campi non appiattiti (mostrati tra parentesi quadre)
+			s+=getFlattenName(); //se  e' il tipo principale questo mi ritornera' l'indexName del tipo
+							//altrimenti mi ritornerà tipiGenitori+nomeCampo+TipoCampo (per ricordare
+			return s+=typeAndFields(this); //...e di seguito i suoi campi tra parentesi quadre
+		}
+	}
+	
+	
+	//controlli per garantire unicita' del tipo all'interno della mappa e per fare comparazioni
+	
+	public boolean equals(Object obj) {
+		if (!(obj instanceof TypeObject))
+			return false;	
+		if (obj == this)
+			return true;
+		return this.getIndexName().equals(((TypeObject) obj).getIndexName());
+	}
+ 
+	public int hashCode(){
+		return getIndexName().hashCode();
+	}
+	
+	
+	/*************************************/
+	
 	/* costruttore utilizzato solo con funzione setFieldsRecursion*/
-	private TypeObject(String className,LinkedHashMap<String,LinkedHashMap<String,Type>> fields,
+	private TypeObject(String className,LinkedHashMap<String,LinkedHashMap<String,String>> fields,
 			int depth,boolean initializedFields){
 		super(className);
 		fieldsRecord = new LinkedHashMap <String,Type>();
+		this.fields=fields;
 		setFieldsRecursion(this, fields, depth-1,initializedFields);
 	}
 	
 	// setta tutti i tipi dei campi di quest'oggetto ad un tipo fittizio oppure a null (non inizializzati)
 	// a seconda del valore initializedFields
 	private static void setFieldsRecursion(TypeObject startType, 
-			final LinkedHashMap<String,LinkedHashMap<String,Type>> fields, int depth, boolean initializedFields){
+			final LinkedHashMap<String,LinkedHashMap<String,String>> fields, int depth, boolean initializedFields){
 		
 		if (depth==0) return; //termina ricorsione
 
 		if(fields.get(startType.getClassName())!=null){ //abbiamo la classe nella nostra mappa
-			LinkedHashMap<String,Type> typeFields = new LinkedHashMap <String,Type>(fields.get(startType.getClassName()));
-		    for(Map.Entry<String, Type> entry : typeFields.entrySet()){
-				if(entry.getValue().isInt()) continue; //interi considerati sempre inizializzati
+			//recupero i tipi dei campi
+			LinkedHashMap<String,String> f = fields.get(startType.getClassName());
+			LinkedHashMap<String,Type> typeFields = new LinkedHashMap <String,Type>();
+		    for(Map.Entry<String, String> entry : f.entrySet()){
+		    	//entry.getValue() e' il tipo del campo e entry.getKey() e' il suo nome
+				if(entry.getValue().equals("INT")) typeFields.put(entry.getKey(),new TypeInt()); //interi considerati sempre inizializzati
 				else{ //campo oggetto
-					TypeObject t =null;
-					
-					if(initializedFields){
-						//viene creato un nuovo oggetto con un nuovo indice
-						t = new TypeObject(((TypeObject)entry.getValue()).getClassName(), fields, depth,initializedFields); 
-						t.fieldName=entry.getKey();
-						t.parent=startType;
+					//viene creato un nuovo oggetto con un nuovo indice
+					TypeObject t = new TypeObject(entry.getValue(), fields, depth, initializedFields);
+					if(initializedFields){ //devo inizializzare i campi
 						try {
-							t.setIndex(); //indice fittizio
+							t.assignIndex(); //indice fittizio
 						} catch (BEException e) {
 							e.printStackTrace();
 							System.exit(1);
 						} 
+						t.fieldName=entry.getKey();
+						t.parent=startType; //salvo il tipo dell'oggetto che contiene questo campo
 					}
 					
-					entry.setValue(t);
+					typeFields.put(entry.getKey(), t);
 				}
 			}
 
@@ -126,7 +247,7 @@ public class TypeObject extends Type{
 	
 	
 	// ritorna la stringa che rappresenta il tipo t comprensivo dei campi visitati ricorsivamente
-		private static String typeAndFields(TypeObject t, int depth){		
+		private static String typeAndFields(TypeObject t){		
 				
 				if(t == null) return "⊥";
 				
@@ -138,7 +259,7 @@ public class TypeObject extends Type{
 						if(entry.getValue()!=null && entry.getValue().isInt()) continue; //evito gli INT
 						else{	
 							s+=fieldName+ " : ";
-							s+= typeAndFields(((TypeObject)entry.getValue()),depth-1)+", " ;	
+							s+= typeAndFields(((TypeObject)entry.getValue()))+", " ;	
 						}
 					}
 					if(s.lastIndexOf(",")==s.length()-2)
@@ -166,7 +287,7 @@ public class TypeObject extends Type{
 				
 				if(t == null) return "⊥";
 				
-				if(t.isRawTypeObject) return t.className;
+				if(t.isClassType) return t.className;
 				
 				String s = t.getIndexName();
 				if(!t.getFieldsRecord().isEmpty()){
@@ -185,125 +306,6 @@ public class TypeObject extends Type{
 		}
 	
 	
-	/* setta il tipo di un campo di questo oggetto (possibile solo se si assegna lo stesso tipo
-	 * o se il campo non era stato inizializzato) */
-	public void setFieldType(String fieldName, Type fieldType) throws BEException{
-		if(!fieldType.isInt() && this.fieldsRecord.get(fieldName)!=null &&
-				!this.fieldsRecord.get(fieldName).equals((TypeObject)fieldType))
-			throw new BEException("Non puoi modificare un campo gia' inizializzato");
-		else if (fieldType != null && !fieldType.isInt() && !isRawTypeObject){
-			this.fieldsRecord.put(fieldName, fieldType);
-		}
-		//altrimenti non devo fare niente (i campi INT sono da subito settati a INT e mai a bottom)
-	}
 	
-	
-	/* ritorna la mappa con tutti i campi dell'oggetto */
-	public LinkedHashMap<String,Type> getObjectFields(){
-		return fieldsRecord;
-	}
-
-	// setta un indice fresh per questo tipo
-	private void setIndex() throws BEException{
-		if(this.index!=null) throw new BEException("Non puoi riassegnare un indice ad un tipo");
-		if(!isRawTypeObject)
-			this.index=TypeObject.getFreshIndex();
-	}
-	
-	//ritorna l'indice di questo tipo o null se questo tipo non è indicizzato
-	public Integer getIndex(){
-		return this.index;
-	}
-	
-	
-	//restituisce l'oggetto con l'indice appena assegnato
-	@Override
-	public TypeObject assignIndex(){
-		if(index==null && !isRawTypeObject){
-			try {
-				setIndex(); //aggiorno il mio indice
-			} catch (BEException e) {
-				e.printStackTrace();
-				System.exit(1);
-			}
-		}
-		return this;
-	}
-	
-	
-	//ritorna il nome base della classe del tipo
-	public String getClassName() {
-		return className;
-	}
-	
-	@Override
-	public String getName(){
-		
-		if(FLATTEN){ //voglio i campi appiattiti per la compatibilita' con il tool DF4ABS
-			return flattenedFields(this, "", "");
-		}else{
-			if(!isRawTypeObject)
-				return typeAndFields(this,DEPTH);
-			else{
-				return className;
-			}
-				
-		}
-	}
-	
-	
-	public String getParentsAndFieldName(){
-	
-		String s="";
-		
-		if(fieldName!=null)
-			s+=fieldName;
-		
-		s+= getIndexName();
-		
-		TypeObject p= parent;
-		if(p!=null){
-			s=p.getIndexName()+s;
-		}
-		
-		return s;
-	
-	}
-	
-	
-	//ritorna il nome del tipo comprensivo di indice
-	public String getIndexName() {
-				
-		String s=this.className;
-				
-		if(index!=null)
-			s+= index;
-	
-		return s;
-	}
-	
-	
-	public boolean equals(Object obj) {
-		if (!(obj instanceof TypeObject))
-			return false;	
-		if (obj == this)
-			return true;
-		return this.getIndexName().equals(((TypeObject) obj).getIndexName());
-	}
- 
-	public int hashCode(){
-		return getIndexName().hashCode();
-	}
-	
-		
-	// ritorna un indice fresh
-	static int getFreshIndex(){
-		return indexCounter++;
-	}
-
-
-	public Type getFieldType(String fieldName) {
-		return fieldsRecord.get(fieldName);
-	}
 	
 }

@@ -1,5 +1,7 @@
 package com.laneve.deadlock.type;
 
+import com.laneve.deadlock.exceptions.BEException;
+
 public abstract class Type {
 			
 	String className=""; // nome della classe del tipo
@@ -16,8 +18,8 @@ public abstract class Type {
 
 	public abstract String getName();
 	
-	// assegna un indice ad un tipo e restituiscilo
-	public abstract Type assignIndex();
+	// assegna un indice ad un tipo (se possibile) e restituisci il tipo appena indicizzato
+	public abstract Type assignIndex() throws BEException;
 
 	
 }

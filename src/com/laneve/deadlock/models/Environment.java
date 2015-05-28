@@ -15,7 +15,7 @@ public class Environment {
 	//in comune a tutti i metodi di una classe
 	String className;
 	BEConstantPool constantPool;
-	private LinkedHashMap<String, LinkedHashMap<String, Type>> fields;
+	private LinkedHashMap<String, LinkedHashMap<String, String>> fields;
 	private HashMap<String, TypeObject> classObjects;
 	
 	//per un singolo metodo
@@ -25,14 +25,14 @@ public class Environment {
 	BEMethodBody currentMethodBody;	
 
 	
-	public Environment(LinkedHashMap<String, LinkedHashMap<String, Type>> fields,
+	public Environment(LinkedHashMap<String, LinkedHashMap<String, String>> fields,
 			BEConstantPool costantPool, String className) {
 		this.constantPool = costantPool;	
 		this.className = className;
 		this.fields = fields;	
 		//creo gli oggetti per ogni classe
 		classObjects= new HashMap<String, TypeObject>();
-		for (Map.Entry<String, LinkedHashMap<String, Type>> entry : fields.entrySet()){
+		for (Map.Entry<String, LinkedHashMap<String, String>> entry : fields.entrySet()){
 			String key = entry.getKey();
 			TypeObject t = new TypeObject(key,fields);
 			if(classObjects.containsKey(key)){
@@ -49,7 +49,7 @@ public class Environment {
 	}
 	
 	
-	public LinkedHashMap<String, LinkedHashMap<String, Type>> getFields() {
+	public LinkedHashMap<String, LinkedHashMap<String, String>> getFields() {
 		return fields;
 	}
 	

@@ -11,104 +11,104 @@ public class Debug {
 	
 	public static void main(String args[]) { 
 		
-		LinkedHashMap<String,LinkedHashMap<String,Type>> fields;
-		
-		fields = new LinkedHashMap<String, LinkedHashMap<String, Type>>();
-		
-		
-		/* classe Pippo */
-		LinkedHashMap<String, Type> pippoFields= new LinkedHashMap<String, Type>();
-		Type t1 = new TypeInt();
-		pippoFields.put("C", t1); //campo C di tipo INT della classe Pippo
-		Type t2 =  TypeObject.getRawTypeObject ("Pluto");
-		pippoFields.put("D", t2); //campo D di tipo Pluto della classe Pippo
-		Type t3 =  TypeObject.getRawTypeObject("Micky");
-		pippoFields.put("E", t3); //campo E di tipo Micky della classe Pippo
-		Type t4 = new TypeInt();
-		pippoFields.put("F", t4); //campo F di tipo INT della classe Pippo
-
-		
-		
-		fields.put("Pippo", pippoFields);
-		
-		
-		/* classe Pluto */
-		LinkedHashMap<String, Type> plutoFields= new LinkedHashMap<String, Type>();
-		Type t5 = new TypeInt();
-		plutoFields.put("o", t5); 
-		Type t6 =  TypeObject.getRawTypeObject("Luca");
-		plutoFields.put("p", t6); 
-		Type t7 =  TypeObject.getRawTypeObject("Mario");
-		plutoFields.put("q", t7); 
-		Type t8 =  TypeObject.getRawTypeObject("Jack");
-		plutoFields.put("r", t8);
-		
-		fields.put("Pluto", plutoFields);
-		
-		
-		/* classe Topolino */
-		LinkedHashMap<String, Type> topolinoFields= new LinkedHashMap<String, Type>();
-		Type t9 = TypeObject.getRawTypeObject("Hulk");
-		topolinoFields.put("m", t9); 
-		Type t10 =  TypeObject.getRawTypeObject("Tessy");
-		topolinoFields.put("qwe", t10); 
-		Type t11 =  TypeObject.getRawTypeObject("Micky");
-		topolinoFields.put("pud", t11);
-		Type t12 =  TypeObject.getRawTypeObject("Titti");
-		topolinoFields.put("x", t12);
-		
-		fields.put("Topolino", topolinoFields);
-		
-		
-		/* classe Jack */
-		LinkedHashMap<String, Type> jackFields= new LinkedHashMap<String, Type>();
-		Type t13 =  TypeObject.getRawTypeObject("Mark");
-		jackFields.put("m", t13); 
-		Type t14 =  TypeObject.getRawTypeObject("Jain");
-		jackFields.put("qwe", t14); 
-		Type t15 =  TypeObject.getRawTypeObject("Lucas");
-		jackFields.put("pud", t15);
-		Type t16 =  TypeObject.getRawTypeObject("Patrik");
-		jackFields.put("x", t16);
-		
-		fields.put("Jack", jackFields);
-		
-		
-		/* stampa della mappa fields*/
-		
-	    for(Map.Entry<String, LinkedHashMap<String, Type>> entry : fields.entrySet()){
-
-	    	System.out.println("-----" + entry.getKey());
-	    	
-		    for(Map.Entry<String, Type> entry2 : entry.getValue().entrySet()){
-
-		    		System.out.println(entry2.getKey() + " "+ (entry2.getValue()).getName());
-		    	
-		    }
-	    	
-	    	System.out.println();
-	    	
-	    }
-	   
-	    //nessuna ricorsione sui campi
-		TypeObject t20 = new TypeObject("Jack", fields,true);	
-		System.out.println(t20.getName());
-		
-		//ricorsione sui campi fino profondità 1
-		TypeObject t21 = new TypeObject("Pluto", fields,true);
-		System.out.println(t21.getName());
-		
-		//ricorsione sui campi fino profondità 2 //funziona se si imposta DEPTH=3 in TypeObject
-		Type t22 = new TypeObject("Pippo", fields,true);	
-		System.out.println(t22.getName());
-
-		//campi appiattiti
-		System.out.println(TypeObject.flattenedFields((TypeObject)t22,"",""));
-		
-		//campo inizializzato a bottom
-		TypeObject t23 = new TypeObject("Pluto", fields,false);
-		System.out.println(t23.getName());
-		System.out.println(TypeObject.flattenedFields((TypeObject)t23,"",""));
+//		LinkedHashMap<String,LinkedHashMap<String,Type>> fields;
+//		
+//		fields = new LinkedHashMap<String, LinkedHashMap<String, Type>>();
+//		
+//		
+//		/* classe Pippo */
+//		LinkedHashMap<String, Type> pippoFields= new LinkedHashMap<String, Type>();
+//		Type t1 = new TypeInt();
+//		pippoFields.put("C", t1); //campo C di tipo INT della classe Pippo
+//		Type t2 =  TypeObject.getRawTypeObject ("Pluto");
+//		pippoFields.put("D", t2); //campo D di tipo Pluto della classe Pippo
+//		Type t3 =  TypeObject.getRawTypeObject("Micky");
+//		pippoFields.put("E", t3); //campo E di tipo Micky della classe Pippo
+//		Type t4 = new TypeInt();
+//		pippoFields.put("F", t4); //campo F di tipo INT della classe Pippo
+//
+//		
+//		
+//		fields.put("Pippo", pippoFields);
+//		
+//		
+//		/* classe Pluto */
+//		LinkedHashMap<String, Type> plutoFields= new LinkedHashMap<String, Type>();
+//		Type t5 = new TypeInt();
+//		plutoFields.put("o", t5); 
+//		Type t6 =  TypeObject.getRawTypeObject("Luca");
+//		plutoFields.put("p", t6); 
+//		Type t7 =  TypeObject.getRawTypeObject("Mario");
+//		plutoFields.put("q", t7); 
+//		Type t8 =  TypeObject.getRawTypeObject("Jack");
+//		plutoFields.put("r", t8);
+//		
+//		fields.put("Pluto", plutoFields);
+//		
+//		
+//		/* classe Topolino */
+//		LinkedHashMap<String, Type> topolinoFields= new LinkedHashMap<String, Type>();
+//		Type t9 = TypeObject.getRawTypeObject("Hulk");
+//		topolinoFields.put("m", t9); 
+//		Type t10 =  TypeObject.getRawTypeObject("Tessy");
+//		topolinoFields.put("qwe", t10); 
+//		Type t11 =  TypeObject.getRawTypeObject("Micky");
+//		topolinoFields.put("pud", t11);
+//		Type t12 =  TypeObject.getRawTypeObject("Titti");
+//		topolinoFields.put("x", t12);
+//		
+//		fields.put("Topolino", topolinoFields);
+//		
+//		
+//		/* classe Jack */
+//		LinkedHashMap<String, Type> jackFields= new LinkedHashMap<String, Type>();
+//		Type t13 =  TypeObject.getRawTypeObject("Mark");
+//		jackFields.put("m", t13); 
+//		Type t14 =  TypeObject.getRawTypeObject("Jain");
+//		jackFields.put("qwe", t14); 
+//		Type t15 =  TypeObject.getRawTypeObject("Lucas");
+//		jackFields.put("pud", t15);
+//		Type t16 =  TypeObject.getRawTypeObject("Patrik");
+//		jackFields.put("x", t16);
+//		
+//		fields.put("Jack", jackFields);
+//		
+//		
+//		/* stampa della mappa fields*/
+//		
+//	    for(Map.Entry<String, LinkedHashMap<String, Type>> entry : fields.entrySet()){
+//
+//	    	System.out.println("-----" + entry.getKey());
+//	    	
+//		    for(Map.Entry<String, Type> entry2 : entry.getValue().entrySet()){
+//
+//		    		System.out.println(entry2.getKey() + " "+ (entry2.getValue()).getName());
+//		    	
+//		    }
+//	    	
+//	    	System.out.println();
+//	    	
+//	    }
+//	   
+//	    //nessuna ricorsione sui campi
+//		TypeObject t20 = new TypeObject("Jack", fields,true);	
+//		System.out.println(t20.getName());
+//		
+//		//ricorsione sui campi fino profondità 1
+//		TypeObject t21 = new TypeObject("Pluto", fields,true);
+//		System.out.println(t21.getName());
+//		
+//		//ricorsione sui campi fino profondità 2 //funziona se si imposta DEPTH=3 in TypeObject
+//		Type t22 = new TypeObject("Pippo", fields,true);	
+//		System.out.println(t22.getName());
+//
+//		//campi appiattiti
+//		System.out.println(TypeObject.flattenedFields((TypeObject)t22,"",""));
+//		
+//		//campo inizializzato a bottom
+//		TypeObject t23 = new TypeObject("Pluto", fields,false);
+//		System.out.println(t23.getName());
+//		System.out.println(TypeObject.flattenedFields((TypeObject)t23,"",""));
 
 	}
 	

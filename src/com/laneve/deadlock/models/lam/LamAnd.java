@@ -26,24 +26,19 @@ public class LamAnd extends LamSubExpr{
 	@Override
 	public String simplify(){ //rimuovo temporaneamente le lam zero e restituisco la stringa aggiornata
 				
-		ArrayList<LamSubExpr> backup=new ArrayList<LamSubExpr>(lamAnd);	
 		ArrayList<LamSubExpr> tmp=new ArrayList<LamSubExpr>();	
 		
 		for(int i=0; i<lamAnd.size();i++){
 			LamSubExpr lsub = lamAnd.get(i);
-			/*if(lsub instanceof LamCouple) 
-				System.out.println("Debug");*/
 			String simplified = lsub.simplify();
 			if(!simplified.equals("0"))
 				tmp.add(lsub);
 		}
 		
-		lamAnd=tmp;
+		lamAnd=tmp; //LamAnd semplificata in maniera distruttiva
 		
 		String s = toString();
-		
-		lamAnd=backup;
-		
+				
 		return s;
 	}
 

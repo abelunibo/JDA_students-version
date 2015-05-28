@@ -43,7 +43,7 @@ public class BEGet extends BEInstructionLine implements BEInstruction{
 					e.printStackTrace();
 					System.exit(1);
 				}
-				fieldType = fieldType.substring(1); //rimuovi la L iniziale nella signature
+				//fieldType = fieldType.substring(1); //rimuovi la L iniziale nella signature
 				environment.pushStack(o.getFieldType(fieldName));
 			}
 			else environment.pushStack(new TypeInt());

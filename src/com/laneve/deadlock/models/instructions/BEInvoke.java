@@ -149,7 +149,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 					pars.add(0,ob);
 					if(environment.getFields().containsKey(methodClass)){ //non considero chiamate a metodi su classi non conosciute
 						lamInv = new LamInvoke(ob.getClassName(), methodName, pars); //TODO contolla se giusto
-						lamC= new LamCouple(LamBase.getTopZbar(environment.getLocks()),ob.getParentsAndFieldName());
+						lamC= new LamCouple(LamBase.getTopZbar(environment.getLocks()),ob.getFlattenName());
 					}
 				}catch(BEException e){
 					e.printStackTrace();
@@ -208,7 +208,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 				
 				if(environment.getFields().containsKey(methodClass)){ //non considero chiamate a metodi su classi non conosciute
 					lamInv = new LamInvoke(methodClass,methodName, pars); //TODO controlla se giusto
-					lamC= new LamCouple(LamBase.getTopZbar(environment.getLocks()),environment.getClassObject(methodClass).getParentsAndFieldName());
+					lamC= new LamCouple(LamBase.getTopZbar(environment.getLocks()),environment.getClassObject(methodClass).getFlattenName());
 				}
 			}catch(BEException e){
 				e.printStackTrace();

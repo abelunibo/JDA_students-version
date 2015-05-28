@@ -10,7 +10,7 @@ public class LamZero extends LamSubExpr {
 
 	@Override
 	public String simplify() {
-		return "0"; //quindi "0"
+		return toString(); //quindi "0"
 	}
 	
 }

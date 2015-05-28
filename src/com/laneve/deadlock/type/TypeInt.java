@@ -11,7 +11,7 @@ public class TypeInt extends Type {
 
 	@Override
 	public String getName() {
-		return className;
+		return className; //cioe' INT
 	}
 
 	@Override

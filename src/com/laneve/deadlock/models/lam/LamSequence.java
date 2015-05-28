@@ -31,8 +31,8 @@ public class LamSequence extends LamBase {
 				
 		Set<String> sSet= new HashSet<String>();
 						
-		ArrayList<LamSubExpr> backup=new ArrayList<LamSubExpr>(lamSeq);	
 		ArrayList<LamSubExpr> tmp=new ArrayList<LamSubExpr>();	
+		
 		
 		for(int i=0; i<lamSeq.size();i++){
 			LamSubExpr lsub = lamSeq.get(i);
@@ -41,15 +41,12 @@ public class LamSequence extends LamBase {
 				tmp.add(lsub);
 				sSet.add(simplified);
 			}
-
 		}
 		
-		lamSeq=tmp;
+		lamSeq=tmp; //LamSequence semplificata in maniera distruttiva
 		
 		String s = toString();
-		
-		lamSeq=backup;
-		
+				
 		return s;
 	}
 

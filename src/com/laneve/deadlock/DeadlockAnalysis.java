@@ -58,7 +58,7 @@ public class DeadlockAnalysis {
 		File folder = new File("bytecode"); //cartella in cui e' contenuto il nostro bytecode
 		ArrayList<LamBase> lams = new ArrayList<LamBase>(); //insieme delle Lam
 		Environment environment;
-		LinkedHashMap<String, LinkedHashMap<String, Type>> fields = new LinkedHashMap<String, LinkedHashMap<String,Type>>(); 
+		LinkedHashMap<String, LinkedHashMap<String, String>> fields = new LinkedHashMap<String, LinkedHashMap<String,String>>(); 
 		//LinkedHashMap<String, String> method = new LinkedHashMap<String, String>(); 
 
 		for ( File fileEntry : folder.listFiles()){
@@ -79,7 +79,7 @@ public class DeadlockAnalysis {
 
 		for(BEClassFile cf : classfiles){ //creiamo dalla constant Pool la mappa <NomeClasse, <nomeCampo, tipoCampo>>
 			String className="",nameAndType="",fieldName = "",type="";
-			LinkedHashMap<String, Type> fieldNameAndTypes = new LinkedHashMap<String, Type>();;
+			LinkedHashMap<String, String> fieldNameAndTypes = new LinkedHashMap<String, String>();;
 			HashMap<String, BEConstantAndInfo> tableEntries = cf.getCostantPool().getTableEntries().getTableEntry();
 			for (Map.Entry<String, BEConstantAndInfo> entry : tableEntries.entrySet()){
 				ArrayList<String> a = entry.getValue().getConstantAndInfo();
@@ -90,27 +90,27 @@ public class DeadlockAnalysis {
 					fieldName = nameAndType.substring(nameAndType.lastIndexOf(" ")+1);
 					if(type.trim().startsWith("L")){
 						type=type.substring(1);
-						fieldNameAndTypes.put(fieldName, TypeObject.getRawTypeObject(type));
+						fieldNameAndTypes.put(fieldName, type);
 					}
 					else
-						fieldNameAndTypes.put(fieldName, new TypeInt());
+						fieldNameAndTypes.put(fieldName, "INT");
 				}
 			}
 			fields.put(className, fieldNameAndTypes);
 		}
 		
-		/* 
+		 
 		  	//print di debug
-			for(Map.Entry<String, LinkedHashMap<String, Type>> entry : fields.entrySet()){
+		/*	for(Map.Entry<String, LinkedHashMap<String, String>> entry : fields.entrySet()){
 
 		    	System.out.println("-----" + entry.getKey());
 		    	
-			    for(Map.Entry<String, Type> entry2 : entry.getValue().entrySet()){
+			    for(Map.Entry<String, String> entry2 : entry.getValue().entrySet()){
 
-			    	if(entry2.getValue().isInt())
-			    		System.out.println(entry2.getKey() + " "+ entry2.getValue().getName());
+			    	if(entry2.getValue().equals("INT"))
+			    		System.out.println(entry2.getKey() + " "+ entry2.getValue());
 			    	else
-			    		System.out.println(entry2.getKey() + " "+ ((TypeObject)entry2.getValue()).getName());
+			    		System.out.println(entry2.getKey() + " "+ entry2.getValue());
 
 			    	
 			    }
