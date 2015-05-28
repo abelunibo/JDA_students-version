@@ -1,11 +1,13 @@
 package com.laneve.deadlock.models;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import com.laneve.deadlock.models.lam.LamBase;
-import com.laneve.deadlock.models.lam.LamSequence;
+import com.laneve.deadlock.models.lam.LamClass;
+import com.laneve.deadlock.models.lam.LamMethod;
 import com.laneve.deadlock.exceptions.BEException;
 
 public class BEClassFile extends BEBase{
@@ -49,23 +51,25 @@ public class BEClassFile extends BEBase{
 		
 	@Override
 	public LamBase generateLam(Environment environment) {
-		LamSequence l = new LamSequence();
+		ArrayList<LamMethod> lamTmp= new ArrayList<LamMethod>();
 		for(Entry<BEMethodHeader, BEMethodDeclaration> m : methods.entrySet()){
 			BEMethodDeclaration methodDeclaration = m.getValue();
-			LamBase lam = methodDeclaration.generateLam(environment);
-			LOGGER.info("-------------------------------------------------------------------------------\n");
-			LOGGER.info("Method Lam:\t"+lam.getLam()+"\n");
-			FILELOGGER.info(lam.getLam()+"\n");
-			l.createSequence(lam);
+			LamMethod lamMtd = (LamMethod) methodDeclaration.generateLam(environment); //ritorna una LamMethod
+			lamTmp.add(lamMtd);
 			
+			//qundo siamo qui abbiamo già la LAM del nostro metodo
+			
+			LOGGER.info("-------------------------------------------------------------------------------\n");
+			LOGGER.info(lamMtd.simplify()+"\n");
+						
 			LOGGER.info("-------------------------------------------------------------------------------\n");
 			LOGGER.info(" FINE metodo "+ m.getKey().getMethodDeclarator().getMethodName() +"\t\t|\tclasse " +
 						environment.getClassName()+"\n");
 			LOGGER.info("-------------------------------------------------------------------------------\n");
 		}
 		
-
+		LamClass lamClass=new LamClass(lamTmp);
 		
-		return l;
+		return lamClass; //ritona una LamClass
 	}
 }

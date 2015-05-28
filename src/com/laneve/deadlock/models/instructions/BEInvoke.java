@@ -2,18 +2,25 @@ package com.laneve.deadlock.models.instructions;
 
 
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+
 import com.laneve.deadlock.exceptions.BEException;
 import com.laneve.deadlock.models.BEConstantPool;
 import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.Environment;
+import com.laneve.deadlock.models.lam.LamAnd;
 import com.laneve.deadlock.models.lam.LamBase;
-import com.laneve.deadlock.models.lam.LamZT;
+import com.laneve.deadlock.models.lam.LamCouple;
+import com.laneve.deadlock.models.lam.LamInvoke;
 import com.laneve.deadlock.type.Type;
 import com.laneve.deadlock.type.TypeInt;
 import com.laneve.deadlock.type.TypeObject;
 
 public class BEInvoke extends BEInstructionLine implements BEInstruction{
-	private String lamEnd="";
+	
+	private LamInvoke lamInv = null; //non e' presente per invocazione di metodi della standard library (tipo start e join)
+	private LamCouple lamC=null; // la coppia di dipendenza tra chiamante e chiamato non e' sempre presente
 
 	public BEInvoke(String text) {
 		instructionName = text;
@@ -21,26 +28,36 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 
 	@Override
 	public LamBase generateLam(Environment environment) {
-		LamBase lzt = new LamZT();		
-		String lamZ = LamZT.getZhatBar(environment.getLocks());
-		String lamT = LamZT.getThat(environment.getQueuethreads());
-		updateEnvironment(environment);
-		if(!lamEnd.isEmpty())
-			lamEnd= " & "+lamEnd;
-		lzt.setLam(lamZ+" & "+lamT+ lamEnd);
-		return lzt;
+				
+		/* la coda dei thread puo' essere aggiornata in una start o una join quindi primo mi salvo la coda attuale
+		 * per poi usarla nelle lam
+		 */
+		LinkedList<TypeObject> threads = new LinkedList<TypeObject>(environment.getQueuethreads());
+		
+		/* devo aggiornare prima l'environment così mentre faccio la pop dei parametri dallo stack 
+		 * li aggiungo alla signature della mia LAM */
+		updateEnvironment(environment); 
+		
+		LamAnd lamAnd =null;
+			lamAnd =new LamAnd(LamBase.getZhatBar(environment.getLocks()), //zhhatbar
+			LamBase.getThat(threads), //that
+			lamInv, //invocazione di metodo
+			lamC); //dipendenza chiamante e chiamato
+		
+		return lamAnd;
 	}
 
 	@Override
 	public void updateEnvironment(Environment environment) {
-		String parameters = "";
+		String parameters="";
 		int numParameters=0;
-		StringBuffer a = new StringBuffer();
-		String obThis= "";
-
-		if(getName().contentEquals("invokespecial")){
+		ArrayList<Type> pars = new ArrayList<Type>();
+		
+		if(getName().contentEquals("invokespecial")){ //init
+			
+			//genera LAM
 			String signature = BEConstantPool.takeCpoolRef(environment.getConstantPool(),getRef());
-			String superClass = signature.substring(signature.lastIndexOf(" ")+1);
+			String methodClass = signature.substring(signature.lastIndexOf(" ")+1);
 			TypeObject ob=null;
 			int openP = signature.indexOf("(");
 			int closedP = signature.indexOf(")");
@@ -53,68 +70,29 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 					}
 				}
 			}
+			
 			try{
-
 				for(int i = 0; i<numParameters; i++){
-					Type type = environment.popStack();
-
-					a.insert(0,type.getName()+","); //rimuovere questa riga se si scommenta parte sotto
-					/*String fieldParam = "";
-					if(!type.isInt()){
-
-						//System.out.println(((TypeObject)type).getRawName());
-						LinkedHashMap<String, LinkedHashMap<String, String>> field = environment.getFields();
-					//	System.out.println(field);
-
-						String name = ((TypeObject)type).getRawName();
-						LinkedHashMap<String, String> fieldNameAndTypes = field.get(((TypeObject)type).getRawName());
-						//TODO da cambiare in funzione ricorsiva che prende la profondita come parametro
-						if(fieldNameAndTypes != null){
-							for (Map.Entry<String, String> f : fieldNameAndTypes.entrySet()){
-								String fieldType = f.getValue().substring(1);
-								fieldParam += fieldType+"£"+f.getKey()+"£"+type.getName()+",";
-								if(!type.isInt()){
-									LinkedHashMap<String, String> fieldNameAndTypes2 = field.get(fieldType);
-									if(fieldNameAndTypes2 != null){
-										for (Map.Entry<String, String> f2 : fieldNameAndTypes2.entrySet()){
-											String fieldType2 = f2.getValue();
-											fieldParam += fieldType2+"£"+f2.getKey()+"£"+fieldType;
-											//System.out.println(fieldParam);
-										}
-									}
-								}
-							}
-						}
-					}
-					a.insert(0,type.getName()+","+fieldParam);*/
+					Type type = environment.popStack(); 
+					pars.add(0,type); // l'ultimo parametro va in cima perchè i parametri nello stack sono in ordine inverso
 				}
-
-				a.insert(0,"(");
-				ob= (TypeObject) environment.popStack();
-				obThis = ob.getName();
-				if(!ob.getRawName().equals(superClass)) // siamo nell'init della superclasse
-					a.insert(1,superClass +",");
-				else //chiama init della mia classe
-					a.insert(1,obThis +",");
-				a.deleteCharAt(a.length()-1);
-				a.insert(a.length(),")");
-				a.insert(0," "+environment.getClassName().toUpperCase());
-			} catch (BEException e) {
+	
+				ob= (TypeObject) environment.popStack(); //il tipo dell'oggetto da inizializzare
+				pars.add(0,ob);
+			}
+			catch(BEException e){
 				e.printStackTrace();
 				System.exit(1);
 			}
-
-
-			if(ob.getRawName().equals(superClass)){ //è il nostro init
-				obThis = "(v " + obThis + ")";
-				this.lamEnd= obThis + a.toString();
-			} else { //è l'init della superclasse
-				this.lamEnd= a.toString();
-			}
-
-
-		}
-		else if(getName().contentEquals("invokevirtual")){
+			if(environment.getFields().containsKey(methodClass)) //TODO controlla se giusto
+				try {
+					lamInv = new LamInvoke(methodClass,ob.getClassName(), pars);
+				} catch (BEException e) {
+					e.printStackTrace();
+					System.exit(1);
+				} 				
+	
+		}else if(getName().contentEquals("invokevirtual")){
 
 
 			String signature = BEConstantPool.takeCpoolRef(environment.getConstantPool(),getRef());
@@ -123,7 +101,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 			if(signature.equals("() start java/lang/Thread")){ //invokevirtual start
 
 				try {
-					environment.addThread(environment.popStack());
+					environment.addThread((TypeObject)environment.popStack());
 				} catch (BEException e) {
 					e.printStackTrace();
 					System.exit(1);
@@ -140,58 +118,55 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 					System.exit(1);
 				}
 
-				String topZ = LamZT.getTopZbar(environment.getQueuethreads());
-				if(topZ!=null)
-					this.lamEnd= "("+ topZ + "," + tName.getName() +")";
+				lamC= new LamCouple(LamBase.getTopZbar(environment.getLocks()),tName.getIndexName());
+
 			} //fine join
 
 			else{ //invokevirtual standard
 
+				//genera LAM
+				String methodClass = signature.substring(signature.lastIndexOf(" ")+1);
+				String methodName = signature.substring(signature.indexOf(" ")+1,signature.lastIndexOf(" "));
+				TypeObject ob=null;
 				int openP = signature.indexOf("(");
 				int closedP = signature.indexOf(")");
-				String mName = signature.substring(signature.indexOf(" ")+1,signature.lastIndexOf(" "));
 				parameters =  signature.substring(openP+1, closedP);
 				numParameters=0;
 				if(parameters.contains(";")){
-					//Logger.logInfo(parameters);
 					for (int i = 0; i < parameters.length(); i++) {
 						if (parameters.charAt(i) == ';') {
 							numParameters++;
 						}
 					}
 				}
-
 				try{
 					for(int i = 0; i<numParameters; i++){
-						a.insert(0,environment.popStack().getName()+",");
+						Type type = environment.popStack();
+						pars.add(0,type);
 					}
-					a.insert(0,"(");
-					obThis = environment.popStack().getName();
-					a.insert(1,obThis+",");
-					a.deleteCharAt(a.length()-1);
-					a.insert(a.length(),")");
-					mName.replaceAll(".", "/");
-					if(!mName.contains("/")){
-						mName= environment.getClassName() + "/" +mName;
+	
+					ob= (TypeObject) environment.popStack(); // il tipo dell'oggetto su cui ho invocato il metodo
+					pars.add(0,ob);
+					if(environment.getFields().containsKey(methodClass)){ //non considero chiamate a metodi su classi non conosciute
+						lamInv = new LamInvoke(ob.getClassName(), methodName, pars); //TODO contolla se giusto
+						lamC= new LamCouple(LamBase.getTopZbar(environment.getLocks()),ob.getParentsAndFieldName());
 					}
-					a.insert(0, mName.toUpperCase());
-				} catch (BEException e) {
+				}catch(BEException e){
 					e.printStackTrace();
 					System.exit(1);
 				}
 
-
-				this.lamEnd= a.toString();
-
-				String topZ = LamZT.getTopZbar(environment.getQueuethreads());
-				if(topZ!=null)
-					this.lamEnd= lamEnd +" & " + "("+ topZ + "," + obThis +")";
 			}
-
+			
+			//devo aggiungere allo stack il tipo di ritorno (se c'e')
 			int index = signature.indexOf(")");
 			String resultType= signature.substring(index,index+1);
+			
+			if(resultType.equals("V")){
 
-			if(resultType.equals("L")){
+				return; //tipo di ritorno void niente da aggiungere sullo stack
+				
+			}else if(resultType.equals("L")){
 
 				String resultTypeClass = signature.substring(index+1,signature.indexOf(" "));
 
@@ -206,67 +181,60 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 		}
 		else if(getName().contentEquals("invokestatic")){
 
+			//genera LAM
 			String signature = BEConstantPool.takeCpoolRef(environment.getConstantPool(),getRef());
-
+			String methodClass = signature.substring(signature.lastIndexOf(" ")+1);
+			String methodName = signature.substring(signature.indexOf(" ")+1,signature.lastIndexOf(" "));
 			int openP = signature.indexOf("(");
 			int closedP = signature.indexOf(")");
 			parameters =  signature.substring(openP+1, closedP);
-			String mName = signature.substring(signature.indexOf(" ")+1,signature.lastIndexOf(" "));
-			String className = signature.substring(signature.lastIndexOf(" ")+1);
 			numParameters=0;
 			if(parameters.contains(";")){
-				//Logger.logInfo(parameters);
 				for (int i = 0; i < parameters.length(); i++) {
 					if (parameters.charAt(i) == ';') {
 						numParameters++;
 					}
 				}
-
 			}
-
+			
 			try{
 				for(int i = 0; i<numParameters; i++){
-					a.insert(0,environment.popStack().getName()+",");
+					Type type = environment.popStack();
+					pars.add(type);
 				}
-				a.insert(0,"(");
-				a.insert(a.length(),")");
-				mName.replaceAll(".", "/");
-				if(!mName.contains("/")){
-					mName= environment.getClassName() + "/" +mName;
+	
+				// il tipo dell'oggetto su cui ho invocato il metodo e' la classe quindi non devo recuperare
+				// alcun oggetto dallo stack
+				
+				if(environment.getFields().containsKey(methodClass)){ //non considero chiamate a metodi su classi non conosciute
+					lamInv = new LamInvoke(methodClass,methodName, pars); //TODO controlla se giusto
+					lamC= new LamCouple(LamBase.getTopZbar(environment.getLocks()),environment.getClassObject(methodClass).getParentsAndFieldName());
 				}
-				a.insert(0,mName.toUpperCase());
-			} catch (BEException e) {
+			}catch(BEException e){
 				e.printStackTrace();
 				System.exit(1);
 			}
-
-
-			// non devo recuperare alcun oggetto this su cui viene invocato il metodo perchè è static
-
-			this.lamEnd = obThis + a.toString();
-
-			String topZ = LamZT.getTopZbar(environment.getQueuethreads());
-
-			if(topZ!=null)
-				this.lamEnd= lamEnd +" & " + "("+ topZ + "," + className +")";
-
+			//devo aggiungere allo stack il tipo di ritorno (se c'e')
 			int index = signature.indexOf(")");
 			String resultType= signature.substring(index,index+1);
-
-			if(resultType.equals("L")){
-
+			
+			if(resultType.equals("V")){
+	
+				return; //tipo di ritorno void niente da aggiungere sullo stack
+				
+			}else if(resultType.equals("L")){
+	
 				String resultTypeClass = signature.substring(index+1,signature.indexOf(" "));
-
+	
 				environment.pushStack(new TypeObject(resultTypeClass,environment.getFields(),false));
-
+	
 			}
 			else if(resultType.equals("I")){
-
+	
 				environment.pushStack(new TypeInt());
 			}
 
 		}
-
 
 	}
 }

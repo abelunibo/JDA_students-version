@@ -1,43 +1,73 @@
 package com.laneve.deadlock.models.lam;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
+/** Alla fine la Lam di un metodo sara' una LamSequence*/
 public class LamSequence extends LamBase {
-	public String lam="";
 	
-	private ArrayList<String> lArr;
+	private ArrayList<LamSubExpr> lamSeq = new ArrayList<LamSubExpr>();
 	
-	public LamSequence(){
+	public LamSequence(LamSubExpr...lamsub){
 		
-		lArr = new ArrayList<String>();
+	    for (LamSubExpr l : lamsub) { //TODO si possono rifiutare le LamZero da subito
+	    	lamSeq.add(l);
+	    }
 	}
-	
-	public String getLam() {
-		return lam;
+
+	public LamSequence(ArrayList<LamSubExpr> lamsub){
+		
+	    for (LamSubExpr l : lamsub) { //TODO si possono rifiutare le LamZero da subito
+	    	lamSeq.add(l);
+	    }
 	}
-	
-	public void setLam(String lam) {
-		this.lam = lam;
-	}
-	
+
 	@Override
-	public void semplify(LamBase lam) {
+	public String simplify() {
+		
+		/* chiamo un semplify ricorsivamente su tutte le mie lam ed elimino quelle uguali */
+				
+		Set<String> sSet= new HashSet<String>();
+						
+		ArrayList<LamSubExpr> backup=new ArrayList<LamSubExpr>(lamSeq);	
+		ArrayList<LamSubExpr> tmp=new ArrayList<LamSubExpr>();	
+		
+		for(int i=0; i<lamSeq.size();i++){
+			LamSubExpr lsub = lamSeq.get(i);
+			String simplified = lsub.simplify();
+			if(!simplified.equals("0") && !sSet.contains(simplified)){
+				tmp.add(lsub);
+				sSet.add(simplified);
+			}
+
+		}
+		
+		lamSeq=tmp;
+		
+		String s = toString();
+		
+		lamSeq=backup;
+		
+		return s;
+	}
+
+	@Override
+	public String toString() {
+
+		String s="";
+		if(lamSeq.size() > 0){
+			for (LamSubExpr l : lamSeq) {
+		        s+=l.toString() + "; ";
+		    }
+			if(s.lastIndexOf(";")==s.length()-2) // l'ultimo ';' non ci deve essere 
+				s=s.substring(0, s.lastIndexOf(";"));
+		}else s="0";
+
+		return s;
 		
 	}
 
-	public void createSequence(LamBase generateLam) {
-		
-		String genLam = generateLam.getLam();
-				
-		if(lArr.size()>0 && lArr.contains(genLam)){ 
-			
-			//non aggiungere niente se lam gia' presente 
-			
-		} else if((!(genLam.trim().equals("0") || genLam.trim().equals("") || genLam.trim().equals("0 & 0")))){
-			lam += genLam+" ; ";
-			lArr.add(genLam);
-		}
-			
-	}
 
 }

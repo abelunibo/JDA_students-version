@@ -22,6 +22,7 @@ import com.laneve.deadlock.models.BEConstantAndInfo;
 import com.laneve.deadlock.models.BEConstantPool;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
+import com.laneve.deadlock.models.lam.LamClass;
 import com.laneve.deadlock.type.Type;
 import com.laneve.deadlock.type.TypeInt;
 import com.laneve.deadlock.type.TypeObject;
@@ -44,10 +45,12 @@ public class DeadlockAnalysis {
 		
 		FILELOGGER.setLevel(Level.INFO);
 		FileHandler hand;
-		hand = new FileHandler("lams_log_file.txt");
+		
+		//TODO se la cartella 'output' non esiste il FileHandler non la crea (fare un controllo e crearla prima)
+		hand = new FileHandler("output/lams_log_file.txt");
 		hand.setFormatter(new LamsFileFormatter());
 		Handler console = rootLog.getHandlers()[0];
-		FILELOGGER.removeHandler(console);
+		FILELOGGER.setUseParentHandlers(false);
 		FILELOGGER.addHandler(hand);
 
 		ArrayList<BEClassFile> classfiles = new ArrayList<BEClassFile>();
@@ -61,7 +64,7 @@ public class DeadlockAnalysis {
 		for ( File fileEntry : folder.listFiles()){
 
 //			if(!fileEntry.getName().contains("Esempio")) continue;
-	//		if(fileEntry.getName().contains("Deadlock")) continue;
+			if(fileEntry.getName().contains("Deadlock")) continue;
 
 			FileInputStream in = new FileInputStream(fileEntry);
 			ANTLRInputStream input = new ANTLRInputStream(in);
@@ -95,7 +98,10 @@ public class DeadlockAnalysis {
 			}
 			fields.put(className, fieldNameAndTypes);
 		}
-		/* for(Map.Entry<String, LinkedHashMap<String, Type>> entry : fields.entrySet()){
+		
+		/* 
+		  	//print di debug
+			for(Map.Entry<String, LinkedHashMap<String, Type>> entry : fields.entrySet()){
 
 		    	System.out.println("-----" + entry.getKey());
 		    	
@@ -109,34 +115,17 @@ public class DeadlockAnalysis {
 			    	
 			    }
 		 }*/
-	/*	for(BEClassFile cf : classfiles){
-			String className="";
-			String nameAndType="";
-			String methodName = "";
-			String type="";
-			String methodNameAndTypes = "";
-			HashMap<String, BEConstantAndInfo> tableEntries = cf.getCostantPool().getTableEntries().getTableEntry();
-			for (Map.Entry<String, BEConstantAndInfo> entry : tableEntries.entrySet()){
-				ArrayList<String> a = entry.getValue().getConstantAndInfo();
-				if(a.get(0).contentEquals("Methodref")){
-					className = BEConstantPool.takeCpoolRef( cf.getCostantPool(), a.get(1));
-					nameAndType = BEConstantPool.takeCpoolRef( cf.getCostantPool(), a.get(2));
-					type = nameAndType.substring(0, nameAndType.indexOf(" "));
-					methodName = nameAndType.substring(nameAndType.lastIndexOf(" ")+1);
-					//System.out.println(className+"."+methodName);
-					//System.out.println(className+"."+methodName+""+type);
-					//TODO questa mappa mi serve per prendere i riferimenti dei metodi nell'invoke
-					//e aggiungere i parametri ricorsivamente
-					methodNameAndTypes = className+"."+methodName+""+type;
-				}
-			}
-			method.put(className, methodNameAndTypes);
-		}*/
 		
 		for(BEClassFile cf : classfiles){
 			environment = new Environment(fields , cf.getCostantPool(),cf.getClassName());
-			lams.add(cf.generateLam(environment));
-		}
-
+			LamClass lam= (LamClass) cf.generateLam(environment); //contiene le Lam per tutti i metodi
+			lams.add(lam); //lams alla fine sara' un insieme di LamClass
+			
+			//creo il file delle lam per il tool DF4ABS			
+			String cleanedLam = LamBase.cleanLamString(lam.simplify().toString());
+			FILELOGGER.info(cleanedLam+"\n");
+			
+		}		
+		
 	}
 }

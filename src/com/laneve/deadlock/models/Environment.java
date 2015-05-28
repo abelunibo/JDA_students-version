@@ -4,23 +4,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
-import com.laneve.bytecode.parser.BytecodeParser.FormalParameterContext;
 import com.laneve.deadlock.exceptions.BEException;
 import com.laneve.deadlock.type.Type;
-import com.laneve.deadlock.type.TypeInt;
 import com.laneve.deadlock.type.TypeObject;
 
 public class Environment {
-	BEConstantPool constantPool;
-	String className;
-	LinkedList<Type>  operandStack, locks, queueThreads;
-	LinkedHashMap<String, Type> localVar; 
-	BEMethodBody currentMethodBody;
-	private LinkedHashMap<String, LinkedHashMap<String, Type>> fields;
 	
-	//Teniamo traccia di come è state tipata la signature del metodo
-	private String currentMethodsLAMSignature;
+	//in comune a tutti i metodi di una classe
+	String className;
+	BEConstantPool constantPool;
+	private LinkedHashMap<String, LinkedHashMap<String, Type>> fields;
+	private HashMap<String, TypeObject> classObjects;
+	
+	//per un singolo metodo
+	LinkedList<Type>  operandStack; 
+	LinkedList<TypeObject> locks, queueThreads;
+	LinkedHashMap<String, Type> localVar;
+	BEMethodBody currentMethodBody;	
 
 	
 	public Environment(LinkedHashMap<String, LinkedHashMap<String, Type>> fields,
@@ -28,11 +30,29 @@ public class Environment {
 		this.constantPool = costantPool;	
 		this.className = className;
 		this.fields = fields;	
+		//creo gli oggetti per ogni classe
+		classObjects= new HashMap<String, TypeObject>();
+		for (Map.Entry<String, LinkedHashMap<String, Type>> entry : fields.entrySet()){
+			String key = entry.getKey();
+			TypeObject t = new TypeObject(key,fields);
+			if(classObjects.containsKey(key)){
+				System.err.println("Ci sono due classi con lo stesso nome nella mappa fields");
+				System.exit(1);
+			}
+			classObjects.put(entry.getKey(), t);
+		}
 	}
+	
+	
+	public TypeObject getClassObject(String className){
+		return classObjects.get(className);
+	}
+	
 	
 	public LinkedHashMap<String, LinkedHashMap<String, Type>> getFields() {
 		return fields;
 	}
+	
 	public String getClassName(){
 		return className;
 	}
@@ -45,108 +65,52 @@ public class Environment {
 
 		//inizializza le strutture
 		operandStack = new LinkedList<Type>();
-		locks = new LinkedList<Type>();
-		queueThreads = new LinkedList<Type>();
+		locks = new LinkedList<TypeObject>();
+		queueThreads = new LinkedList<TypeObject>();
 		localVar = new LinkedHashMap<String, Type>();
 		currentMethodBody=mb;
 
-		ArrayList<Type> aType= new ArrayList<Type>();
+		//recupero i parametri dalla signature del metodo
+		ArrayList<Type> pars= mb.getLamSignature().getParameters();
 		
-		TypeObject t=new TypeObject(className,fields,true); //il this del metodo
-		aType.add(t);
+		boolean isStatic=false;
 		
-		//recupero il nome del metodo
-		String methodName="";
-		try {
-			methodName = mb.getMethodHeader().getMethodDeclarator().getMethodName();
-		} catch (BEException e1) {
-			e1.printStackTrace();
+		TypeObject t= (TypeObject) pars.get(0); //il tipo dell'oggetto this o la classe se il metodo e' statico
+		
+		//setta i parametri nelle corrispondenti posizioni della localVar
+		
+		int j=0;
+		
+		if(mb.getMethodModifier() != null && 
+				mb.getMethodModifier().getModifier().contains("static")){ //ha un modificatore statico
+			isStatic=true;
+		}
+		else{  
+			localVar.put("0", t); //nella posizione 0 delle variabili locali c'e' il this se il metodo non e' statico
+			j++;
+		}
+
+		
+		for(int i=0;i<pars.size(); i++){
+			localVar.put(String.valueOf(j),pars.get(i));
+			j++;
 		}
 		
 		//controllo se metodo synchronized
 		if(mb.getMethodModifier() != null && 
 				mb.getMethodModifier().getModifier().contains("synchronized")){ 
-			// se metodo e' synchronized  aggiungi il tipo del this ai lock
-			addLock(t);  
-		}
-
-		//setta i parametri nelle corrispondenti posizioni della localVar
-		ArrayList<FormalParameterContext> pars=null;
-		try {
-			pars = mb.getMethodHeader().getMethodDeclarator().getFormalParameters();
-		} catch (BEException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-
-		int j=0;
-
-		if(mb.getMethodModifier() != null && 
-				!mb.getMethodModifier().getModifier().contains("static")){ //non ha un modificatore statico
-			//aggiungo il this in posizione 0 delle localVar
-			localVar.put("0", t);
-			j++;
-		}
-
-		for(int i=0;i<pars.size(); i++){
-			Type t1=null;
-			if(pars.get(i).getText().equals("int")){
-				t1=new TypeInt();
-				localVar.put(String.valueOf(j),t1);
-			}
-			else{
-				t1= new TypeObject(pars.get(i).getText(),fields,true);
-				localVar.put(String.valueOf(j), t1);
-			}
-			
-			aType.add(t1);
-			
-			j++;
+			// se metodo e' synchronized  aggiungi il tipo dell'oggetto this o della classe (se e' statico) ai lock
+			if(isStatic)
+				addLock(t);
 		}
 		
-		
-		//creo la signature per la LAM del metodo
-		
-		String mName=methodName;
-		if(!methodName.contains(".") && !methodName.contains("/") && !methodName.equals("main")) //il metodo main deve essere unico
-			mName=className+"."+mName;
-	
-		String mSignature=mName.toUpperCase() + "(";
-		
-		int k=0;
-		
-		for(int i =0; i<aType.size() ;i++){
-		
-			if(aType.get(i).isInt()) //i tipi interi non li mettiamo nella signature dei metodi
-				continue;
-			else{
-				mSignature+=TypeObject.flattenedFields(((TypeObject)aType.get(i)), "", "")+", ";
-				k++;
-			}
-		}
-
-		if(j>0)
-			mSignature = mSignature.substring(0, mSignature.lastIndexOf(",")); //rimuovo l'ultima virgola
-		mSignature+=")";
-
-		currentMethodsLAMSignature = mSignature;
-		System.out.println(mSignature);
 	}
-
 	
 	public void closeScope() {
 		operandStack = null;
 		locks = null;
 		queueThreads = null;
 		currentMethodBody=null;
-		currentMethodsLAMSignature=null;
-	}
-	
-	
-	public String getCurrentMethodLAMSignature(){
-		
-		return currentMethodsLAMSignature;
-		
 	}
 
 	public BEConstantPool getConstantPool() {
@@ -161,11 +125,11 @@ public class Environment {
 		return operandStack;
 	}
 
-	public LinkedList<Type> getLocks() {
+	public LinkedList<TypeObject> getLocks() {
 		return locks;
 	}
 
-	public void addLock(Type lock){
+	public void addLock(TypeObject lock){
 		this.locks.add(lock);
 	}
 
@@ -177,11 +141,11 @@ public class Environment {
 		return o;
 	}
 
-	public LinkedList<Type> getQueuethreads() {
+	public LinkedList<TypeObject> getQueuethreads() {
 		return queueThreads;
 	}
 
-	public void addThread(Type t){
+	public void addThread(TypeObject t){
 		queueThreads.add(t);
 	}
 
@@ -229,14 +193,13 @@ public class Environment {
 
 	}
 
-
 	//TODO usata solo per debug
-	public void setLocks(LinkedList<Type> z) {
+	public void setLocks(LinkedList<TypeObject> z) {
 		this.locks=z;
 	}
 
 	//TODO usata solo per debug
-	public void setQueuethreads(LinkedList<Type> t) {
+	public void setQueuethreads(LinkedList<TypeObject> t) {
 		this.queueThreads=t;
 
 	}

@@ -17,6 +17,11 @@ public class TypeObject extends Type{
 	
 	Integer index = null; //indice null se oggetto non ha index
 	
+	boolean FLATTEN=true;
+	
+	TypeObject parent = null; //se sono un campo tengo traccia del mio tipo padre
+	String fieldName = null; //se sono un campo so il mio nome;
+	
 	//ogni tipo oggetto ha un insieme di campi che hanno un nome e un tipo
 	LinkedHashMap <String,Type> fieldsRecord=null; 
 	
@@ -41,6 +46,13 @@ public class TypeObject extends Type{
 	}
 	
 	
+	//costruttore per gli oggetti corrispondenti alle classi (un oggetto per classe)
+	public TypeObject(String className, LinkedHashMap<String,LinkedHashMap<String,Type>> fields){
+		super(className);
+		fieldsRecord = new LinkedHashMap <String,Type>();
+		setFieldsRecursion(this, fields, DEPTH, true);
+	}
+	
 	/** Crea un oggetto di tipo NULL*/
 	public TypeObject(){
 		super("NULL");
@@ -51,10 +63,13 @@ public class TypeObject extends Type{
 	// usato solo da metodo getRawTypeObject
 	private TypeObject(String className){
 		super(className);
+		fieldsRecord = new LinkedHashMap <String,Type>();
 		isRawTypeObject=true;
 	}
 	
-	/* ritorna un oggetto che identifica una classe */
+	/* ritorna un oggetto che non ha campi e non puo' essere indicizzato
+	 * senza andare ricorsivamente a generarne i campi
+	 * (usato unicamente per la costruzione della mappa fields in com.laneve.deadlock.DeadlockAnalysis) */
 	public static TypeObject getRawTypeObject(String className){
 		TypeObject t = new TypeObject(className);
 		return t;
@@ -79,16 +94,18 @@ public class TypeObject extends Type{
 		
 		if (depth==0) return; //termina ricorsione
 
-		if(fields.get(startType.getRawName())!=null){ //abbiamo la classe nella nostra mappa
-			LinkedHashMap<String,Type> typeFields = new LinkedHashMap <String,Type>(fields.get(startType.getRawName()));
+		if(fields.get(startType.getClassName())!=null){ //abbiamo la classe nella nostra mappa
+			LinkedHashMap<String,Type> typeFields = new LinkedHashMap <String,Type>(fields.get(startType.getClassName()));
 		    for(Map.Entry<String, Type> entry : typeFields.entrySet()){
 				if(entry.getValue().isInt()) continue; //interi considerati sempre inizializzati
 				else{ //campo oggetto
 					TypeObject t =null;
 					
 					if(initializedFields){
-						//vengono creato un nuovo oggetto ognuno con un nuovo indice
-						t = new TypeObject(((TypeObject)entry.getValue()).getRawName(), fields, depth,initializedFields); 
+						//viene creato un nuovo oggetto con un nuovo indice
+						t = new TypeObject(((TypeObject)entry.getValue()).getClassName(), fields, depth,initializedFields); 
+						t.fieldName=entry.getKey();
+						t.parent=startType;
 						try {
 							t.setIndex(); //indice fittizio
 						} catch (BEException e) {
@@ -124,7 +141,8 @@ public class TypeObject extends Type{
 							s+= typeAndFields(((TypeObject)entry.getValue()),depth-1)+", " ;	
 						}
 					}
-					s= s.substring(0, s.lastIndexOf(",")); //rimuovo l'ultima virgola
+					if(s.lastIndexOf(",")==s.length()-2)
+						s= s.substring(0, s.lastIndexOf(",")); //rimuovo l'ultima virgola
 					s+="]";
 				}
 				
@@ -132,9 +150,12 @@ public class TypeObject extends Type{
 		}
 		
 		
+		
+		
 		// ritorna una stringa che rappresenta la vista appiattita dei campi dell'oggetto di tipo t
 		public static String flattenedFields(TypeObject t, String leftSeparator, String rightSeparator){		
-			
+				
+				
 				if (leftSeparator == ""){
 					leftSeparator = "->"; //separatore di defalut
 				}
@@ -145,8 +166,11 @@ public class TypeObject extends Type{
 				
 				if(t == null) return "⊥";
 				
-				String s = t.getIndexName() +", ";
+				if(t.isRawTypeObject) return t.className;
+				
+				String s = t.getIndexName();
 				if(!t.getFieldsRecord().isEmpty()){
+					s+=", ";
 					for(Map.Entry<String, Type> entry : t.getFieldsRecord().entrySet()){
 						String fieldName=entry.getKey(); //nome campo
 						if(entry.getValue()!=null && entry.getValue().isInt()) continue; //evito gli INT
@@ -155,7 +179,8 @@ public class TypeObject extends Type{
 						}
 					}
 				}
-				s= s.substring(0, s.lastIndexOf(",")); //rimuovo l'ultima virgola
+				if(s.lastIndexOf(",")==s.length()-2)
+					s= s.substring(0, s.lastIndexOf(",")); //rimuovo l'ultima virgola
 				return s;
 		}
 	
@@ -166,16 +191,12 @@ public class TypeObject extends Type{
 		if(!fieldType.isInt() && this.fieldsRecord.get(fieldName)!=null &&
 				!this.fieldsRecord.get(fieldName).equals((TypeObject)fieldType))
 			throw new BEException("Non puoi modificare un campo gia' inizializzato");
-		else if (!fieldType.isInt() && fieldType != null){
+		else if (fieldType != null && !fieldType.isInt() && !isRawTypeObject){
 			this.fieldsRecord.put(fieldName, fieldType);
 		}
 		//altrimenti non devo fare niente (i campi INT sono da subito settati a INT e mai a bottom)
 	}
 	
-	/* ritorna il tipo di un campo*/
-	public Type getFieldType(String fieldName){
-		return fieldsRecord.get(fieldName);
-	}
 	
 	/* ritorna la mappa con tutti i campi dell'oggetto */
 	public LinkedHashMap<String,Type> getObjectFields(){
@@ -195,9 +216,10 @@ public class TypeObject extends Type{
 	}
 	
 	
+	//restituisce l'oggetto con l'indice appena assegnato
 	@Override
 	public TypeObject assignIndex(){
-		if(index==null){
+		if(index==null && !isRawTypeObject){
 			try {
 				setIndex(); //aggiorno il mio indice
 			} catch (BEException e) {
@@ -209,28 +231,54 @@ public class TypeObject extends Type{
 	}
 	
 	
-	//ritorna il nome raw del tipo
-	public String getRawName() {
+	//ritorna il nome base della classe del tipo
+	public String getClassName() {
 		return className;
 	}
 	
 	@Override
 	public String getName(){
-		if(!isRawTypeObject)
-			return typeAndFields(this,DEPTH);
-		else
-			return className; //tipi nella tabella globale dei campi
+		
+		if(FLATTEN){ //voglio i campi appiattiti per la compatibilita' con il tool DF4ABS
+			return flattenedFields(this, "", "");
+		}else{
+			if(!isRawTypeObject)
+				return typeAndFields(this,DEPTH);
+			else{
+				return className;
+			}
+				
+		}
 	}
 	
 	
-	//ritorna il nome del tipo indicizzato
+	public String getParentsAndFieldName(){
+	
+		String s="";
+		
+		if(fieldName!=null)
+			s+=fieldName;
+		
+		s+= getIndexName();
+		
+		TypeObject p= parent;
+		if(p!=null){
+			s=p.getIndexName()+s;
+		}
+		
+		return s;
+	
+	}
+	
+	
+	//ritorna il nome del tipo comprensivo di indice
 	public String getIndexName() {
 				
 		String s=this.className;
-		
+				
 		if(index!=null)
-			s+= "?"+index+"?";
-			
+			s+= index;
+	
 		return s;
 	}
 	
@@ -251,6 +299,11 @@ public class TypeObject extends Type{
 	// ritorna un indice fresh
 	static int getFreshIndex(){
 		return indexCounter++;
+	}
+
+
+	public Type getFieldType(String fieldName) {
+		return fieldsRecord.get(fieldName);
 	}
 	
 }

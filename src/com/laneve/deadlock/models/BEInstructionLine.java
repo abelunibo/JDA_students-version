@@ -1,12 +1,11 @@
 package com.laneve.deadlock.models;
 
 import com.laneve.deadlock.models.lam.LamBase;
-import com.laneve.deadlock.models.lam.LamZT;
 
 public class BEInstructionLine extends BEBase {
 	protected String instructionName;
 	protected String number;
-	//it is the local var index in other compiler
+	//it is the local var index in other compilers
 	protected String nat;
 	protected String ref;
 	protected String index;
@@ -48,10 +47,7 @@ public class BEInstructionLine extends BEBase {
 	}
 
 	@Override
-	public LamBase generateLam(Environment environment) {
-		LamBase l = new LamZT();
-		l.setLam(instructionName);
-		return l;
-	}	
+	public LamBase generateLam(Environment environment) {return null;}
+
 }
 	

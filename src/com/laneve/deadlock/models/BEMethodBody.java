@@ -1,5 +1,6 @@
 package com.laneve.deadlock.models;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -7,9 +8,10 @@ import java.util.logging.Logger;
 
 import com.laneve.deadlock.exceptions.BEException;
 import com.laneve.deadlock.models.lam.LamBase;
+import com.laneve.deadlock.models.lam.LamInvoke;
 import com.laneve.deadlock.models.lam.LamSequence;
+import com.laneve.deadlock.models.lam.LamSubExpr;
 import com.laneve.deadlock.type.Type;
-import com.laneve.deadlock.type.TypeObject;
 
 
 public class BEMethodBody extends BEBase{
@@ -19,10 +21,9 @@ public class BEMethodBody extends BEBase{
 	HashMap<String, Integer> instructionMap;
 	BEInstructionLine instructionTemp;
 	Integer nextGoToInstruction = null;
+	private LamInvoke lamInvokeSignature =null;
 
 	private static Logger LOGGER = Logger.getLogger("");
-	private static Logger FILELOGGER = Logger.getLogger("lams_log");
-
 
 	public BEMethodBody(LinkedList<BEInstructionLine> instructions,
 			HashMap<String, Integer> instructionMap) {
@@ -56,6 +57,15 @@ public class BEMethodBody extends BEBase{
 	public BEMethodHeader getMethodHeader() throws BEException{
 		return methodHeader;
 	}
+	
+	public void setLamSignature(LamInvoke lamInv){
+		
+		this.lamInvokeSignature=lamInv;
+	}
+	
+	public LamInvoke getLamSignature(){
+		return this.lamInvokeSignature;
+	}
 
 	public BEMethodModifier getMethodModifier() {
 		return methodModifier;
@@ -75,8 +85,6 @@ public class BEMethodBody extends BEBase{
 
 	@Override
 	public LamBase generateLam(Environment environment) {
-		LamSequence l = new LamSequence();
-		environment.openScope(this);
 		
 		try {
 			LOGGER.info("-------------------------------------------------------------------------------\n");
@@ -88,9 +96,11 @@ public class BEMethodBody extends BEBase{
 			e.printStackTrace();
 		}
 		
+		ArrayList<LamSubExpr> lamArray = new ArrayList<LamSubExpr>();
+		
 		for(int i = 0 ; i < instructions.size() ;i++){			
 
-			
+			//salto per gestire il goto
 			if(nextGoToInstruction != null){
 				i = nextGoToInstruction;
 				nextGoToInstruction = null;
@@ -136,22 +146,24 @@ public class BEMethodBody extends BEBase{
 				if(!vars.equals(""))
 					vars = vars.substring(0, vars.length()-2);
 				LOGGER.info("QueueThreads:\t ["+vars+"]\n");
-		
-				LamBase lb= instructions.get(i).generateLam(environment);
 			
-				l.createSequence(lb);
+			/////////
+				
+			LamSubExpr lamSub= (LamSubExpr) instructions.get(i).generateLam(environment); //Ritorna una lam LamSubExpr
+					
+			lamArray.add(lamSub);
+		
+			////////
 			
 			/* print instruction's lam */
-			LOGGER.info("Lam:\t\t ["+lb.getLam()+"]");
+			LOGGER.info("Lam:\t\t ["+lamSub.toString()+"]\n");
 			
 			instructionTemp = instructions.get(i);
 
 		}
 		
-		String toPrint = environment.getCurrentMethodLAMSignature();
-		FILELOGGER.info(toPrint +" = ");
+		LamSequence l = new LamSequence(lamArray);
 
-		environment.closeScope();
-		return l;
+		return l; // ritorna una LamSequence
 	}
 }
