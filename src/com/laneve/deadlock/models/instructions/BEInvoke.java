@@ -84,7 +84,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 				e.printStackTrace();
 				System.exit(1);
 			}
-			if(environment.getFields().containsKey(methodClass)) //TODO controlla se giusto
+			if(environment.getFields().containsKey(methodClass)) //sto invocando un costruttore di una delle classi user-defined
 				try {
 					lamInv = new LamInvoke(methodClass,ob.getClassName(), pars);
 				} catch (BEException e) {
@@ -118,7 +118,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 					System.exit(1);
 				}
 
-				lamC= new LamCouple(LamBase.getTopZbar(environment.getLocks()),tName.getIndexName());
+				lamC= new LamCouple(LamBase.getTopZbar(environment.getLocks()),tName.getName());
 
 			} //fine join
 
@@ -148,8 +148,8 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 					ob= (TypeObject) environment.popStack(); // il tipo dell'oggetto su cui ho invocato il metodo
 					pars.add(0,ob);
 					if(environment.getFields().containsKey(methodClass)){ //non considero chiamate a metodi su classi non conosciute
-						lamInv = new LamInvoke(ob.getClassName(), methodName, pars); //TODO contolla se giusto
-						lamC= new LamCouple(LamBase.getTopZbar(environment.getLocks()),ob.getFlattenName());
+						lamInv = new LamInvoke(ob.getClassName(), methodName, pars); 
+						lamC= new LamCouple(LamBase.getTopZbar(environment.getLocks()),ob.getName());
 					}
 				}catch(BEException e){
 					e.printStackTrace();
@@ -208,7 +208,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 				
 				if(environment.getFields().containsKey(methodClass)){ //non considero chiamate a metodi su classi non conosciute
 					lamInv = new LamInvoke(methodClass,methodName, pars); //TODO controlla se giusto
-					lamC= new LamCouple(LamBase.getTopZbar(environment.getLocks()),environment.getClassObject(methodClass).getFlattenName());
+					lamC= new LamCouple(LamBase.getTopZbar(environment.getLocks()),environment.getClassObject(methodClass).getName());
 				}
 			}catch(BEException e){
 				e.printStackTrace();

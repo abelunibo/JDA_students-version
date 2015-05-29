@@ -29,7 +29,7 @@ public class BEIinc extends BEInstructionLine implements BEInstruction{
 		String localVarIndex = getNat();
 		
 		/* e' inutile ottenere il valore da incrementare...tanto alla fine il
-		 * il risultato sara' sempre un tipo INT
+		 * il risultato sara' sempre un tipo int
 		 */
 		//String inc = getNumber(); 
 		

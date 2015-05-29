@@ -31,7 +31,7 @@ public class BEOperation extends BEInstructionLine implements BEInstruction{
 			System.exit(1);
 		}
 		
-		environment.pushStack(new TypeInt());
+		environment.pushStack(new TypeInt()); //risultato dell'operazione
 	}
 
 }

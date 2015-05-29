@@ -59,7 +59,7 @@ public class LamInvoke extends LamSubExpr {
 			if(parameters.get(i).isInt()) //i tipi interi non li mettiamo nella signature dei metodi
 				continue;
 			else{
-				mSignature+=parameters.get(i).getName()+", ";
+				mSignature+=parameters.get(i).getNameForMethod()+", ";
 			}
 		}
 		if(mSignature.lastIndexOf(",")==mSignature.length()-2)

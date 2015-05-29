@@ -1,12 +1,17 @@
 package com.laneve.deadlock.type;
 
-import com.laneve.deadlock.exceptions.BEException;
 
 public abstract class Type {
-			
-	String className=""; // nome della classe del tipo
+	
+	final String className; // nome base del tipo (senza indice)
 	
 	boolean isInt=false; 	// true per interi
+		
+	// se e' true il tipo identifica una classe
+	// ne esiste uno per ogni classe del programma
+	// non puo' essere indicizzato
+	// i suoi campi invece possono essere settati/indicizzati
+	boolean isClassType= false;
 	
 	public Type(String name){
 		this.className = name;		
@@ -15,11 +20,18 @@ public abstract class Type {
 	public boolean isInt(){
 		return isInt;
 	}
-
-	public abstract String getName();
 	
-	// assegna un indice ad un tipo (se possibile) e restituisci il tipo appena indicizzato
-	public abstract Type assignIndex() throws BEException;
+	public String getClassName(){ //ottiene il nome semplice della classe del tipo (senza indice)
+		return className;
+	}
+
+	public boolean isClassType(){
+		return isClassType;
+	};
+
+	public abstract String getName(); //per la stampa del tipo non nella signature dei metodi
+	
+	public abstract String getNameForMethod(); // per la stampa del tipo nella signature dei metodi
 
 	
 }

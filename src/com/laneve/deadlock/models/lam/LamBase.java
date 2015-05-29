@@ -43,11 +43,11 @@ public abstract class LamBase {
 		
 		if(z!=null && z.size()>1){
 			
-			lamSub.add(new LamCouple(z.get(0).getFlattenName(),z.get(1).getFlattenName()));
+			lamSub.add(new LamCouple(z.get(0).getName(), z.get(1).getName()));
 
 			for(int i=1; i < z.size() -  1; i++){
 								
-				lamSub.add(new LamCouple(z.get(i).getFlattenName(),z.get(i+1).getFlattenName()));
+				lamSub.add(new LamCouple(z.get(i).getName(),z.get(i+1).getName()));
 
 			}
 		}

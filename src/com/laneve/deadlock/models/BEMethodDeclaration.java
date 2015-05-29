@@ -47,8 +47,8 @@ public class BEMethodDeclaration extends BEBase{
 		
 		ArrayList<Type> aType= new ArrayList<Type>();
 				
-		TypeObject t=new TypeObject(environment.getClassName(),environment.getFields(),true); //il this del metodo (solo per metodi non statici)
-		
+		TypeObject t=new TypeObject(environment.getClassName(),environment.getFields(),false); //il this del metodo (solo per metodi non statici)
+				
 		TypeObject tClass= environment.getClassObject(environment.getClassName());//l'oggetto corrispondente alla classe (se il metodo è statico)
 		
 		//recupero il nome del metodo
@@ -70,7 +70,7 @@ public class BEMethodDeclaration extends BEBase{
 				t1=new TypeInt();
 			}
 			else{
-				t1= new TypeObject(pars.get(i).getText(),environment.getFields(),true);
+				t1= new TypeObject(pars.get(i).getText(),environment.getFields(),false);
 			}
 			
 			aType.add(t1);

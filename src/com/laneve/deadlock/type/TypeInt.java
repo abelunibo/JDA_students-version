@@ -5,18 +5,18 @@ public class TypeInt extends Type {
 
 	//costruttore per il tipo degli interi
 	public TypeInt(){
-		super("INT");
+		super("int"); // particolare classe int
 		isInt=true; //e' un tipo intero
 	}
 
 	@Override
 	public String getName() {
-		return className; //cioe' INT
+		return className; //cioe' int
 	}
 
 	@Override
-	public TypeInt assignIndex() {
-		return this; // un intero non ha alcun indice
+	public String getNameForMethod() {
+		return className;
 	}
 
 	

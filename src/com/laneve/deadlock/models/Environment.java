@@ -26,21 +26,11 @@ public class Environment {
 
 	
 	public Environment(LinkedHashMap<String, LinkedHashMap<String, String>> fields,
-			BEConstantPool costantPool, String className) {
+			BEConstantPool costantPool, String className, HashMap<String, TypeObject> classObjects) {
 		this.constantPool = costantPool;	
 		this.className = className;
 		this.fields = fields;	
-		//creo gli oggetti per ogni classe
-		classObjects= new HashMap<String, TypeObject>();
-		for (Map.Entry<String, LinkedHashMap<String, String>> entry : fields.entrySet()){
-			String key = entry.getKey();
-			TypeObject t = new TypeObject(key,fields);
-			if(classObjects.containsKey(key)){
-				System.err.println("Ci sono due classi con lo stesso nome nella mappa fields");
-				System.exit(1);
-			}
-			classObjects.put(entry.getKey(), t);
-		}
+		this.classObjects = classObjects;
 	}
 	
 	
@@ -91,7 +81,7 @@ public class Environment {
 		}
 
 		
-		for(int i=0;i<pars.size(); i++){
+		for(int i=1;i<pars.size(); i++){
 			localVar.put(String.valueOf(j),pars.get(i));
 			j++;
 		}

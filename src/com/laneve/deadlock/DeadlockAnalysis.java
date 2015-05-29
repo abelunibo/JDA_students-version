@@ -93,7 +93,7 @@ public class DeadlockAnalysis {
 						fieldNameAndTypes.put(fieldName, type);
 					}
 					else
-						fieldNameAndTypes.put(fieldName, "INT");
+						fieldNameAndTypes.put(fieldName, "int");
 				}
 			}
 			fields.put(className, fieldNameAndTypes);
@@ -107,7 +107,7 @@ public class DeadlockAnalysis {
 		    	
 			    for(Map.Entry<String, String> entry2 : entry.getValue().entrySet()){
 
-			    	if(entry2.getValue().equals("INT"))
+			    	if(entry2.getValue().equals("int"))
 			    		System.out.println(entry2.getKey() + " "+ entry2.getValue());
 			    	else
 			    		System.out.println(entry2.getKey() + " "+ entry2.getValue());
@@ -116,8 +116,23 @@ public class DeadlockAnalysis {
 			    }
 		 }*/
 		
+		//creo gli oggetti per ogni classe
+		HashMap<String, TypeObject> classObjects= new HashMap<String, TypeObject>();
+		for (Map.Entry<String, LinkedHashMap<String, String>> entry : fields.entrySet()){
+			String key = entry.getKey();
+			TypeObject t = new TypeObject(key,fields,true);
+			if(classObjects.containsKey(key)){
+				System.err.println("Ci sono due classi con lo stesso nome nella mappa fields");
+				System.exit(1);
+			}
+			classObjects.put(entry.getKey(), t);
+		}
+				
+		System.out.println(classObjects.get("Pluto").getFieldType("p").getName());
+		
+		
 		for(BEClassFile cf : classfiles){
-			environment = new Environment(fields , cf.getCostantPool(),cf.getClassName());
+			environment = new Environment(fields , cf.getCostantPool(),cf.getClassName(),classObjects);
 			LamClass lam= (LamClass) cf.generateLam(environment); //contiene le Lam per tutti i metodi
 			lams.add(lam); //lams alla fine sara' un insieme di LamClass
 			

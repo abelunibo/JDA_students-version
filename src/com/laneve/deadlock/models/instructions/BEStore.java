@@ -49,7 +49,6 @@ public class BEStore extends BEInstructionLine implements BEInstruction{
 					String indexToJump = environment.getCurrentMethodBody().getInstructionTemp().getNat();
 					Integer indexListTojump = environment.getCurrentMethodBody().getInstructionMap().get(indexToJump);
 					environment.getCurrentMethodBody().setNextGotoInstruction(indexListTojump);
-
 				}
 
 			}else

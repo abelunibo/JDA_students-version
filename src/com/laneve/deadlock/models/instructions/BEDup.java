@@ -23,7 +23,7 @@ public class BEDup extends BEInstructionLine implements BEInstruction{
 
 	@Override
 	public void updateEnvironment(Environment environment) {
-		String index = getIndex().substring(0,getIndex().indexOf(':'));
+		//String index = getIndex().substring(0,getIndex().indexOf(':'));
 		try {
 			environment.pushStack(environment.getTopStack());
 		} catch (BEException e) {
