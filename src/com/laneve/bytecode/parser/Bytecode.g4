@@ -21,7 +21,7 @@ classModifier
 	;
 	
 innerClass
-	: 'InnerClasses:' ((('static'|'public') ('= '|ref|'of')+ | ref) ';')+
+	: 'InnerClasses:' ((('static'|'public')* ('= '|ref|'of')+ | ref) ';')+
 	;
 
 
@@ -161,7 +161,7 @@ methodBody
 
 
 // istruzioni 
-instructionLine : INDEX instruction ((NAT? num?) | ref);
+instructionLine : INDEX instruction ((NAT? (',')? num?) | ref);
 
 //'astore' ('_'NAT)?
 
@@ -226,6 +226,7 @@ instruction
 	| 'putstatic' #Put
 	| 'anewarray' #NotImplemented // riguarda array (non dovremmo considerarla ma servono per parsare classe di esempio DeadlockFriend)
 	| 'aastore' #NotImplemented // riguarda array (non dovremmo considerarla ma servono per parsare classe di esempio DeadlockFriend)
+	| 'aaload' #NotImplemented
 	| 'return' #Return
 	;
 
@@ -320,7 +321,7 @@ LOCALVARIABLELINE: [0-9]+ [' '|'/t']+ [0-9]+ [' '|'/t']+ [0-9]+ [' '|'/t']+  ~[\
 STACKMAPTABLE: 'StackMapTable: number_of_entries = ' [0-9]+ '\r'? '\n'{skip();};
 FRAMETYPE: 'frame_type = ' [0-9]+ [' '|'*'|'/'|A-Z|a-z|'_'|0-9]*  '\r'? '\n'{skip();};
 OFFSETDELTA: 'offset_delta = ' [0-9]+ [' '|'*'|'/'|A-Z|a-z]*  '\r'? '\n'{skip();};
-LOCALS: 'locals = ' '[' [A-Z|a-z|','|'/'|' ' | 0-9 ]* ']' '\r'? '\n'{skip();};
+LOCALS: 'locals = ' ~[\r\n]* {skip();};
 STACK: 'stack =' ~[\r\n]*  {skip();};
 STACKLOCALARGSSIZE: 'stack=' ( |[0-9]+ ', locals='[0-9]+ ', args_size='[0-9]+)  '\r'? '\n'{skip();};
 EXCEPTION: 'Exceptions:'  '\r'? '\n'{skip();};

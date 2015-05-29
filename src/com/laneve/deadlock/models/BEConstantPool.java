@@ -55,8 +55,7 @@ public class BEConstantPool extends BEBase{
 			String returnTypeRef = a.get(2);
 			String methodName = takeCpoolRef(constantPool,methodNameRef);
 			String returnType = takeCpoolRef(constantPool,returnTypeRef);
-			//if(!(returnType.contentEquals("I")))
-				returnType = returnType.substring(0, returnType.length()-1);
+			returnType = returnType.substring(0, returnType.length());
 			//returnType = returnType.substring(1);
 			return returnType+" "+methodName;
 		case "String":

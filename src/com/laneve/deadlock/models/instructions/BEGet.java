@@ -46,7 +46,14 @@ public class BEGet extends BEInstructionLine implements BEInstruction{
 				//fieldType = fieldType.substring(1); //rimuovi la L iniziale nella signature
 				environment.pushStack(o.getFieldType(fieldName));
 			}
-			else environment.pushStack(new TypeInt());
+			else{ //sto recuperando un tipo intero
+				try {
+					environment.popStack(); //tolgo l'elemento da cui devo recuperare l'intero
+				} catch (BEException e) {
+					e.printStackTrace();
+				}
+				environment.pushStack(new TypeInt());
+			}
 			
 		}else if(getName().equals("getstatic")){ //devo mettere sullo stack un campo di una classe
 			if(firstLetter.contentEquals("L")){

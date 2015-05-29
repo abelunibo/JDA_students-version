@@ -34,9 +34,10 @@ public class BEConst extends BEInstructionLine implements BEInstruction{
 			String cpType = BEConstantPool.takeCpoolRefType(environment.getConstantPool(),getRef());
 			if(cpType.equals("Integer"))
 				environment.pushStack(new TypeInt());
-			else
+			else{
 				environment.pushStack(new TypeObject(BEConstantPool.takeCpoolRef(environment.getConstantPool(),getRef()),
 						environment.getFields(),false));
+			}
 		}
 	}
 	

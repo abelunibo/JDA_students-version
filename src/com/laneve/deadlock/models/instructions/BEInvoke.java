@@ -55,8 +55,6 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 		
 		if(getName().contentEquals("invokespecial")){ //init
 			
-			
-			
 			//genera LAM
 			String signature = BEConstantPool.takeCpoolRef(environment.getConstantPool(),getRef());
 			//String methodName = signature.substring(signature.indexOf(" ")+1,signature.lastIndexOf(" "));
@@ -66,15 +64,21 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 			int openP = signature.indexOf("(");
 			int closedP = signature.indexOf(")");
 			parameters =  signature.substring(openP+1, closedP);
-			numParameters=0;
-			if(parameters.contains(";")){
-				for (int i = 0; i < parameters.length(); i++) {
-					if (parameters.charAt(i) == ';') {
+			numParameters=0;		
+			for (int i = 0; i < parameters.length(); i++) {
+				if (parameters.charAt(i) == 'L') { //e' tipo classe
+					int index= parameters.indexOf(';',i);
+					if(index!=-1){
 						numParameters++;
+						i=index;
+						continue;
 					}
 				}
-			}
+				if(parameters.charAt(i) == 'I'){
+					numParameters++;
+				}
 			
+			}
 			try{
 				for(int i = 0; i<numParameters; i++){
 					Type type = environment.popStack(); 
@@ -131,18 +135,25 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 				//genera LAM
 				String methodClass = signature.substring(signature.lastIndexOf(" ")+1);
 				String methodName = signature.substring(signature.indexOf(" ")+1,signature.lastIndexOf(" "));
-				
+								
 				TypeObject ob=null;
 				int openP = signature.indexOf("(");
 				int closedP = signature.indexOf(")");
 				parameters =  signature.substring(openP+1, closedP);
 				numParameters=0;
-				if(parameters.contains(";")){
-					for (int i = 0; i < parameters.length(); i++) {
-						if (parameters.charAt(i) == ';') {
+				for (int i = 0; i < parameters.length(); i++) {
+					if (parameters.charAt(i) == 'L') { //e' tipo classe
+						int index= parameters.indexOf(';',i);
+						if(index!=-1){
 							numParameters++;
+							i=index;
+							continue;
 						}
 					}
+					if(parameters.charAt(i) == 'I'){
+						numParameters++;
+					}
+				
 				}
 				try{
 					for(int i = 0; i<numParameters; i++){
@@ -167,7 +178,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 			int index = signature.indexOf(")");
 			String resultType= signature.substring(index,index+1);
 			
-			if(resultType.equals("V")){
+			if(resultType.equals("V") || resultType.equals("")){
 
 				return; //tipo di ritorno void niente da aggiungere sullo stack
 				
@@ -194,14 +205,20 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 			int closedP = signature.indexOf(")");
 			parameters =  signature.substring(openP+1, closedP);
 			numParameters=0;
-			if(parameters.contains(";")){
-				for (int i = 0; i < parameters.length(); i++) {
-					if (parameters.charAt(i) == ';') {
+			for (int i = 0; i < parameters.length(); i++) {
+				if (parameters.charAt(i) == 'L') { //e' tipo classe
+					int index= parameters.indexOf(';',i);
+					if(index!=-1){
 						numParameters++;
+						i=index;
+						continue;
 					}
 				}
-			}
+				if(parameters.charAt(i) == 'I'){
+					numParameters++;
+				}
 			
+			}
 			try{
 				for(int i = 0; i<numParameters; i++){
 					Type type = environment.popStack();

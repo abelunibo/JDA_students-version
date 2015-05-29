@@ -24,7 +24,7 @@ public class Deadlock1 {
 
 	public static void main(String[]args) throws InterruptedException{
 	
-		Deadlock1 d = new Deadlock1();
+		final Deadlock1 d = new Deadlock1();
 		
 		
 		Thread t1 = new Thread(){
