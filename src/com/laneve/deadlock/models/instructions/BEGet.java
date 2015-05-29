@@ -27,7 +27,7 @@ public class BEGet extends BEInstructionLine implements BEInstruction{
 	@Override
 	public void updateEnvironment(Environment environment){
 		String getfieldRef = BEConstantPool.takeCpoolRef(environment.getConstantPool(),getRef());
-		String fieldType = getfieldRef.substring(0, getfieldRef.indexOf(" ")); //tipo del campo da modificare
+		//String fieldType = getfieldRef.substring(0, getfieldRef.indexOf(" ")); //tipo del campo da modificare
 		String fieldName = getfieldRef.substring(getfieldRef.indexOf(" ")+1, getfieldRef.lastIndexOf(" ")); //nome del campo da modificare
 		String fieldObjectType = getfieldRef.substring(getfieldRef.lastIndexOf(" ")+1); //tipo dell'oggetto in cui e' contenuto il campo
 		String firstLetter = getfieldRef.substring(0, 1);
@@ -57,7 +57,6 @@ public class BEGet extends BEInstructionLine implements BEInstruction{
 			
 		}else if(getName().equals("getstatic")){ //devo mettere sullo stack un campo di una classe
 			if(firstLetter.contentEquals("L")){
-				fieldType = fieldType.substring(1); //rimuovi la L iniziale nella signature
 				environment.pushStack(environment.getClassObject(fieldObjectType).getFieldType(fieldName));
 			}
 			else environment.pushStack(new TypeInt());

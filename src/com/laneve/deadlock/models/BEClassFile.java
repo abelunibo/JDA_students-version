@@ -2,6 +2,7 @@ package com.laneve.deadlock.models;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
@@ -14,7 +15,7 @@ public class BEClassFile extends BEBase{
 	String className;
 	
 	BEConstantPool costantPool;
-	HashMap<BEMethodHeader, BEMethodDeclaration> methods = new HashMap<BEMethodHeader, BEMethodDeclaration>();
+	LinkedHashMap<BEMethodHeader, BEMethodDeclaration> methods = new LinkedHashMap<BEMethodHeader, BEMethodDeclaration>();
 	
 	private static Logger LOGGER = Logger.getLogger("");
 
@@ -30,7 +31,7 @@ public class BEClassFile extends BEBase{
 	
 	public void addMethod(BEMethodDeclaration methodDec) throws BEException {
 		if(methods.containsKey(methodDec.getMethodHeader())){ //NON DOVREBBE SUCCEDERE
-			throw new BEException("Due metodi con lo stesso header dentro lo stesso classfile");
+			throw new BEException("Non possono esserci due metodi con lo stesso header dentro lo stesso classfile");
 		}
 		methods.put(methodDec.getMethodHeader(), methodDec);
 		
@@ -43,8 +44,26 @@ public class BEClassFile extends BEBase{
 	public BEConstantPool getCostantPool() {
 		return costantPool;
 	}
+	
+	public void removeMethod(BEMethodHeader key){
+		methods.remove(key);
+	}
 
-	public HashMap<BEMethodHeader, BEMethodDeclaration> getMethods() {
+	public void addMethodOnTop(BEMethodHeader bmh, BEMethodDeclaration bmd){
+		
+		LinkedHashMap<BEMethodHeader, BEMethodDeclaration> tmp= new LinkedHashMap<BEMethodHeader, BEMethodDeclaration>();
+		
+		tmp.put(bmh,bmd);
+		
+		for(Entry<BEMethodHeader, BEMethodDeclaration> m : methods.entrySet()){
+			tmp.put(m.getKey(), m.getValue());
+		}
+		
+		methods=tmp;
+		
+	}
+	
+	public LinkedHashMap<BEMethodHeader, BEMethodDeclaration> getMethods() {
 		return methods;
 	}
 		

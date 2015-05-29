@@ -20,6 +20,8 @@ import com.laneve.bytecode.parser.BytecodeParser;
 import com.laneve.deadlock.models.BEClassFile;
 import com.laneve.deadlock.models.BEConstantAndInfo;
 import com.laneve.deadlock.models.BEConstantPool;
+import com.laneve.deadlock.models.BEMethodDeclaration;
+import com.laneve.deadlock.models.BEMethodHeader;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.models.lam.LamClass;
@@ -62,7 +64,7 @@ public class DeadlockAnalysis {
 
 			if(fileEntry.getName().contains("Dining")) continue;
 		//	if(fileEntry.getName().contains("Pluto")) continue;
-		//	if(fileEntry.getName().contains("Pippo")) continue;
+			//if(fileEntry.getName().contains("Pippo")) continue;
 			if(fileEntry.getName().contains("Deadlock")) continue;
 
 			FileInputStream in = new FileInputStream(fileEntry);
@@ -75,6 +77,43 @@ public class DeadlockAnalysis {
 			BytecodeVisitor bcVisitor = new BytecodeVisitor();
 			classfiles.add((BEClassFile) bcVisitor.visit(tree));
 		}
+		
+		
+		boolean trovato=false;
+		int cIndex=0;
+		BEMethodHeader mKey=null; 
+		
+		//posiziono il main in cima ai metodi per la generazione corretta delle Lam per il tool DF4ABS
+		for(int i=0; i<classfiles.size(); i++){
+			for (Map.Entry<BEMethodHeader, BEMethodDeclaration> entry : classfiles.get(i).getMethods().entrySet()){
+				if(entry.getKey().getMethodDeclarator().getMethodName().equals("main")){
+					if(trovato){
+						System.err.println("Non possono esistere 2 metodi main()");
+						System.exit(1);
+					}
+					else{ 
+						trovato=true;
+						cIndex=i;
+						mKey=entry.getKey();
+					}
+					
+				}
+			}
+		}
+		
+		if(!trovato){
+			System.err.println("Deve esistere almeno un metodo main()");
+			System.exit(1);
+		}
+		else{
+			BEClassFile tmp = classfiles.get(cIndex); //prendo il ClassFile che contiene il main
+			BEMethodDeclaration bmd = tmp.getMethods().get(mKey); //prendo il metodo main
+			//System.out.println(bmd.getMethodHeader().getMethodDeclarator().getMethodName());
+			tmp.removeMethod(mKey); //rimuovo il metodo dalla posizione in cui si trovava
+			tmp.addMethodOnTop(mKey, bmd); //lo metto in cima alla lista dei metodi
+			classfiles.remove(tmp); //rimuovo il vecchio classfile dalla lista dei classfile
+			classfiles.add(0, tmp); //e aggiungo l'elemento modificato in cima
+		}
 
 		for(BEClassFile cf : classfiles){ //creiamo dalla constant Pool la mappa <NomeClasse, <nomeCampo, tipoCampo>>
 			String className="",nameAndType="",fieldName = "",type="";
@@ -83,12 +122,12 @@ public class DeadlockAnalysis {
 			for (Map.Entry<String, BEConstantAndInfo> entry : tableEntries.entrySet()){
 				ArrayList<String> a = entry.getValue().getConstantAndInfo();
 				if(a.get(0).contentEquals("Fieldref")){
-					className = BEConstantPool.takeCpoolRef( cf.getCostantPool(), a.get(1));
+					className = BEConstantPool.takeCpoolRef(cf.getCostantPool(), a.get(1));
 					nameAndType = BEConstantPool.takeCpoolRef( cf.getCostantPool(), a.get(2));
 					type = nameAndType.substring(0, nameAndType.indexOf(" "));
 					fieldName = nameAndType.substring(nameAndType.lastIndexOf(" ")+1);
 					if(type.trim().startsWith("L")){
-						type=type.substring(1);
+						type=type.substring(1,type.length()-1);
 						fieldNameAndTypes.put(fieldName, type);
 					}
 					else
@@ -113,7 +152,7 @@ public class DeadlockAnalysis {
 
 			    	
 			    }
-		 }*/
+		 	}*/
 		
 		//creo gli oggetti per ogni classe //devono essere in comune per tutte le classi
 		HashMap<String, TypeObject> classObjects= new HashMap<String, TypeObject>();
