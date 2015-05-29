@@ -55,8 +55,12 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 		
 		if(getName().contentEquals("invokespecial")){ //init
 			
+			
+			
 			//genera LAM
 			String signature = BEConstantPool.takeCpoolRef(environment.getConstantPool(),getRef());
+			//String methodName = signature.substring(signature.indexOf(" ")+1,signature.lastIndexOf(" "));
+	
 			String methodClass = signature.substring(signature.lastIndexOf(" ")+1);
 			TypeObject ob=null;
 			int openP = signature.indexOf("(");
@@ -127,6 +131,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 				//genera LAM
 				String methodClass = signature.substring(signature.lastIndexOf(" ")+1);
 				String methodName = signature.substring(signature.indexOf(" ")+1,signature.lastIndexOf(" "));
+				
 				TypeObject ob=null;
 				int openP = signature.indexOf("(");
 				int closedP = signature.indexOf(")");
@@ -207,7 +212,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 				// alcun oggetto dallo stack
 				
 				if(environment.getFields().containsKey(methodClass)){ //non considero chiamate a metodi su classi non conosciute
-					lamInv = new LamInvoke(methodClass,methodName, pars); //TODO controlla se giusto
+					lamInv = new LamInvoke(methodClass,methodName, pars);
 					lamC= new LamCouple(LamBase.getTopZbar(environment.getLocks()),environment.getClassObject(methodClass).getName());
 				}
 			}catch(BEException e){

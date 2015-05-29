@@ -171,7 +171,6 @@ public class TypeObject extends Type{
 			}
 
 			startType.fieldsRecord=typeFields; // tra i campi vi sono salvati anche quelli di tipo int
-
 		}
 		
 	}

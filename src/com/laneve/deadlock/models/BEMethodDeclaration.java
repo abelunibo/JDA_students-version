@@ -53,7 +53,7 @@ public class BEMethodDeclaration extends BEBase{
 		
 		//recupero il nome del metodo
 		String methodName = getMethodHeader().getMethodDeclarator().getMethodName();
-				
+			
 		ArrayList<FormalParameterContext> pars = getMethodHeader().getMethodDeclarator().getFormalParameters();
 		
 		if(methodBody.getMethodModifier() != null && 
@@ -70,7 +70,7 @@ public class BEMethodDeclaration extends BEBase{
 				t1=new TypeInt();
 			}
 			else{
-				t1= new TypeObject(pars.get(i).getText(),environment.getFields(),false);
+				t1= new TypeObject(pars.get(i).getText().replace('.', '/'),environment.getFields(),false);
 			}
 			
 			aType.add(t1);
