@@ -2,7 +2,6 @@ package com.laneve.deadlock.models.lam;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 /** Alla fine la Lam di un metodo sara' una LamSequence*/

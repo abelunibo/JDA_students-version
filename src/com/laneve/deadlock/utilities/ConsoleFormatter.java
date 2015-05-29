@@ -10,7 +10,8 @@ public class ConsoleFormatter extends Formatter {
     //
     // Create a DateFormat to format the logger timestamp.
     //
-    private static final DateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss.SSS");
+    @SuppressWarnings("unused")
+	private static final DateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss.SSS");
     
     @Override
     public String format(LogRecord record) {

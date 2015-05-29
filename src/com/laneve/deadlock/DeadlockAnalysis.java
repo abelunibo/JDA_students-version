@@ -23,8 +23,6 @@ import com.laneve.deadlock.models.BEConstantPool;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.models.lam.LamClass;
-import com.laneve.deadlock.type.Type;
-import com.laneve.deadlock.type.TypeInt;
 import com.laneve.deadlock.type.TypeObject;
 import com.laneve.deadlock.utilities.ConsoleFormatter;
 import com.laneve.deadlock.utilities.LamsFileFormatter;
@@ -49,7 +47,6 @@ public class DeadlockAnalysis {
 		//TODO se la cartella 'output' non esiste il FileHandler non la crea (fare un controllo e crearla prima)
 		hand = new FileHandler("output/lams_log_file.txt");
 		hand.setFormatter(new LamsFileFormatter());
-		Handler console = rootLog.getHandlers()[0];
 		FILELOGGER.setUseParentHandlers(false);
 		FILELOGGER.addHandler(hand);
 
@@ -116,7 +113,7 @@ public class DeadlockAnalysis {
 			    }
 		 }*/
 		
-		//creo gli oggetti per ogni classe
+		//creo gli oggetti per ogni classe //devono essere in comune per tutte le classi
 		HashMap<String, TypeObject> classObjects= new HashMap<String, TypeObject>();
 		for (Map.Entry<String, LinkedHashMap<String, String>> entry : fields.entrySet()){
 			String key = entry.getKey();
@@ -126,19 +123,20 @@ public class DeadlockAnalysis {
 				System.exit(1);
 			}
 			classObjects.put(entry.getKey(), t);
-		}
-				
-		System.out.println(classObjects.get("Pluto").getFieldType("p").getName());
-		
+		}		
 		
 		for(BEClassFile cf : classfiles){
 			environment = new Environment(fields , cf.getCostantPool(),cf.getClassName(),classObjects);
 			LamClass lam= (LamClass) cf.generateLam(environment); //contiene le Lam per tutti i metodi
 			lams.add(lam); //lams alla fine sara' un insieme di LamClass
 			
+			String s = lam.simplify().toString();
+			
 			//creo il file delle lam per il tool DF4ABS			
-			String cleanedLam = LamBase.cleanLamString(lam.simplify().toString());
-			FILELOGGER.info(cleanedLam+"\n");
+			String cleanedLam = LamBase.cleanLamString(s);
+			if(TypeObject.FLATTEN){
+				FILELOGGER.info(cleanedLam+"\n");
+			}else FILELOGGER.info(s+"\n");
 			
 		}		
 		

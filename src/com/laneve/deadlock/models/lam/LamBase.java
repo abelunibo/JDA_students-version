@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.Set;
 
 import com.laneve.deadlock.exceptions.BEException;
-import com.laneve.deadlock.type.Type;
 import com.laneve.deadlock.type.TypeObject;
 
 public abstract class LamBase {

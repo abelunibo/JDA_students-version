@@ -19,7 +19,7 @@ public class TypeObject extends Type{
 	// specifica se i campi devono essere appiattiti
 	// se è false i campi degli vengono mostrati tra parentesi quadre 
 	// se e' true i campi vengono mostrati appiattiti cioe' a pari livello dell'oggetto che li contiene separati da virgole
-	static final boolean FLATTEN=true; 
+	public static final boolean FLATTEN=true; 
 	
 	Integer index = null; //indice (null se tipo non ha index)
 
@@ -57,7 +57,7 @@ public class TypeObject extends Type{
 	String getIndexName() {
 		String s=this.className;
 		if(index!=null)
-			s+= index;
+			s+= "_"+index;
 		return s;
 	}
 

@@ -1,7 +1,6 @@
 package com.laneve.deadlock.models.lam;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 
 public class LamAnd extends LamSubExpr{

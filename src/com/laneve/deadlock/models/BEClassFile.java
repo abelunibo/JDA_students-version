@@ -17,7 +17,6 @@ public class BEClassFile extends BEBase{
 	HashMap<BEMethodHeader, BEMethodDeclaration> methods = new HashMap<BEMethodHeader, BEMethodDeclaration>();
 	
 	private static Logger LOGGER = Logger.getLogger("");
-	private static Logger FILELOGGER = Logger.getLogger("lams_log");
 
 	public BEClassFile(String className,BEConstantPool costantPool) {
 		super();

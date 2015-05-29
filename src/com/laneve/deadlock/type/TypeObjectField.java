@@ -47,13 +47,13 @@ public class TypeObjectField extends TypeObject{
 	@Override
 	String getRecordName() { //per la stampa dei record non appiattiti
 		
-		String s=""+fieldName+":";
+		String s=fieldName+":";
 
 		s+= getIndexName();
 		
-		TypeObject p= parent;
+		//TypeObject p= parent;
 		
-		s=p.getRecordName()+s; //tipi indicizzati dei padri + nomeCampo + : + tipoCampo
+		//s=p.getRecordName()+s; //tipi indicizzati dei padri + nomeCampo + : + tipoCampo
 		
 		return s;
 	}

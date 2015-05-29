@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.Map;
 
 import com.laneve.deadlock.exceptions.BEException;
 import com.laneve.deadlock.type.Type;
