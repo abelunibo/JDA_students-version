@@ -39,6 +39,7 @@ public class BEPut extends BEInstructionLine implements BEInstruction{
 			
 			//non si puo' modificare il campo della classe se non siamo nella sua init
 			if(!environment.getCurrentMethodBody().getMethodHeader().getMethodDeclarator().getMethodName().equals(environment.getClassName())){
+				
 				throw new BEException("Non si possono modificare campi gia' inizializzati");
 			}  //else sono in un costruttore e posso settare il valore del campo
 			

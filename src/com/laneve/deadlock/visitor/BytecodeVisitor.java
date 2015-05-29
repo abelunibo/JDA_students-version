@@ -176,7 +176,7 @@ public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
 				formalParameters.add(f);
 			}
 		}
-		methodDeclarator = new BEMethodDeclarator(ctx.methodName().packageAndClassName().getText(), formalParameters);
+		methodDeclarator = new BEMethodDeclarator(ctx.methodName().packageAndClassName().getText().replace(".", "/"), formalParameters);
 
 		return methodDeclarator; 
 	}

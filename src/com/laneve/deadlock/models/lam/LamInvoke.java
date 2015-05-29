@@ -14,7 +14,7 @@ public class LamInvoke extends LamSubExpr {
 	public LamInvoke(String className, String methodName, Type...parameters) throws BEException{
 		
 		if(methodName==null || methodName.trim().isEmpty() || className==null || className.trim().isEmpty()){
-			throw new BEException("Il nom del metodo e delle classe devono essere validi");
+			throw new BEException("Il nome del metodo e della classe deve essere valido");
 		}
 		this.className=className;
 		this.methodName=methodName;
@@ -27,7 +27,7 @@ public class LamInvoke extends LamSubExpr {
 	public LamInvoke(String className, String methodName, ArrayList<Type> parameters) throws BEException{
 		
 		if(methodName==null || methodName.trim().isEmpty() || className==null || className.trim().isEmpty()){
-			throw new BEException("Il nom del metodo e delle classe devono essere validi");
+			throw new BEException("Il nome del metodo e della classe deve essere valido");
 		}
 		this.className=className;
 		this.methodName=methodName;
