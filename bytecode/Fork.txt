@@ -1,0 +1,67 @@
+Classfile /Users/andrea/Documents/workspace/bytecodedeadlockanalysis/bin/com/laneve/test/Fork.class
+  Last modified 30-mag-2015; size 422 bytes
+  MD5 checksum b0f45e0f9667b1b911196bd811412429
+  Compiled from "DiningPhilosopher.java"
+class com.laneve.test.Fork
+  minor version: 0
+  major version: 52
+  flags: ACC_SUPER
+Constant pool:
+   #1 = Class              #2             // com/laneve/test/Fork
+   #2 = Utf8               com/laneve/test/Fork
+   #3 = Class              #4             // java/lang/Object
+   #4 = Utf8               java/lang/Object
+   #5 = Utf8               number
+   #6 = Utf8               I
+   #7 = Utf8               <init>
+   #8 = Utf8               (I)V
+   #9 = Utf8               Code
+  #10 = Methodref          #3.#11         // java/lang/Object."<init>":()V
+  #11 = NameAndType        #7:#12         // "<init>":()V
+  #12 = Utf8               ()V
+  #13 = Fieldref           #1.#14         // com/laneve/test/Fork.number:I
+  #14 = NameAndType        #5:#6          // number:I
+  #15 = Utf8               LineNumberTable
+  #16 = Utf8               LocalVariableTable
+  #17 = Utf8               this
+  #18 = Utf8               Lcom/laneve/test/Fork;
+  #19 = Utf8               getNumber
+  #20 = Utf8               ()I
+  #21 = Utf8               SourceFile
+  #22 = Utf8               DiningPhilosopher.java
+{
+  public com.laneve.test.Fork(int);
+    descriptor: (I)V
+    flags: ACC_PUBLIC
+    Code:
+      stack=2, locals=2, args_size=2
+         0: aload_0
+         1: invokespecial #10                 // Method java/lang/Object."<init>":()V
+         4: aload_0
+         5: iload_1
+         6: putfield      #13                 // Field number:I
+         9: return
+      LineNumberTable:
+        line 77: 0
+        line 78: 4
+        line 79: 9
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0      10     0  this   Lcom/laneve/test/Fork;
+            0      10     1 number   I
+
+  public int getNumber();
+    descriptor: ()I
+    flags: ACC_PUBLIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: getfield      #13                 // Field number:I
+         4: ireturn
+      LineNumberTable:
+        line 82: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       5     0  this   Lcom/laneve/test/Fork;
+}
+SourceFile: "DiningPhilosopher.java"

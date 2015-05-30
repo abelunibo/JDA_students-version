@@ -10,18 +10,6 @@ public class DiningPhilosopher extends Thread{
 	private Fork left, right;
 	private static Random random = new Random();
 	
-	public static class Fork{
-		private int number;
-		
-		public Fork(int number){
-			this.number = number;
-		}
-		
-		public int getNumber(){
-			return number;
-		}
-	}
-	
 	public DiningPhilosopher(int number, Fork left, Fork right){
 		this.number = number;
 		this.left = left;
@@ -80,4 +68,17 @@ public class DiningPhilosopher extends Thread{
 
 	}
 
+}
+
+class Fork{
+	
+	private int number;
+	
+	public Fork(int number){
+		this.number = number;
+	}
+	
+	public int getNumber(){
+		return number;
+	}
 }
