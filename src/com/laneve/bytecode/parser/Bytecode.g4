@@ -217,16 +217,18 @@ instruction
 	| 'isub' #Operation
 	| 'ldc' #Const
 	| 'ldc_w' #Const
-	| 'ldc2_w' #NotImplemented // ldc2_w is used for loading category 2 constants (doubles and longs) quindi, se consideriamo solo interi, a noi non interessa
+	| 'ldc2_w' #Const // ldc2_w is used for loading category 2 constants (doubles and longs)
 	| 'monitorenter' #Monitorenter 
 	| 'monitorexit' #Monitorexit
 	| 'new'  #New
 	| 'pop' #Pop
 	| 'putfield'  #Put
 	| 'putstatic' #Put
-	| 'anewarray' #NotImplemented // riguarda array (non dovremmo considerarla ma servono per parsare classe di esempio DeadlockFriend)
-	| 'aastore' #NotImplemented // riguarda array (non dovremmo considerarla ma servono per parsare classe di esempio DeadlockFriend)
-	| 'aaload' #NotImplemented
+	| 'anewarray' #NotImplemented // riguarda array
+	| 'aastore' #NotImplemented // riguarda array
+	| 'aaload' #NotImplemented  // riguarda array
+	| 'f2l'  #Conversion //conversione float in long
+	| 'lmul' #Operation //moltiplicazione long
 	| 'return' #Return
 	;
 

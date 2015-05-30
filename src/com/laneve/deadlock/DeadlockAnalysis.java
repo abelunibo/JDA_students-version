@@ -27,6 +27,7 @@ import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.models.lam.LamClass;
 import com.laneve.deadlock.type.TypeObject;
 import com.laneve.deadlock.utilities.ConsoleFormatter;
+import com.laneve.deadlock.utilities.FromClass2Txt;
 import com.laneve.deadlock.utilities.LamsFileFormatter;
 import com.laneve.deadlock.visitor.BytecodeVisitor;
 
@@ -53,7 +54,12 @@ public class DeadlockAnalysis {
 		FILELOGGER.addHandler(hand);
 
 		ArrayList<BEClassFile> classfiles = new ArrayList<BEClassFile>();
+		
 		//TODO ottenere direttamente i file .txt da cartella bytecode java
+		FromClass2Txt fc2t = new FromClass2Txt("bin/com/laneve/test", "bytecode");
+		fc2t.convert();
+		System.exit(0);
+		
 		File folder = new File("bytecode"); //cartella in cui e' contenuto il nostro bytecode
 		ArrayList<LamBase> lams = new ArrayList<LamBase>(); //insieme delle Lam
 		Environment environment;
@@ -125,28 +131,50 @@ public class DeadlockAnalysis {
 			for (Map.Entry<String, BEConstantAndInfo> entry : tableEntries.entrySet()){
 				ArrayList<String> a = entry.getValue().getConstantAndInfo();
 				if(a.get(0).contentEquals("Fieldref")){
+					boolean staticField = false;
 					className = BEConstantPool.takeCpoolRef(cf.getCostantPool(), a.get(1));
-					if(!className.equals(cf.getClassName())){
-						continue;
-					}
 					nameAndType = BEConstantPool.takeCpoolRef(cf.getCostantPool(), a.get(2));
 					type = nameAndType.substring(0, nameAndType.indexOf(" "));
 					fieldName = nameAndType.substring(nameAndType.lastIndexOf(" ")+1);
+					if(!className.equals(cf.getClassName())){ //ho un riferimento a un campo statico di un altra classe (esempio campo out di java/io/PrintStream)						
+						staticField = true;
+						LinkedHashMap<String, String> fieldNAndT;
+						if(fields.get(className) == null){
+							fieldNAndT = new LinkedHashMap<String, String>();
+						}
+						else {
+							fieldNAndT = fields.get(className);
+						}
+				
+						if(type.trim().startsWith("L")){
+							String type1=type.substring(1,type.length()-1);
+							fieldNAndT.put(fieldName, type1);
+						}
+						else
+							fieldNAndT.put(fieldName, "int");
+						
+						
+						fields.put(className, fieldNAndT);
+					}
+					
 					if(type.trim().startsWith("L")){
 						type=type.substring(1,type.length()-1);
+						if(staticField) fieldName= className+"."+fieldName;
 						fieldNameAndTypes.put(fieldName, type);
 					}
-					else
+					else{
+						if(staticField) fieldName= className+"."+fieldName;
 						fieldNameAndTypes.put(fieldName, "int");
+					}
 				}
 			}
 			fields.put(cf.getClassName(), fieldNameAndTypes);
 		}
 		 
 		  	//print di debug
-		/*	for(Map.Entry<String, LinkedHashMap<String, String>> entry : fields.entrySet()){
+			/*for(Map.Entry<String, LinkedHashMap<String, String>> entry : fields.entrySet()){
 
-		    	System.out.println("--^^^^^--" + entry.getKey());
+		    	System.out.println("------" + entry.getKey());
 		    	
 			    for(Map.Entry<String, String> entry2 : entry.getValue().entrySet()){
 

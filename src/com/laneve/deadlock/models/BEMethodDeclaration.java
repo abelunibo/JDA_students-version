@@ -53,7 +53,7 @@ public class BEMethodDeclaration extends BEBase{
 		
 		//recupero il nome del metodo
 		String methodName = getMethodHeader().getMethodDeclarator().getMethodName();
-			
+					
 		ArrayList<FormalParameterContext> pars = getMethodHeader().getMethodDeclarator().getFormalParameters();
 		
 		if(methodBody.getMethodModifier() != null && 

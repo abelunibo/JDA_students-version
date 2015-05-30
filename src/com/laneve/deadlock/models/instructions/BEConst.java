@@ -32,7 +32,7 @@ public class BEConst extends BEInstructionLine implements BEInstruction{
 			environment.pushStack(new TypeObject());
 		}else if(getName().contains("ldc")){
 			String cpType = BEConstantPool.takeCpoolRefType(environment.getConstantPool(),getRef());
-			if(cpType.equals("Integer"))
+			if(cpType.equals("Integer") || cpType.contains("Long"))
 				environment.pushStack(new TypeInt());
 			else{
 				environment.pushStack(new TypeObject(BEConstantPool.takeCpoolRef(environment.getConstantPool(),getRef()),

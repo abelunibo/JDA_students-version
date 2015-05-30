@@ -68,7 +68,6 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 			//genera LAM
 			String signature = BEConstantPool.takeCpoolRef(environment.getConstantPool(),getRef());
 			//String methodName = signature.substring(signature.indexOf(" ")+1,signature.lastIndexOf(" "));
-	
 			String methodClass = signature.substring(signature.lastIndexOf(" ")+1);
 			TypeObject ob=null;
 			int openP = signature.indexOf("(");
@@ -84,7 +83,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 						continue;
 					}
 				}
-				if(parameters.charAt(i) == 'I'){
+				if(parameters.charAt(i) == 'I' || parameters.charAt(i) == 'J'){
 					numParameters++;
 				}
 			
@@ -112,11 +111,9 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 	
 		}else if(getName().contentEquals("invokevirtual") || privateMethod){ //invokevirtual o invokespecial su metodo privato
 
-
 			String signature = BEConstantPool.takeCpoolRef(environment.getConstantPool(),getRef());
-			
-
-			if(signature.equals("()V start java/lang/Thread")){ //invokevirtual start
+						
+			if(signature.startsWith("()V start")){ //invokevirtual start
 
 				try {
 					environment.addThread((TypeObject)environment.popStack());
@@ -126,7 +123,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 				}
 			} //fine start
 
-			else if(signature.equals("()V join java/lang/Thread")){ //invokevirtual join
+			else if(signature.startsWith("()V join")){ //invokevirtual join
 				TypeObject tName=null;
 				try {
 					tName=(TypeObject) environment.popStack();
@@ -160,7 +157,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 							continue;
 						}
 					}
-					if(parameters.charAt(i) == 'I'){
+					if(parameters.charAt(i) == 'I' || parameters.charAt(i) == 'J'){
 						numParameters++;
 					}
 				
@@ -187,7 +184,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 			
 			//devo aggiungere allo stack il tipo di ritorno (se c'e')
 			int index = signature.indexOf(")");
-			String resultType= signature.substring(index,index+1);
+			String resultType= signature.substring(index+1,index+2);
 			
 			if(resultType.equals("V") || resultType.equals("")){
 
@@ -200,7 +197,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 				environment.pushStack(new TypeObject(resultTypeClass,environment.getFields(),false));
 
 			}
-			else if(resultType.equals("I")){
+			else if(resultType.equals("I") || resultType.equals("F")){
 
 				environment.pushStack(new TypeInt());
 			}
@@ -225,7 +222,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 						continue;
 					}
 				}
-				if(parameters.charAt(i) == 'I'){
+				if(parameters.charAt(i) == 'I' || parameters.charAt(i) == 'J'){
 					numParameters++;
 				}
 			
@@ -249,7 +246,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 			}
 			//devo aggiungere allo stack il tipo di ritorno (se c'e')
 			int index = signature.indexOf(")");
-			String resultType= signature.substring(index,index+1);
+			String resultType= signature.substring(index+1,index+2);
 			
 			if(resultType.equals("V")){
 	
@@ -262,7 +259,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 				environment.pushStack(new TypeObject(resultTypeClass,environment.getFields(),false));
 	
 			}
-			else if(resultType.equals("I")){
+			else if(resultType.equals("I") || resultType.equals("F")){
 	
 				environment.pushStack(new TypeInt());
 			}

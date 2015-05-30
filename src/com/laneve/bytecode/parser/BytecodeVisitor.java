@@ -121,6 +121,13 @@ public interface BytecodeVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNotImplemented(@NotNull BytecodeParser.NotImplementedContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code Conversion}
+	 * labeled alternative in {@link BytecodeParser#instruction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConversion(@NotNull BytecodeParser.ConversionContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link BytecodeParser#integralType}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

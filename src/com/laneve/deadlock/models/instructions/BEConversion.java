@@ -1,14 +1,13 @@
 package com.laneve.deadlock.models.instructions;
 
-import com.laneve.deadlock.models.BEConstantPool;
 import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamAnd;
 import com.laneve.deadlock.models.lam.LamBase;
 
-public class BEGoto extends BEInstructionLine implements BEInstruction{
+public class BEConversion extends BEInstructionLine implements BEInstruction{
 
-	public BEGoto(String text) {
+	public BEConversion(String text) {
 		instructionName = text;
 	}
 
@@ -23,7 +22,7 @@ public class BEGoto extends BEInstructionLine implements BEInstruction{
 
 	@Override
 	public void updateEnvironment(Environment environment) {
+		//l'istruzone f2l toglie l'elemento float dalo stack e poi ci rimette la sua conversione in long
+		//noi consideriamo solo interi e supponiamo quindi che lo stack rimanga invariato
 	}
-
-
 }
