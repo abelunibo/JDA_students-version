@@ -85,7 +85,6 @@ public class DeadlockAnalysis {
 			if(fileEntry.getName().contains("Pippo")) continue;
 			//if(fileEntry.getName().contains("Deadlock")) continue;
 			if(fileEntry.getName().contains("Debug")) continue;
-
 			
 			
 			FileInputStream in = new FileInputStream(fileEntry);
