@@ -1,14 +1,9 @@
-PIPPO_TAKELOCK2(Pippo1Pippo1, Pippo1__a_java_lang_Object2, Pippo1__b_java_lang_Object3) = (Pippo1bjava_lang_Object3, Pippo1ajava_lang_Object2)
-PIPPO_PIPPO(Pippo4Pippo4, Pippo4__a_java_lang_Object5, Pippo4__b_java_lang_Object6) = 0
-PIPPO_TAKELOCK(Pippo9Pippo9, Pippo9__a_java_lang_Object10, Pippo9__b_java_lang_Object11) = (Pippo9ajava_lang_Object10, Pippo9bjava_lang_Object11)
+COM_LANEVE_TEST_DININGPHILOSOPHER_MAIN(com_laneve_test_DiningPhilosopher__5, java_lang_String____6) = COM_LANEVE_TEST_FORK(com_laneve_test_Fork__7); COM_LANEVE_TEST_FORK(com_laneve_test_Fork__8); COM_LANEVE_TEST_FORK(com_laneve_test_Fork__9)
+COM_LANEVE_TEST_DININGPHILOSOPHER_STATICBLOCK_0(com_laneve_test_DiningPhilosopher__13) = 0
+COM_LANEVE_TEST_DININGPHILOSOPHER(com_laneve_test_DiningPhilosopher__15, com_laneve_test_Fork__16, com_laneve_test_Fork__17) = 0
+COM_LANEVE_TEST_DININGPHILOSOPHER_TOSTRING(com_laneve_test_DiningPhilosopher__18) = 0
+COM_LANEVE_TEST_DININGPHILOSOPHER_RUN(com_laneve_test_DiningPhilosopher__21) = 0
 
-PLUTO_MAIN(Pluto12Pluto12, Pluto12__p_Pippo15, Pippo15__a_java_lang_Object13, Pippo15__b_java_lang_Object14, java_lang_String__16java_lang_String__16) = PLUTO_1_RUN(Pluto_117Pluto_117); PLUTO_1_RUN(Pluto_117Pluto_117) & PLUTO_2_RUN(Pluto_218Pluto_218)
-PLUTO_STATICBLOCK_0(Pluto19Pluto19, Pluto19__p_Pippo22, Pippo22__a_java_lang_Object20, Pippo22__b_java_lang_Object21) = PIPPO_PIPPO(Pippo23Pippo23, Pippo23__a_java_lang_Object, Pippo23__b_java_lang_Object)
-PLUTO_PLUTO(Pluto24Pluto24, Pluto24__p_Pippo27, Pippo27__a_java_lang_Object25, Pippo27__b_java_lang_Object26) = 0
-
-PLUTO_1_RUN(Pluto_128Pluto_128) = PLUTO_TAKELOCK(PlutoPluto)
-PLUTO_1_PLUTO_1(Pluto_129Pluto_129) = 0
-
-PLUTO_2_PLUTO_2(Pluto_230Pluto_230) = 0
-PLUTO_2_RUN(Pluto_231Pluto_231) = PLUTO_TAKELOCK2(PlutoPluto)
+COM_LANEVE_TEST_FORK(com_laneve_test_Fork__22) = 0
+COM_LANEVE_TEST_FORK_GETNUMBER(com_laneve_test_Fork__23) = 0
 

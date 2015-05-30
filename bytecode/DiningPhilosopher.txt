@@ -1,6 +1,6 @@
 Classfile /Users/andrea/Documents/workspace/bytecodedeadlockanalysis/bin/com/laneve/test/DiningPhilosopher.class
-  Last modified 29-mag-2015; size 2680 bytes
-  MD5 checksum f76e8719cc63ed0cddc552ef3415f951
+  Last modified 30-mag-2015; size 2570 bytes
+  MD5 checksum d2450672bb3dcde1a4b4d3eb74b357e3
   Compiled from "DiningPhilosopher.java"
 public class com.laneve.test.DiningPhilosopher extends java.lang.Thread
   minor version: 0
@@ -14,7 +14,7 @@ Constant pool:
     #5 = Utf8               number
     #6 = Utf8               I
     #7 = Utf8               left
-    #8 = Utf8               Lcom/laneve/test/DiningPhilosopher$Fork;
+    #8 = Utf8               Lcom/laneve/test/Fork;
     #9 = Utf8               right
    #10 = Utf8               random
    #11 = Utf8               Ljava/util/Random;
@@ -30,14 +30,14 @@ Constant pool:
    #21 = NameAndType        #10:#11       // random:Ljava/util/Random;
    #22 = Utf8               LineNumberTable
    #23 = Utf8               LocalVariableTable
-   #24 = Utf8               (ILcom/laneve/test/DiningPhilosopher$Fork;Lcom/laneve/test/DiningPhilosopher$Fork;)V
+   #24 = Utf8               (ILcom/laneve/test/Fork;Lcom/laneve/test/Fork;)V
    #25 = Methodref          #3.#18        // java/lang/Thread."<init>":()V
    #26 = Fieldref           #1.#27        // com/laneve/test/DiningPhilosopher.number:I
    #27 = NameAndType        #5:#6         // number:I
-   #28 = Fieldref           #1.#29        // com/laneve/test/DiningPhilosopher.left:Lcom/laneve/test/DiningPhilosopher$Fork;
-   #29 = NameAndType        #7:#8         // left:Lcom/laneve/test/DiningPhilosopher$Fork;
-   #30 = Fieldref           #1.#31        // com/laneve/test/DiningPhilosopher.right:Lcom/laneve/test/DiningPhilosopher$Fork;
-   #31 = NameAndType        #9:#8         // right:Lcom/laneve/test/DiningPhilosopher$Fork;
+   #28 = Fieldref           #1.#29        // com/laneve/test/DiningPhilosopher.left:Lcom/laneve/test/Fork;
+   #29 = NameAndType        #7:#8         // left:Lcom/laneve/test/Fork;
+   #30 = Fieldref           #1.#31        // com/laneve/test/DiningPhilosopher.right:Lcom/laneve/test/Fork;
+   #31 = NameAndType        #9:#8         // right:Lcom/laneve/test/Fork;
    #32 = Utf8               this
    #33 = Utf8               Lcom/laneve/test/DiningPhilosopher;
    #34 = Utf8               toString
@@ -103,9 +103,9 @@ Constant pool:
    #95 = Utf8               (Ljava/lang/Object;)Ljava/lang/StringBuilder;
    #96 = String             #97           //  takes left fork no.
    #97 = Utf8                takes left fork no.
-   #98 = Methodref          #99.#101      // com/laneve/test/DiningPhilosopher$Fork.getNumber:()I
-   #99 = Class              #100          // com/laneve/test/DiningPhilosopher$Fork
-  #100 = Utf8               com/laneve/test/DiningPhilosopher$Fork
+   #98 = Methodref          #99.#101      // com/laneve/test/Fork.getNumber:()I
+   #99 = Class              #100          // com/laneve/test/Fork
+  #100 = Utf8               com/laneve/test/Fork
   #101 = NameAndType        #102:#103     // getNumber:()I
   #102 = Utf8               getNumber
   #103 = Utf8               ()I
@@ -124,11 +124,11 @@ Constant pool:
   #116 = NameAndType        #110:#13      // run:()V
   #117 = Utf8               main
   #118 = Utf8               ([Ljava/lang/String;)V
-  #119 = Methodref          #99.#120      // com/laneve/test/DiningPhilosopher$Fork."<init>":(I)V
+  #119 = Methodref          #99.#120      // com/laneve/test/Fork."<init>":(I)V
   #120 = NameAndType        #19:#121      // "<init>":(I)V
   #121 = Utf8               (I)V
-  #122 = Methodref          #1.#123       // com/laneve/test/DiningPhilosopher."<init>":(ILcom/laneve/test/DiningPhilosopher$Fork;Lcom/laneve/test/DiningPhilosopher$Fork;)V
-  #123 = NameAndType        #19:#24       // "<init>":(ILcom/laneve/test/DiningPhilosopher$Fork;Lcom/laneve/test/DiningPhilosopher$Fork;)V
+  #122 = Methodref          #1.#123       // com/laneve/test/DiningPhilosopher."<init>":(ILcom/laneve/test/Fork;Lcom/laneve/test/Fork;)V
+  #123 = NameAndType        #19:#24       // "<init>":(ILcom/laneve/test/Fork;Lcom/laneve/test/Fork;)V
   #124 = Methodref          #1.#125       // com/laneve/test/DiningPhilosopher.start:()V
   #125 = NameAndType        #126:#13      // start:()V
   #126 = Utf8               start
@@ -142,8 +142,6 @@ Constant pool:
   #134 = Utf8               d3
   #135 = Utf8               SourceFile
   #136 = Utf8               DiningPhilosopher.java
-  #137 = Utf8               InnerClasses
-  #138 = Utf8               Fork
 {
   static {};
     descriptor: ()V
@@ -160,8 +158,8 @@ Constant pool:
       LocalVariableTable:
         Start  Length  Slot  Name   Signature
 
-  public com.laneve.test.DiningPhilosopher(int, com.laneve.test.DiningPhilosopher$Fork, com.laneve.test.DiningPhilosopher$Fork);
-    descriptor: (ILcom/laneve/test/DiningPhilosopher$Fork;Lcom/laneve/test/DiningPhilosopher$Fork;)V
+  public com.laneve.test.DiningPhilosopher(int, com.laneve.test.Fork, com.laneve.test.Fork);
+    descriptor: (ILcom/laneve/test/Fork;Lcom/laneve/test/Fork;)V
     flags: ACC_PUBLIC
     Code:
       stack=2, locals=4, args_size=4
@@ -172,23 +170,23 @@ Constant pool:
          6: putfield      #26                 // Field number:I
          9: aload_0
         10: aload_2
-        11: putfield      #28                 // Field left:Lcom/laneve/test/DiningPhilosopher$Fork;
+        11: putfield      #28                 // Field left:Lcom/laneve/test/Fork;
         14: aload_0
         15: aload_3
-        16: putfield      #30                 // Field right:Lcom/laneve/test/DiningPhilosopher$Fork;
+        16: putfield      #30                 // Field right:Lcom/laneve/test/Fork;
         19: return
       LineNumberTable:
-        line 25: 0
-        line 26: 4
-        line 27: 9
-        line 28: 14
-        line 29: 19
+        line 13: 0
+        line 14: 4
+        line 15: 9
+        line 16: 14
+        line 17: 19
       LocalVariableTable:
         Start  Length  Slot  Name   Signature
             0      20     0  this   Lcom/laneve/test/DiningPhilosopher;
             0      20     1 number   I
-            0      20     2  left   Lcom/laneve/test/DiningPhilosopher$Fork;
-            0      20     3 right   Lcom/laneve/test/DiningPhilosopher$Fork;
+            0      20     2  left   Lcom/laneve/test/Fork;
+            0      20     3 right   Lcom/laneve/test/Fork;
 
   public java.lang.String toString();
     descriptor: ()Ljava/lang/String;
@@ -205,7 +203,7 @@ Constant pool:
         16: invokevirtual #47                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
         19: areturn
       LineNumberTable:
-        line 32: 0
+        line 20: 0
       LocalVariableTable:
         Start  Length  Slot  Name   Signature
             0      20     0  this   Lcom/laneve/test/DiningPhilosopher;
@@ -223,10 +221,10 @@ Constant pool:
          9: invokevirtual #115                // Method run:()V
         12: return
       LineNumberTable:
-        line 61: 0
-        line 62: 4
-        line 63: 8
-        line 64: 12
+        line 49: 0
+        line 50: 4
+        line 51: 8
+        line 52: 12
       LocalVariableTable:
         Start  Length  Slot  Name   Signature
             0      13     0  this   Lcom/laneve/test/DiningPhilosopher;
@@ -236,41 +234,41 @@ Constant pool:
     flags: ACC_PUBLIC, ACC_STATIC
     Code:
       stack=5, locals=7, args_size=1
-         0: new           #99                 // class com/laneve/test/DiningPhilosopher$Fork
+         0: new           #99                 // class com/laneve/test/Fork
          3: dup
          4: iconst_0
-         5: invokespecial #119                // Method com/laneve/test/DiningPhilosopher$Fork."<init>":(I)V
+         5: invokespecial #119                // Method com/laneve/test/Fork."<init>":(I)V
          8: astore_1
-         9: new           #99                 // class com/laneve/test/DiningPhilosopher$Fork
+         9: new           #99                 // class com/laneve/test/Fork
         12: dup
         13: iconst_1
-        14: invokespecial #119                // Method com/laneve/test/DiningPhilosopher$Fork."<init>":(I)V
+        14: invokespecial #119                // Method com/laneve/test/Fork."<init>":(I)V
         17: astore_2
-        18: new           #99                 // class com/laneve/test/DiningPhilosopher$Fork
+        18: new           #99                 // class com/laneve/test/Fork
         21: dup
         22: iconst_2
-        23: invokespecial #119                // Method com/laneve/test/DiningPhilosopher$Fork."<init>":(I)V
+        23: invokespecial #119                // Method com/laneve/test/Fork."<init>":(I)V
         26: astore_3
         27: new           #1                  // class com/laneve/test/DiningPhilosopher
         30: dup
         31: iconst_0
         32: aload_1
         33: aload_3
-        34: invokespecial #122                // Method "<init>":(ILcom/laneve/test/DiningPhilosopher$Fork;Lcom/laneve/test/DiningPhilosopher$Fork;)V
+        34: invokespecial #122                // Method "<init>":(ILcom/laneve/test/Fork;Lcom/laneve/test/Fork;)V
         37: astore        4
         39: new           #1                  // class com/laneve/test/DiningPhilosopher
         42: dup
         43: iconst_1
         44: aload_2
         45: aload_1
-        46: invokespecial #122                // Method "<init>":(ILcom/laneve/test/DiningPhilosopher$Fork;Lcom/laneve/test/DiningPhilosopher$Fork;)V
+        46: invokespecial #122                // Method "<init>":(ILcom/laneve/test/Fork;Lcom/laneve/test/Fork;)V
         49: astore        5
         51: new           #1                  // class com/laneve/test/DiningPhilosopher
         54: dup
         55: iconst_2
         56: aload_3
         57: aload_2
-        58: invokespecial #122                // Method "<init>":(ILcom/laneve/test/DiningPhilosopher$Fork;Lcom/laneve/test/DiningPhilosopher$Fork;)V
+        58: invokespecial #122                // Method "<init>":(ILcom/laneve/test/Fork;Lcom/laneve/test/Fork;)V
         61: astore        6
         63: aload         4
         65: invokevirtual #124                // Method start:()V
@@ -280,26 +278,24 @@ Constant pool:
         75: invokevirtual #124                // Method start:()V
         78: return
       LineNumberTable:
-        line 68: 0
-        line 69: 9
-        line 70: 18
-        line 72: 27
-        line 74: 39
-        line 75: 51
-        line 77: 63
-        line 78: 68
-        line 79: 73
-        line 81: 78
+        line 56: 0
+        line 57: 9
+        line 58: 18
+        line 60: 27
+        line 62: 39
+        line 63: 51
+        line 65: 63
+        line 66: 68
+        line 67: 73
+        line 69: 78
       LocalVariableTable:
         Start  Length  Slot  Name   Signature
             0      79     0  args   [Ljava/lang/String;
-            9      70     1    f0   Lcom/laneve/test/DiningPhilosopher$Fork;
-           18      61     2    f1   Lcom/laneve/test/DiningPhilosopher$Fork;
-           27      52     3    f2   Lcom/laneve/test/DiningPhilosopher$Fork;
+            9      70     1    f0   Lcom/laneve/test/Fork;
+           18      61     2    f1   Lcom/laneve/test/Fork;
+           27      52     3    f2   Lcom/laneve/test/Fork;
            39      40     4    d1   Lcom/laneve/test/DiningPhilosopher;
            51      28     5    d2   Lcom/laneve/test/DiningPhilosopher;
            63      16     6    d3   Lcom/laneve/test/DiningPhilosopher;
 }
 SourceFile: "DiningPhilosopher.java"
-InnerClasses:
-     public static #138= #99 of #1; //Fork=class com/laneve/test/DiningPhilosopher$Fork of class com/laneve/test/DiningPhilosopher
