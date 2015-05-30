@@ -33,7 +33,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 		 * per poi usarla nelle lam
 		 */
 		LinkedList<TypeObject> threads = new LinkedList<TypeObject>(environment.getQueuethreads());
-		
+				
 		/* devo aggiornare prima l'environment così mentre faccio la pop dei parametri dallo stack 
 		 * li aggiungo alla signature della mia LAM */
 		updateEnvironment(environment); 
@@ -106,7 +106,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 			String signature = BEConstantPool.takeCpoolRef(environment.getConstantPool(),getRef());
 
 
-			if(signature.equals("() start java/lang/Thread")){ //invokevirtual start
+			if(signature.equals("()V start java/lang/Thread")){ //invokevirtual start
 
 				try {
 					environment.addThread((TypeObject)environment.popStack());
@@ -116,7 +116,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 				}
 			} //fine start
 
-			else if(signature.equals("() join java/lang/Thread")){ //invokevirtual join
+			else if(signature.equals("()V join java/lang/Thread")){ //invokevirtual join
 				TypeObject tName=null;
 				try {
 					tName=(TypeObject) environment.popStack();
