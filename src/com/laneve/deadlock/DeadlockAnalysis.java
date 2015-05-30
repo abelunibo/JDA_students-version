@@ -37,7 +37,10 @@ public class DeadlockAnalysis {
 
 	public static void main(String[] args) throws IOException{
 		
-		/* log configuration */
+		/*** PARAMETRI ***/
+		final boolean convertClass2Txt = false;
+		
+		/*** log configuration ***/
 		Logger rootLog = Logger.getLogger("");
 		rootLog.setLevel(Level.ALL);
 
@@ -47,7 +50,11 @@ public class DeadlockAnalysis {
 		FILELOGGER.setLevel(Level.INFO);
 		FileHandler hand;
 		
-		//TODO se la cartella 'output' non esiste il FileHandler non la crea (fare un controllo e crearla prima)
+		// Se la dir 'output' non esiste viene creata 
+		File outDir = new File("output");
+		if(!outDir.exists())
+			outDir.mkdir();
+		
 		hand = new FileHandler("output/lams_log_file.txt");
 		hand.setFormatter(new LamsFileFormatter());
 		FILELOGGER.setUseParentHandlers(false);
@@ -55,10 +62,11 @@ public class DeadlockAnalysis {
 
 		ArrayList<BEClassFile> classfiles = new ArrayList<BEClassFile>();
 		
-		//TODO ottenere direttamente i file .txt da cartella bytecode java
-		FromClass2Txt fc2t = new FromClass2Txt("bin/com/laneve/test", "bytecode");
-		fc2t.convert();
-		System.exit(0);
+		/*** Converte class in txt e li posiziona dentro bytecode ***/
+		if(convertClass2Txt){
+			FromClass2Txt fc2t = new FromClass2Txt("bin/com/laneve/test", "bytecode");
+			fc2t.convert(); 
+		}
 		
 		File folder = new File("bytecode"); //cartella in cui e' contenuto il nostro bytecode
 		ArrayList<LamBase> lams = new ArrayList<LamBase>(); //insieme delle Lam
@@ -73,7 +81,7 @@ public class DeadlockAnalysis {
 			if(fileEntry.getName().contains("Pluto")) continue;
 			if(fileEntry.getName().contains("Pippo")) continue;
 			if(fileEntry.getName().contains("Deadlock")) continue;
-
+			if(fileEntry.getName().contains("Debug")) continue;
 			
 			
 			FileInputStream in = new FileInputStream(fileEntry);
