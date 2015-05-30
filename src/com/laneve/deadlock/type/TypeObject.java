@@ -218,7 +218,10 @@ public class TypeObject extends Type{
 
 		
 		public void setFieldType(String fieldName, Type type) {
-
+			
+			if(type instanceof TypeObject){
+				((TypeObject) type).parent = this;
+			}
 			fieldsRecord.put(fieldName, type);
 		}
 

@@ -19,7 +19,7 @@ public class BEGet extends BEInstructionLine implements BEInstruction{
 	public LamBase generateLam(Environment environment) {
 		LamAnd lamAnd =null;
 		lamAnd =new LamAnd(LamBase.getZhatBar(environment.getLocks()), //zhhatbar
-				LamBase.getThat(environment.getQueuethreads())); //tHat
+				LamBase.getThat(environment.getQueuethreads(),environment)); //tHat
 		updateEnvironment(environment);
 		return lamAnd;
 	}
@@ -57,7 +57,9 @@ public class BEGet extends BEInstructionLine implements BEInstruction{
 			
 		}else if(getName().equals("getstatic")){ //devo mettere sullo stack un campo di una classe
 			if(firstLetter.contentEquals("L")){
-				environment.pushStack(environment.getClassObject(fieldObjectType).getFieldType(fieldName));
+				if(environment.getClassObject(fieldObjectType) != null){ //e' una classe user-defined
+					environment.pushStack(environment.getClassObject(fieldObjectType).getFieldType(fieldName));
+				}
 			}
 			else environment.pushStack(new TypeInt());
 		}

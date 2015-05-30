@@ -17,7 +17,7 @@ public class BEOperation extends BEInstructionLine implements BEInstruction{
 	public LamBase generateLam(Environment environment) {
 		LamAnd lamAnd =null;
 		lamAnd =new LamAnd(LamBase.getZhatBar(environment.getLocks()), //zhhatbar
-				LamBase.getThat(environment.getQueuethreads())); //tHat
+				LamBase.getThat(environment.getQueuethreads(),environment)); //tHat
 		updateEnvironment(environment);
 		return lamAnd;
 	}

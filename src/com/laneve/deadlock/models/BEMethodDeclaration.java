@@ -1,6 +1,7 @@
 package com.laneve.deadlock.models;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import com.laneve.bytecode.parser.BytecodeParser.FormalParameterContext;
 import com.laneve.deadlock.exceptions.BEException;
@@ -46,10 +47,12 @@ public class BEMethodDeclaration extends BEBase{
 		//LAM signature del metodo
 		
 		ArrayList<Type> aType= new ArrayList<Type>();
+		
+		String className=environment.getClassName();
+		
+		TypeObject t=new TypeObject(className,environment.getFields(),false); //il this del metodo (solo per metodi non statici)
 				
-		TypeObject t=new TypeObject(environment.getClassName(),environment.getFields(),false); //il this del metodo (solo per metodi non statici)
-				
-		TypeObject tClass= environment.getClassObject(environment.getClassName());//l'oggetto corrispondente alla classe (se il metodo è statico)
+		TypeObject tClass= environment.getClassObject(className);//l'oggetto corrispondente alla classe (se il metodo è statico)
 		
 		//recupero il nome del metodo
 		String methodName = getMethodHeader().getMethodDeclarator().getMethodName();
@@ -74,6 +77,22 @@ public class BEMethodDeclaration extends BEBase{
 			}
 			
 			aType.add(t1);
+		}
+		
+		//Se il metodo e' invocato su una classe che fa uso di campi statici esterni
+		//bisogna passargli anche i campi statici per far si che questo li conosca se ne fa uso
+		String clName=null,fieldName=null;
+		for (Map.Entry<String, String> entry1 : environment.getFields().get(className).entrySet()){ //itero sui campi della classe
+			if(entry1.getKey().contains(".")){ //il campo non e' di questa classe ma e' un riferimento ad un campo statico
+				String fullfieldName=entry1.getKey(); //nomeClasseProprietaria.nomeCampo
+				clName= fullfieldName.substring(0, fullfieldName.lastIndexOf('.')); //nomeClasseProprietaria
+				if(environment.getClassObject(clName)==null) //la classe proprietaria non e' una classe user-defined
+					continue;
+				fieldName= fullfieldName.substring(fullfieldName.lastIndexOf('.')+1); //nome campo
+				//String fieldType= entry1.getValue(); //tipo campo
+				//System.out.println("--"+fullfieldName+" "+clName+" "+fieldName+" "+fieldType);
+				aType.add(environment.getClassObject(clName).getFieldType(fieldName));
+			}
 		}
 		
 		//creo la signature per la LAM del metodo

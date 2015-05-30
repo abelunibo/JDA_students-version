@@ -3,9 +3,12 @@ package com.laneve.deadlock.models.lam;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Set;
 
 import com.laneve.deadlock.exceptions.BEException;
+import com.laneve.deadlock.models.Environment;
+import com.laneve.deadlock.type.Type;
 import com.laneve.deadlock.type.TypeObject;
 
 public abstract class LamBase {
@@ -65,21 +68,38 @@ public abstract class LamBase {
 	
 	
 	/* Calcola T cappello */
-	public static LamAnd getThat(LinkedList<TypeObject> t){
+	public static LamAnd getThat(LinkedList<TypeObject> t, Environment environment){
 		
 		ArrayList<LamSubExpr> lamSub = new ArrayList<LamSubExpr>();
 		
 		try{
+			
 			if(t!=null && t.size()>0){
 				
-				lamSub.add(new LamInvoke(t.get(0).getClassName(), "RUN",t.get(0))); //run prende come parametro il this
-	
-				for(int i=1; i < t.size(); i++){
-									
-					lamSub.add(new LamInvoke(t.get(i).getClassName(), "RUN",t.get(i)));
-	
+				for(int i=0; i < t.size(); i++){
+					ArrayList<Type> objects = new ArrayList<Type>();
+					objects.add(t.get(i));
+					
+					//Se il metodo e' invocato su una classe che fa uso di campi statici esterni
+					//bisogna passargli anche i campi statici per far si che questo li conosca se ne fa uso
+					String clName=null,fieldName=null;
+					for (Map.Entry<String, String> entry1 : environment.getFields().get(t.get(i).getClassName()).entrySet()){ //itero sui campi della classe
+						if(entry1.getKey().contains(".")){ //il campo non e' di questa classe ma e' un riferimento ad un campo statico
+							String fullfieldName=entry1.getKey(); //nomeClasseProprietaria.nomeCampo
+							clName= fullfieldName.substring(0, fullfieldName.lastIndexOf('.')); //nomeClasseProprietaria
+							if(environment.getClassObject(clName)==null) //la classe proprietaria non e' una classe user-defined
+								continue;
+							fieldName= fullfieldName.substring(fullfieldName.lastIndexOf('.')+1); //nome campo
+							//String fieldType= entry1.getValue(); //tipo campo
+							//System.out.println("--"+fullfieldName+" "+clName+" "+fieldName+" "+fieldType);
+							objects.add(environment.getClassObject(clName).getFieldType(fieldName));
+						}
+					}
+					
+					lamSub.add(new LamInvoke(t.get(i).getClassName(), "RUN",objects));
 				}
 			}
+			
 		}catch(BEException e){
 			e.printStackTrace();
 			System.exit(1);	

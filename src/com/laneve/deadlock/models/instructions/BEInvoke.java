@@ -4,6 +4,7 @@ package com.laneve.deadlock.models.instructions;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Map;
 
 import com.laneve.bytecode.parser.BytecodeParser.FormalParameterContext;
 import com.laneve.deadlock.exceptions.BEException;
@@ -42,7 +43,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 		
 		LamAnd lamAnd =null;
 			lamAnd =new LamAnd(LamBase.getZhatBar(environment.getLocks()), //zhhatbar
-			LamBase.getThat(threads), //that
+			LamBase.getThat(threads,environment), //that
 			lamInv, //invocazione di metodo
 			lamC); //dipendenza chiamante e chiamato
 		
@@ -140,8 +141,6 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 					if(initializer==null) throw new BEException("Il costruttore per la classe "+ methodClass +"non e' stato trovato"
 							+ "\n. I parametri attuali non sono stati sostituiti correttamente");
 					else{
-						
-						System.out.println(methodClass+" "+pars.size());
 						int k=1; //parte da 1 perche' in pars a 0 c'e' il this
 						// ciclo sulle istruzioni
 						String prevInst=null;
@@ -165,6 +164,21 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 						
 					}
 					
+					//Se il metodo e' invocato su una classe che fa uso di campi statici esterni
+					//bisogna passargli anche i campi statici per far si che questo li conosca se ne fa uso
+					String clName=null,fieldName=null;
+					for (Map.Entry<String, String> entry1 : environment.getFields().get(methodClass).entrySet()){ //itero sui campi della classe
+						if(entry1.getKey().contains(".")){ //il campo non e' di questa classe ma e' un riferimento ad un campo statico
+							String fullfieldName=entry1.getKey(); //nomeClasseProprietaria.nomeCampo
+							clName= fullfieldName.substring(0, fullfieldName.lastIndexOf('.')); //nomeClasseProprietaria
+							if(environment.getClassObject(clName)==null) //la classe proprietaria non e' una classe user-defined
+								continue;
+							fieldName= fullfieldName.substring(fullfieldName.lastIndexOf('.')+1); //nome campo
+							//String fieldType= entry1.getValue(); //tipo campo
+							//System.out.println("--"+fullfieldName+" "+clName+" "+fieldName+" "+fieldType);
+							pars.add(environment.getClassObject(clName).getFieldType(fieldName));
+						}
+					}
 					
 					lamInv = new LamInvoke(methodClass,ob.getClassName(), pars);
 				
@@ -237,6 +251,24 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 					pars.add(0,ob);
 
 					if(environment.getFields().containsKey(methodClass)){ //non considero chiamate a metodi su classi non conosciute
+						
+						//Se il metodo e' invocato su una classe che fa uso di campi statici esterni
+						//bisogna passargli anche i campi statici per far si che questo li conosca se ne fa uso
+						String clName=null,fieldName=null;
+						for (Map.Entry<String, String> entry1 : environment.getFields().get(methodClass).entrySet()){ //itero sui campi della classe
+							if(entry1.getKey().contains(".")){ //il campo non e' di questa classe ma e' un riferimento ad un campo statico
+								String fullfieldName=entry1.getKey(); //nomeClasseProprietaria.nomeCampo
+								clName= fullfieldName.substring(0, fullfieldName.lastIndexOf('.')); //nomeClasseProprietaria
+								if(environment.getClassObject(clName)==null) //la classe proprietaria non e' una classe user-defined
+									continue;
+								fieldName= fullfieldName.substring(fullfieldName.lastIndexOf('.')+1); //nome campo
+								//String fieldType= entry1.getValue(); //tipo campo
+								//System.out.println("--"+fullfieldName+" "+clName+" "+fieldName+" "+fieldType);
+								pars.add(environment.getClassObject(clName).getFieldType(fieldName));
+							}
+						}
+						
+						
 						lamInv = new LamInvoke(ob.getClassName(), methodName, pars); 
 						lamC= new LamCouple(LamBase.getTopZbar(environment.getLocks()),ob.getName());
 					}
@@ -302,6 +334,21 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 				// alcun oggetto dallo stack
 				
 				if(environment.getFields().containsKey(methodClass)){ //non considero chiamate a metodi su classi non conosciute
+					//Se il metodo e' invocato su una classe che fa uso di campi statici esterni
+					//bisogna passargli anche i campi statici per far si che questo li conosca se ne fa uso
+					String clName=null,fieldName=null;
+					for (Map.Entry<String, String> entry1 : environment.getFields().get(methodClass).entrySet()){ //itero sui campi della classe
+						if(entry1.getKey().contains(".")){ //il campo non e' di questa classe ma e' un riferimento ad un campo statico
+							String fullfieldName=entry1.getKey(); //nomeClasseProprietaria.nomeCampo
+							clName= fullfieldName.substring(0, fullfieldName.lastIndexOf('.')); //nomeClasseProprietaria
+							if(environment.getClassObject(clName)==null) //la classe proprietaria non e' una classe user-defined
+								continue;
+							fieldName= fullfieldName.substring(fullfieldName.lastIndexOf('.')+1); //nome campo
+							//String fieldType= entry1.getValue(); //tipo campo
+							//System.out.println("--"+fullfieldName+" "+clName+" "+fieldName+" "+fieldType);
+							pars.add(environment.getClassObject(clName).getFieldType(fieldName));
+						}
+					}
 					lamInv = new LamInvoke(methodClass,methodName, pars);
 					lamC= new LamCouple(LamBase.getTopZbar(environment.getLocks()),environment.getClassObject(methodClass).getName());
 				}

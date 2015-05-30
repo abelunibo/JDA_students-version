@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
@@ -21,7 +20,6 @@ import com.laneve.bytecode.parser.BytecodeParser;
 import com.laneve.deadlock.models.BEClassFile;
 import com.laneve.deadlock.models.BEConstantAndInfo;
 import com.laneve.deadlock.models.BEConstantPool;
-import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.BEMethodDeclaration;
 import com.laneve.deadlock.models.BEMethodDeclarator;
 import com.laneve.deadlock.models.BEMethodHeader;
@@ -41,7 +39,7 @@ public class DeadlockAnalysis {
 	public static void main(String[] args) throws IOException{
 		
 		/*** PARAMETRI ***/
-		final boolean convertClass2Txt = false;
+		final boolean CONVERTCLASS2TXT = false;
 		
 		/*** log configuration ***/
 		Logger rootLog = Logger.getLogger("");
@@ -66,7 +64,7 @@ public class DeadlockAnalysis {
 		ArrayList<BEClassFile> classfiles = new ArrayList<BEClassFile>();
 		
 		/*** Converte class in txt e li posiziona dentro bytecode ***/
-		if(convertClass2Txt){
+		if(CONVERTCLASS2TXT){
 			FromClass2Txt fc2t = new FromClass2Txt("bin/com/laneve/test", "bytecode");
 			fc2t.convert(); 
 		}
@@ -81,9 +79,9 @@ public class DeadlockAnalysis {
 
 			if(fileEntry.getName().contains("Fork")) continue;
 			if(fileEntry.getName().contains("Dining")) continue;
-			if(fileEntry.getName().contains("Pluto")) continue;
-			if(fileEntry.getName().contains("Pippo")) continue;
-			//if(fileEntry.getName().contains("Deadlock")) continue;
+			//if(fileEntry.getName().contains("Pluto")) continue;
+			//if(fileEntry.getName().contains("Pippo")) continue;
+			if(fileEntry.getName().contains("Deadlock")) continue;
 			if(fileEntry.getName().contains("Debug")) continue;
 			
 			
@@ -147,25 +145,9 @@ public class DeadlockAnalysis {
 					nameAndType = BEConstantPool.takeCpoolRef(cf.getCostantPool(), a.get(2));
 					type = nameAndType.substring(0, nameAndType.indexOf(" "));
 					fieldName = nameAndType.substring(nameAndType.lastIndexOf(" ")+1);
+					
 					if(!className.equals(cf.getClassName())){ //ho un riferimento a un campo statico di un altra classe (esempio campo out di java/io/PrintStream)						
 						staticField = true;
-						LinkedHashMap<String, String> fieldNAndT;
-						if(fields.get(className) == null){
-							fieldNAndT = new LinkedHashMap<String, String>();
-						}
-						else {
-							fieldNAndT = fields.get(className);
-						}
-				
-						if(type.trim().startsWith("L")){
-							String type1=type.substring(1,type.length()-1);
-							fieldNAndT.put(fieldName, type1);
-						}
-						else
-							fieldNAndT.put(fieldName, "int");
-						
-						
-						fields.put(className, fieldNAndT);
 					}
 					
 					if(type.trim().startsWith("L")){
@@ -221,8 +203,8 @@ public class DeadlockAnalysis {
 				System.exit(1);
 			}
 			classObjects.put(entry.getKey(), t);
-		}		
-		
+		}
+				
 		LinkedHashMap<String, BEConstantPool> cpools = new LinkedHashMap<String, BEConstantPool>();
 		for(BEClassFile cf : classfiles){
 			cpools.put(cf.getClassName(), cf.getCostantPool());

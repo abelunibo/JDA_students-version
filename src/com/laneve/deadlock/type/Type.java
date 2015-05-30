@@ -6,7 +6,7 @@ public abstract class Type {
 	final String className; // nome base del tipo (senza indice)
 	
 	boolean isInt=false; 	// true per interi
-		
+	
 	// se e' true il tipo identifica una classe
 	// ne esiste uno per ogni classe del programma
 	// non puo' essere indicizzato

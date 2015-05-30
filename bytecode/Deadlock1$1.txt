@@ -1,5 +1,5 @@
 Classfile /Users/andrea/Documents/workspace/bytecodedeadlockanalysis/bin/com/laneve/test/Deadlock1$1.class
-  Last modified 29-mag-2015; size 774 bytes
+  Last modified 30-mag-2015; size 774 bytes
   MD5 checksum 505937232b833ed6a1fd3e743f51f8ab
   Compiled from "Deadlock1.java"
 class com.laneve.test.Deadlock1$1 extends java.lang.Thread
