@@ -53,7 +53,17 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 		int numParameters=0;
 		ArrayList<Type> pars = new ArrayList<Type>();
 		
-		if(getName().contentEquals("invokespecial")){ //init
+		boolean privateMethod= false; 
+		
+		String s = BEConstantPool.takeCpoolRef(environment.getConstantPool(),getRef());
+		String mName= s.substring(s.indexOf(" ")+1,s.lastIndexOf(" "));
+		//System.out.println(mName);
+		if(getName().contentEquals("invokespecial")  && !mName.equals("<init>")){ //invocazione di metodo privato della classe
+			privateMethod=true;
+		}
+		
+		
+		if(getName().contentEquals("invokespecial") && !privateMethod){ //init
 			
 			//genera LAM
 			String signature = BEConstantPool.takeCpoolRef(environment.getConstantPool(),getRef());
@@ -100,11 +110,11 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 					System.exit(1);
 				} 				
 	
-		}else if(getName().contentEquals("invokevirtual")){
+		}else if(getName().contentEquals("invokevirtual") || privateMethod){ //invokevirtual o invokespecial su metodo privato
 
 
 			String signature = BEConstantPool.takeCpoolRef(environment.getConstantPool(),getRef());
-
+			
 
 			if(signature.equals("()V start java/lang/Thread")){ //invokevirtual start
 
@@ -135,7 +145,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 				//genera LAM
 				String methodClass = signature.substring(signature.lastIndexOf(" ")+1);
 				String methodName = signature.substring(signature.indexOf(" ")+1,signature.lastIndexOf(" "));
-								
+
 				TypeObject ob=null;
 				int openP = signature.indexOf("(");
 				int closedP = signature.indexOf(")");
@@ -163,6 +173,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 	
 					ob= (TypeObject) environment.popStack(); // il tipo dell'oggetto su cui ho invocato il metodo
 					pars.add(0,ob);
+
 					if(environment.getFields().containsKey(methodClass)){ //non considero chiamate a metodi su classi non conosciute
 						lamInv = new LamInvoke(ob.getClassName(), methodName, pars); 
 						lamC= new LamCouple(LamBase.getTopZbar(environment.getLocks()),ob.getName());

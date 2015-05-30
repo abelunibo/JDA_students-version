@@ -120,13 +120,16 @@ public class DeadlockAnalysis {
 
 		for(BEClassFile cf : classfiles){ //creiamo dalla constant Pool la mappa <NomeClasse, <nomeCampo, tipoCampo>>
 			String className="",nameAndType="",fieldName = "",type="";
-			LinkedHashMap<String, String> fieldNameAndTypes = new LinkedHashMap<String, String>();;
+			LinkedHashMap<String, String> fieldNameAndTypes = new LinkedHashMap<String, String>();
 			HashMap<String, BEConstantAndInfo> tableEntries = cf.getCostantPool().getTableEntries().getTableEntry();
 			for (Map.Entry<String, BEConstantAndInfo> entry : tableEntries.entrySet()){
 				ArrayList<String> a = entry.getValue().getConstantAndInfo();
 				if(a.get(0).contentEquals("Fieldref")){
 					className = BEConstantPool.takeCpoolRef(cf.getCostantPool(), a.get(1));
-					nameAndType = BEConstantPool.takeCpoolRef( cf.getCostantPool(), a.get(2));
+					if(!className.equals(cf.getClassName())){
+						continue;
+					}
+					nameAndType = BEConstantPool.takeCpoolRef(cf.getCostantPool(), a.get(2));
 					type = nameAndType.substring(0, nameAndType.indexOf(" "));
 					fieldName = nameAndType.substring(nameAndType.lastIndexOf(" ")+1);
 					if(type.trim().startsWith("L")){
@@ -137,14 +140,13 @@ public class DeadlockAnalysis {
 						fieldNameAndTypes.put(fieldName, "int");
 				}
 			}
-			fields.put(className, fieldNameAndTypes);
+			fields.put(cf.getClassName(), fieldNameAndTypes);
 		}
-		
 		 
 		  	//print di debug
 		/*	for(Map.Entry<String, LinkedHashMap<String, String>> entry : fields.entrySet()){
 
-		    	System.out.println("-----" + entry.getKey());
+		    	System.out.println("--^^^^^--" + entry.getKey());
 		    	
 			    for(Map.Entry<String, String> entry2 : entry.getValue().entrySet()){
 
