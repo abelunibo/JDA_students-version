@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
@@ -20,7 +21,9 @@ import com.laneve.bytecode.parser.BytecodeParser;
 import com.laneve.deadlock.models.BEClassFile;
 import com.laneve.deadlock.models.BEConstantAndInfo;
 import com.laneve.deadlock.models.BEConstantPool;
+import com.laneve.deadlock.models.BEInstructionLine;
 import com.laneve.deadlock.models.BEMethodDeclaration;
+import com.laneve.deadlock.models.BEMethodDeclarator;
 import com.laneve.deadlock.models.BEMethodHeader;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamBase;
@@ -37,7 +40,10 @@ public class DeadlockAnalysis {
 
 	public static void main(String[] args) throws IOException{
 		
-		/* log configuration */
+		/*** PARAMETRI ***/
+		final boolean convertClass2Txt = false;
+		
+		/*** log configuration ***/
 		Logger rootLog = Logger.getLogger("");
 		rootLog.setLevel(Level.ALL);
 
@@ -47,7 +53,11 @@ public class DeadlockAnalysis {
 		FILELOGGER.setLevel(Level.INFO);
 		FileHandler hand;
 		
-		//TODO se la cartella 'output' non esiste il FileHandler non la crea (fare un controllo e crearla prima)
+		// Se la dir 'output' non esiste viene creata 
+		File outDir = new File("output");
+		if(!outDir.exists())
+			outDir.mkdir();
+		
 		hand = new FileHandler("output/lams_log_file.txt");
 		hand.setFormatter(new LamsFileFormatter());
 		FILELOGGER.setUseParentHandlers(false);
@@ -55,10 +65,11 @@ public class DeadlockAnalysis {
 
 		ArrayList<BEClassFile> classfiles = new ArrayList<BEClassFile>();
 		
-		//TODO ottenere direttamente i file .txt da cartella bytecode java
-		FromClass2Txt fc2t = new FromClass2Txt("bin/com/laneve/test", "bytecode");
-		fc2t.convert();
-		System.exit(0);
+		/*** Converte class in txt e li posiziona dentro bytecode ***/
+		if(convertClass2Txt){
+			FromClass2Txt fc2t = new FromClass2Txt("bin/com/laneve/test", "bytecode");
+			fc2t.convert(); 
+		}
 		
 		File folder = new File("bytecode"); //cartella in cui e' contenuto il nostro bytecode
 		ArrayList<LamBase> lams = new ArrayList<LamBase>(); //insieme delle Lam
@@ -68,11 +79,12 @@ public class DeadlockAnalysis {
 
 		for ( File fileEntry : folder.listFiles()){
 
-			//if(fileEntry.getName().contains("Fork")) continue;
-			//if(fileEntry.getName().contains("Dining")) continue;
+			if(fileEntry.getName().contains("Fork")) continue;
+			if(fileEntry.getName().contains("Dining")) continue;
 			if(fileEntry.getName().contains("Pluto")) continue;
 			if(fileEntry.getName().contains("Pippo")) continue;
-			if(fileEntry.getName().contains("Deadlock")) continue;
+			//if(fileEntry.getName().contains("Deadlock")) continue;
+			if(fileEntry.getName().contains("Debug")) continue;
 
 			
 			
@@ -187,6 +199,19 @@ public class DeadlockAnalysis {
 			    }
 		 	}*/
 		
+		LinkedHashMap<String, ArrayList<BEMethodDeclaration>> initMethods = new LinkedHashMap<String, ArrayList<BEMethodDeclaration>>();
+		
+		for(BEClassFile cf : classfiles){ //itero sulle classi
+			ArrayList<BEMethodDeclaration> m = new ArrayList<BEMethodDeclaration>(); //tutti i costruttori per questa classe
+			for (Map.Entry<BEMethodHeader, BEMethodDeclaration> entry : cf.getMethods().entrySet()){ //itero sui metodi della classe	
+				BEMethodDeclarator bmd = entry.getKey().getMethodDeclarator();
+				if(bmd.getMethodName().equals(cf.getClassName())){
+					m.add(entry.getValue());
+				}
+			}
+			initMethods.put(cf.getClassName(),m);
+		}
+		
 		//creo gli oggetti per ogni classe //devono essere in comune per tutte le classi
 		HashMap<String, TypeObject> classObjects= new HashMap<String, TypeObject>();
 		for (Map.Entry<String, LinkedHashMap<String, String>> entry : fields.entrySet()){
@@ -199,8 +224,13 @@ public class DeadlockAnalysis {
 			classObjects.put(entry.getKey(), t);
 		}		
 		
+		LinkedHashMap<String, BEConstantPool> cpools = new LinkedHashMap<String, BEConstantPool>();
 		for(BEClassFile cf : classfiles){
-			environment = new Environment(fields , cf.getCostantPool(),cf.getClassName(),classObjects);
+			cpools.put(cf.getClassName(), cf.getCostantPool());
+		}
+		
+		for(BEClassFile cf : classfiles){
+			environment = new Environment(initMethods, fields , cpools,cf.getClassName(),classObjects);
 			LamClass lam= (LamClass) cf.generateLam(environment); //contiene le Lam per tutti i metodi
 			lams.add(lam); //lams alla fine sara' un insieme di LamClass
 			

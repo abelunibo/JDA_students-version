@@ -25,7 +25,7 @@ public class BENew extends BEInstructionLine implements BEInstruction{
 	@Override
 	public void updateEnvironment(Environment environment) {
 		//creo un nuovo oggetto
-		String className= BEConstantPool.takeCpoolRef(environment.getConstantPool(), getRef());
+		String className= BEConstantPool.takeCpoolRef(environment.getConstantPool(environment.getClassName()), getRef());
 		environment.pushStack(new TypeObject(className,environment.getFields(),false));
 				
 	}

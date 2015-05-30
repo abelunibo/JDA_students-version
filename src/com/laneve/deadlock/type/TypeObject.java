@@ -216,6 +216,12 @@ public class TypeObject extends Type{
 				return s;
 		}
 
+		
+		public void setFieldType(String fieldName, Type type) {
+
+			fieldsRecord.put(fieldName, type);
+		}
+
 
 		
 }

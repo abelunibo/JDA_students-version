@@ -26,7 +26,7 @@ public class BEGet extends BEInstructionLine implements BEInstruction{
 
 	@Override
 	public void updateEnvironment(Environment environment){
-		String getfieldRef = BEConstantPool.takeCpoolRef(environment.getConstantPool(),getRef());
+		String getfieldRef = BEConstantPool.takeCpoolRef(environment.getConstantPool(environment.getClassName()),getRef());
 		//String fieldType = getfieldRef.substring(0, getfieldRef.indexOf(" ")); //tipo del campo da modificare
 		String fieldName = getfieldRef.substring(getfieldRef.indexOf(" ")+1, getfieldRef.lastIndexOf(" ")); //nome del campo da modificare
 		String fieldObjectType = getfieldRef.substring(getfieldRef.lastIndexOf(" ")+1); //tipo dell'oggetto in cui e' contenuto il campo

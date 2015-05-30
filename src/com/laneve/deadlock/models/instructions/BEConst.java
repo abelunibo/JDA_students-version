@@ -31,11 +31,11 @@ public class BEConst extends BEInstructionLine implements BEInstruction{
 		}else if(getName().equals("aconst_null")){
 			environment.pushStack(new TypeObject());
 		}else if(getName().contains("ldc")){
-			String cpType = BEConstantPool.takeCpoolRefType(environment.getConstantPool(),getRef());
+			String cpType = BEConstantPool.takeCpoolRefType(environment.getConstantPool(environment.getClassName()),getRef());
 			if(cpType.equals("Integer") || cpType.contains("Long"))
 				environment.pushStack(new TypeInt());
 			else{
-				environment.pushStack(new TypeObject(BEConstantPool.takeCpoolRef(environment.getConstantPool(),getRef()),
+				environment.pushStack(new TypeObject(BEConstantPool.takeCpoolRef(environment.getConstantPool(environment.getClassName()),getRef()),
 						environment.getFields(),false));
 			}
 		}

@@ -30,6 +30,10 @@ Constant pool:
   #21 = Utf8               SourceFile
   #22 = Utf8               DiningPhilosopher.java
 {
+  private int number;
+    descriptor: I
+    flags: ACC_PRIVATE
+
   public com.laneve.test.Fork(int);
     descriptor: (I)V
     flags: ACC_PUBLIC

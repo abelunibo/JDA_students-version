@@ -1,14 +1,14 @@
-Classfile /Users/andrea/Documents/workspace/Prova/bin/Pluto$1.class
-  Last modified 22-mag-2015; size 650 bytes
-  MD5 checksum 5a6eebcf032c0e2e3284389a1f55c0ac
+Classfile /Users/andrea/Documents/workspace/bytecodedeadlockanalysis/bin/com/laneve/test/Pluto$2.class
+  Last modified 29-mag-2015; size 731 bytes
+  MD5 checksum dfd5b0a2226337d9e6395192614b3030
   Compiled from "Pluto.java"
-class Pluto$1 extends java.lang.Thread
+class com.laneve.test.Pluto$2 extends java.lang.Thread
   minor version: 0
   major version: 52
   flags: ACC_SUPER
 Constant pool:
-   #1 = Class              #2             // Pluto$1
-   #2 = Utf8               Pluto$1
+   #1 = Class              #2             // com/laneve/test/Pluto$2
+   #2 = Utf8               com/laneve/test/Pluto$2
    #3 = Class              #4             // java/lang/Thread
    #4 = Utf8               java/lang/Thread
    #5 = Utf8               <init>
@@ -19,19 +19,19 @@ Constant pool:
   #10 = Utf8               LineNumberTable
   #11 = Utf8               LocalVariableTable
   #12 = Utf8               this
-  #13 = Utf8               LPluto$1;
+  #13 = Utf8               Lcom/laneve/test/Pluto$2;
   #14 = Utf8               run
-  #15 = Fieldref           #16.#18        // Pluto.p:LPippo;
-  #16 = Class              #17            // Pluto
-  #17 = Utf8               Pluto
-  #18 = NameAndType        #19:#20        // p:LPippo;
+  #15 = Fieldref           #16.#18        // com/laneve/test/Pluto.p:Lcom/laneve/test/Pippo;
+  #16 = Class              #17            // com/laneve/test/Pluto
+  #17 = Utf8               com/laneve/test/Pluto
+  #18 = NameAndType        #19:#20        // p:Lcom/laneve/test/Pippo;
   #19 = Utf8               p
-  #20 = Utf8               LPippo;
-  #21 = Methodref          #22.#24        // Pippo.takelock:()V
-  #22 = Class              #23            // Pippo
-  #23 = Utf8               Pippo
-  #24 = NameAndType        #25:#6         // takelock:()V
-  #25 = Utf8               takelock
+  #20 = Utf8               Lcom/laneve/test/Pippo;
+  #21 = Methodref          #22.#24        // com/laneve/test/Pippo.takelock2:()V
+  #22 = Class              #23            // com/laneve/test/Pippo
+  #23 = Utf8               com/laneve/test/Pippo
+  #24 = NameAndType        #25:#6         // takelock2:()V
+  #25 = Utf8               takelock2
   #26 = Methodref          #27.#29        // java/lang/InterruptedException.printStackTrace:()V
   #27 = Class              #28            // java/lang/InterruptedException
   #28 = Utf8               java/lang/InterruptedException
@@ -48,7 +48,7 @@ Constant pool:
   #39 = Utf8               ([Ljava/lang/String;)V
   #40 = Utf8               InnerClasses
 {
-  Pluto$1();
+  com.laneve.test.Pluto$2();
     descriptor: ()V
     flags:
     Code:
@@ -57,19 +57,19 @@ Constant pool:
          1: invokespecial #8                  // Method java/lang/Thread."<init>":()V
          4: return
       LineNumberTable:
-        line 11: 0
+        line 26: 0
         line 1: 4
       LocalVariableTable:
         Start  Length  Slot  Name   Signature
-            0       5     0  this   LPluto$1;
+            0       5     0  this   Lcom/laneve/test/Pluto$2;
 
   public void run();
     descriptor: ()V
     flags: ACC_PUBLIC
     Code:
       stack=1, locals=2, args_size=1
-         0: getstatic     #15                 // Field Pluto.p:LPippo;
-         3: invokevirtual #21                 // Method Pippo.takelock:()V
+         0: getstatic     #15                 // Field com/laneve/test/Pluto.p:Lcom/laneve/test/Pippo;
+         3: invokevirtual #21                 // Method com/laneve/test/Pippo.takelock2:()V
          6: goto          14
          9: astore_1
         10: aload_1
@@ -79,13 +79,13 @@ Constant pool:
          from    to  target type
              0     6     9   Class java/lang/InterruptedException
       LineNumberTable:
-        line 16: 0
-        line 17: 6
-        line 18: 10
-        line 20: 14
+        line 31: 0
+        line 32: 6
+        line 33: 10
+        line 35: 14
       LocalVariableTable:
         Start  Length  Slot  Name   Signature
-            0      15     0  this   LPluto$1;
+            0      15     0  this   Lcom/laneve/test/Pluto$2;
            10       4     1     e   Ljava/lang/InterruptedException;
       StackMapTable: number_of_entries = 2
         frame_type = 73 /* same_locals_1_stack_item */
@@ -93,6 +93,6 @@ Constant pool:
         frame_type = 4 /* same */
 }
 SourceFile: "Pluto.java"
-EnclosingMethod: #16.#37                // Pluto.main
+EnclosingMethod: #16.#37                // com.laneve.test.Pluto.main
 InnerClasses:
-     #1; //class Pluto$1
+     #1; //class com/laneve/test/Pluto$2

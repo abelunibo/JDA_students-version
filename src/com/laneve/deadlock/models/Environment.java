@@ -13,8 +13,10 @@ public class Environment {
 	
 	//in comune a tutti i metodi di una classe
 	String className;
-	BEConstantPool constantPool;
+	LinkedHashMap<String, BEConstantPool> cpools;
+	BEConstantPool constantPool; //constantPoolAttuale
 	private LinkedHashMap<String, LinkedHashMap<String, String>> fields;
+	final LinkedHashMap<String, ArrayList<BEMethodDeclaration>> initMethods;
 	private HashMap<String, TypeObject> classObjects;
 	
 	//per un singolo metodo
@@ -24,11 +26,13 @@ public class Environment {
 	BEMethodBody currentMethodBody;	
 
 	
-	public Environment(LinkedHashMap<String, LinkedHashMap<String, String>> fields,
-			BEConstantPool costantPool, String className, HashMap<String, TypeObject> classObjects) {
-		this.constantPool = costantPool;	
+	public Environment(LinkedHashMap<String, ArrayList<BEMethodDeclaration>> initMethods, LinkedHashMap<String, LinkedHashMap<String, String>> fields,
+			LinkedHashMap<String, BEConstantPool> cpools, String className, HashMap<String, TypeObject> classObjects) {
+		this.cpools= cpools;
 		this.className = className;
+		this.constantPool = cpools.get(className);	
 		this.fields = fields;	
+		this.initMethods= initMethods;
 		this.classObjects = classObjects;
 	}
 	
@@ -36,8 +40,7 @@ public class Environment {
 	public TypeObject getClassObject(String className){
 		return classObjects.get(className);
 	}
-	
-	
+		
 	public LinkedHashMap<String, LinkedHashMap<String, String>> getFields() {
 		return fields;
 	}
@@ -48,6 +51,13 @@ public class Environment {
 
 	public BEMethodBody getCurrentMethodBody(){
 		return currentMethodBody;
+	}
+	
+	public ArrayList<BEMethodDeclaration> getClassInitMethods(String className) throws BEException{
+		if(initMethods.get(className)==null){
+			new BEException("Non si possono ottenere i costruttori di una classe non user-defined");
+		}
+		return initMethods.get(className);
 	}
 
 	public void openScope(BEMethodBody mb) {
@@ -102,12 +112,8 @@ public class Environment {
 		currentMethodBody=null;
 	}
 
-	public BEConstantPool getConstantPool() {
-		return constantPool;
-	}
-
-	public void setConstantPool(BEConstantPool constantPool) {
-		this.constantPool = constantPool;
+	public BEConstantPool getConstantPool(String className) {
+		return cpools.get(className);
 	}
 
 	public LinkedList<Type> getOperandStack() {
@@ -192,4 +198,5 @@ public class Environment {
 		this.queueThreads=t;
 
 	}
+
 }	

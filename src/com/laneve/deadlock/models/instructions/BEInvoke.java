@@ -5,9 +5,11 @@ package com.laneve.deadlock.models.instructions;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import com.laneve.bytecode.parser.BytecodeParser.FormalParameterContext;
 import com.laneve.deadlock.exceptions.BEException;
 import com.laneve.deadlock.models.BEConstantPool;
 import com.laneve.deadlock.models.BEInstructionLine;
+import com.laneve.deadlock.models.BEMethodDeclaration;
 import com.laneve.deadlock.models.Environment;
 import com.laneve.deadlock.models.lam.LamAnd;
 import com.laneve.deadlock.models.lam.LamBase;
@@ -55,7 +57,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 		
 		boolean privateMethod= false; 
 		
-		String s = BEConstantPool.takeCpoolRef(environment.getConstantPool(),getRef());
+		String s = BEConstantPool.takeCpoolRef(environment.getConstantPool(environment.getClassName()),getRef());
 		String mName= s.substring(s.indexOf(" ")+1,s.lastIndexOf(" "));
 		//System.out.println(mName);
 		if(getName().contentEquals("invokespecial")  && !mName.equals("<init>")){ //invocazione di metodo privato della classe
@@ -66,9 +68,10 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 		if(getName().contentEquals("invokespecial") && !privateMethod){ //init
 			
 			//genera LAM
-			String signature = BEConstantPool.takeCpoolRef(environment.getConstantPool(),getRef());
+			String signature = BEConstantPool.takeCpoolRef(environment.getConstantPool(environment.getClassName()),getRef());
 			//String methodName = signature.substring(signature.indexOf(" ")+1,signature.lastIndexOf(" "));
-			String methodClass = signature.substring(signature.lastIndexOf(" ")+1);
+			String methodClass = signature.substring(signature.lastIndexOf(" ")+1); //la classe in cui si trova il costruttore	
+			
 			TypeObject ob=null;
 			int openP = signature.indexOf("(");
 			int closedP = signature.indexOf(")");
@@ -101,17 +104,79 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 				e.printStackTrace();
 				System.exit(1);
 			}
-			if(environment.getFields().containsKey(methodClass)) //sto invocando un costruttore di una delle classi user-defined
+			if(environment.getFields().containsKey(methodClass)){ //sto invocando un costruttore di una delle classi user-defined
 				try {
+					
+					//vado a vedere dentro a questa init i putfield (che avvengono nell'ordine specificato dai parametri)
+					// per settare correttamente i valori.
+					
+					//recupero i costruttori della classe
+					ArrayList<BEMethodDeclaration> bmd= environment.getClassInitMethods(methodClass);
+					
+					BEMethodDeclaration initializer=null;
+					
+					//cerco il costruttore corrispondente (numero parametri e tipo devono coincidere)
+					for(BEMethodDeclaration b: bmd){ //qui il ciclo e' solo su metodi init
+						
+						//l'array 'pars' contiene tutti i tipi dei parametri attuali + 
+						// in prima posizione il this che non va considerarato nel controllo seguente
+						
+						ArrayList<FormalParameterContext> params = b.getMethodHeader().getMethodDeclarator().getFormalParameters();
+
+						if(params.size() != (pars.size()-1)) continue; //non e' questo costruttore (numero parametri diverso)
+						
+						for(int i=0;i<params.size(); i++){
+							if(!params.get(i).getText().equals(pars.get(i+1).getClassName())){ 
+								//se il tipo di parametri è diverso non e' questo costruttore
+								break; //guardane un altro
+							}
+						}
+						
+						//ho passato il for quindi il tipo di parametri erano uguali o non avevano parametri
+						initializer=b;
+					}
+					
+
+					if(initializer==null) throw new BEException("Il costruttore per la classe "+ methodClass +"non e' stato trovato"
+							+ "\n. I parametri attuali non sono stati sostituiti correttamente");
+					else{
+						
+						System.out.println(methodClass+" "+pars.size());
+						int k=1; //parte da 1 perche' in pars a 0 c'e' il this
+						// ciclo sulle istruzioni
+						String prevInst=null;
+						for(BEInstructionLine inst: initializer.getMethodBody().getInstructions()){
+							// quando trovo una putfield ottengo il nome del campo da settare
+							if(inst.getName().equals("putfield")){
+								
+								if(prevInst.contains("load_"+k)){
+									String getfieldRef = BEConstantPool.takeCpoolRef(environment.getConstantPool(methodClass),inst.getRef());
+									String fieldName = getfieldRef.substring(getfieldRef.indexOf(" ")+1, getfieldRef.lastIndexOf(" ")); //nome del campo da modificare
+									// aggiorno il field dell'oggetto su cui e' invocato il metodo con setFieldType e l'ultimo campo aggiunto		
+									ob.setFieldType(fieldName, pars.get(k));
+									k++;
+								}
+							
+							}
+							
+							prevInst=inst.getName();
+					
+						}		
+						
+					}
+					
+					
 					lamInv = new LamInvoke(methodClass,ob.getClassName(), pars);
+				
 				} catch (BEException e) {
 					e.printStackTrace();
 					System.exit(1);
-				} 				
+				} 	
+			}
 	
 		}else if(getName().contentEquals("invokevirtual") || privateMethod){ //invokevirtual o invokespecial su metodo privato
 
-			String signature = BEConstantPool.takeCpoolRef(environment.getConstantPool(),getRef());
+			String signature = BEConstantPool.takeCpoolRef(environment.getConstantPool(environment.getClassName()),getRef());
 						
 			if(signature.startsWith("()V start")){ //invokevirtual start
 
@@ -206,7 +271,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 		else if(getName().contentEquals("invokestatic")){
 
 			//genera LAM
-			String signature = BEConstantPool.takeCpoolRef(environment.getConstantPool(),getRef());
+			String signature = BEConstantPool.takeCpoolRef(environment.getConstantPool(environment.getClassName()),getRef());
 			String methodClass = signature.substring(signature.lastIndexOf(" ")+1);
 			String methodName = signature.substring(signature.indexOf(" ")+1,signature.lastIndexOf(" "));
 			int openP = signature.indexOf("(");
