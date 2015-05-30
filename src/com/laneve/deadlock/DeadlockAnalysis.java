@@ -27,6 +27,7 @@ import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.models.lam.LamClass;
 import com.laneve.deadlock.type.TypeObject;
 import com.laneve.deadlock.utilities.ConsoleFormatter;
+import com.laneve.deadlock.utilities.FromClass2Txt;
 import com.laneve.deadlock.utilities.LamsFileFormatter;
 import com.laneve.deadlock.visitor.BytecodeVisitor;
 
@@ -53,7 +54,12 @@ public class DeadlockAnalysis {
 		FILELOGGER.addHandler(hand);
 
 		ArrayList<BEClassFile> classfiles = new ArrayList<BEClassFile>();
+		
 		//TODO ottenere direttamente i file .txt da cartella bytecode java
+		FromClass2Txt fc2t = new FromClass2Txt("bin/com/laneve/test", "bytecode");
+		fc2t.convert();
+		System.exit(0);
+		
 		File folder = new File("bytecode"); //cartella in cui e' contenuto il nostro bytecode
 		ArrayList<LamBase> lams = new ArrayList<LamBase>(); //insieme delle Lam
 		Environment environment;
