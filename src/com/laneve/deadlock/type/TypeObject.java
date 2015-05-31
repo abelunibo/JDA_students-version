@@ -199,7 +199,10 @@ public class TypeObject extends Type{
 					for(Map.Entry<String, Type> entry : t.getFieldsRecord().entrySet()){ //scorro sulla mappa dei campi che ho creato durante l'istanziazione del tipo
 						if(entry.getValue()!=null && entry.getValue().isInt()) continue; //evito di stampare i campi int
 						else{ //se il campo e' di tipo oggetto vado a vedere ricorsivamente i suoi campi
-							s+= flattenedFields(((TypeObject)entry.getValue()))+", " ;	
+							//a meno che non sia un tipo di cun campo statico
+							if(!entry.getKey().contains(".")){
+								s+= flattenedFields(((TypeObject)entry.getValue()))+", " ;	
+							}
 						}
 					}
 				}
