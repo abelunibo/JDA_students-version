@@ -4,22 +4,14 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.laneve.deadlock.exceptions.BEException;
+import com.laneve.deadlock.utilities.Consts;
 
 
 /** Tipo oggetto */
 public class TypeObject extends Type{
 	
-	
-	/* specifica la profondità di ricorsione sui campi nell'espansione dei tipi */
-	static final private int DEPTH = 2;
-	
 	/* campo usato per generare i tipi fresh */
 	static private int indexCounter = 1;
-	
-	// specifica se i campi devono essere appiattiti
-	// se è false i campi degli vengono mostrati tra parentesi quadre 
-	// se e' true i campi vengono mostrati appiattiti cioe' a pari livello dell'oggetto che li contiene separati da virgole
-	public static final boolean FLATTEN=true; 
 	
 	Integer index = null; //indice (null se tipo non ha index)
 
@@ -41,7 +33,7 @@ public class TypeObject extends Type{
 		} catch (BEException e) { // non si puo' mai verificare, il tipo e' appena stato creato --> non ha ancora un indice
 			e.printStackTrace();
 		}
-		setFieldsRecursively(this, fields, DEPTH);
+		setFieldsRecursively(this, fields, Consts.DEPTH);
 
 	}
 	
@@ -83,7 +75,7 @@ public class TypeObject extends Type{
 	
 	@Override
 	public String getNameForMethod(){ // per la stampa del tipo nella signature dei metodi
-		if(FLATTEN){ //voglio i campi appiattiti per la compatibilita' con il tool DF4ABS
+		if(Consts.FLATTEN){ //voglio i campi appiattiti per la compatibilita' con il tool DF4ABS
 			return flattenedFields(this);
 		}else{ //campi non appiattiti (mostrati tra parentesi quadre)
 			return typeAndFields(this); //...e di seguito i suoi campi tra parentesi quadre

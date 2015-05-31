@@ -27,7 +27,7 @@ public class FromClass2Txt {
 	    	System.out.println("Writing " + filenameT);
 	    	
 			System.out.println("Eseguo javap -c "+ filenameC);
-			String[] cmd = {"javap","-c", "-v", "-private", sourceDir.getAbsolutePath()+"/"+filenameC};
+			String[] cmd = {"javap","-c", "-v", "-s", "-private", sourceDir.getAbsolutePath()+"/"+filenameC};
 			try {
 				//TODO ATTENZIONE se esiste gia' un file <textFilePath>.txt verra' sovrascritto
 				

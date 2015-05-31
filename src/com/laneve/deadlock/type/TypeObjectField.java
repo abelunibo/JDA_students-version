@@ -3,6 +3,7 @@ package com.laneve.deadlock.type;
 import java.util.LinkedHashMap;
 
 import com.laneve.deadlock.exceptions.BEException;
+import com.laneve.deadlock.utilities.Consts;
 
 
 public class TypeObjectField extends TypeObject{
@@ -60,7 +61,7 @@ public class TypeObjectField extends TypeObject{
 	
 	@Override
 	public String getName() { //per la stampa del tipo NON nella signature dei metodi
-		if(FLATTEN){
+		if(Consts.FLATTEN){
 			return getFlattenName();
 		}
 		else{

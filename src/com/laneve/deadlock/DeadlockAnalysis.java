@@ -28,6 +28,7 @@ import com.laneve.deadlock.models.lam.LamBase;
 import com.laneve.deadlock.models.lam.LamClass;
 import com.laneve.deadlock.type.TypeObject;
 import com.laneve.deadlock.utilities.ConsoleFormatter;
+import com.laneve.deadlock.utilities.Consts;
 import com.laneve.deadlock.utilities.FromClass2Txt;
 import com.laneve.deadlock.utilities.LamsFileFormatter;
 import com.laneve.deadlock.visitor.BytecodeVisitor;
@@ -37,10 +38,7 @@ public class DeadlockAnalysis {
 	private static Logger FILELOGGER = Logger.getLogger("lams_log");
 
 	public static void main(String[] args) throws IOException{
-		
-		/*** PARAMETRI ***/
-		final boolean CONVERTCLASS2TXT = false;
-		
+				
 		/*** log configuration ***/
 		Logger rootLog = Logger.getLogger("");
 		rootLog.setLevel(Level.ALL);
@@ -64,7 +62,7 @@ public class DeadlockAnalysis {
 		ArrayList<BEClassFile> classfiles = new ArrayList<BEClassFile>();
 		
 		/*** Converte class in txt e li posiziona dentro bytecode ***/
-		if(CONVERTCLASS2TXT){
+		if(Consts.CONVERTCLASS2TXT){
 			FromClass2Txt fc2t = new FromClass2Txt("bin/com/laneve/test", "bytecode");
 			fc2t.convert(); 
 		}
@@ -219,7 +217,7 @@ public class DeadlockAnalysis {
 			
 			//creo il file delle lam per il tool DF4ABS			
 			String cleanedLam = LamBase.cleanLamString(s);
-			if(TypeObject.FLATTEN){
+			if(Consts.FLATTEN){
 				FILELOGGER.info(cleanedLam+"\n");
 			}else FILELOGGER.info(s+"\n");
 			
