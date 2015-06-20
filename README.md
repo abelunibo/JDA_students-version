@@ -4,7 +4,7 @@ Il software permette di effettuare un'analisi statica di un programma Java, al f
 In particolare, per bypassare l'eterogeneità sintattica delle numerose librerie Java dedite al parallelismo, questo viene fatto analizzandone direttamente il bytecode. 
 Partendo da quest'ultimo, viene generato un opportuno programma Lam (deadLock Analysis Model, http://www.cs.unibo.it/~laneve/papers/concur2014.pdf) che potrà essere dato in input al tool DF4ABS (http://df4abs.nws.cs.unibo.it). Questo sfrutta un algoritmo che, partendo dal suddetto programma Lam, è in grado di rilevare eventuali circolarità che indicano la possibile presenza di deadlock.
 
-1) Download del repository e compilazione del codice sorgente (istruzioni Linux / OS X)
+## Download del repository e compilazione del codice sorgente (istruzioni Linux / OS X) ##
 
 1a) Download del repository (https://bitbucket.org/t6o/bytecodedeadlockanalysis/downloads)
 
@@ -45,11 +45,17 @@ $ javac -d bin @sources.txt
 ```
 
 
-2) Esecuzione del software ed analisi dell'output mediante il tool DF4ABS----------
+## Esecuzione del software ed analisi dell'output mediante il tool DF4ABS ##
 
 2a) Assicurarsi che la variabile d'ambiente CLASSPATH sia configurata correttamente per puntare alla cartella /bin, creata in precedenza, e alla libreria lib/antlr-4.4-complete.jar, entrambe contenute dentro la cartella t6o-bytecodedeadlockanalysis-xxxxxxxxxxxx. Per verificarlo, basta eseguire da terminale il comando:
+
+```
+#!bash
+
 $ echo $CLASSPATH
-ed assicurarsi che i percorsi <AbsolutePath>/t6o-bytecodedeadlockanalysis-xxxxxxxxxxxx/bin e <AbsolutePath>/t6o-bytecodedeadlockanalysis-xxxxxxxxxxxx/lib/antlr-4.4-complete.jar siano presenti. Se non presenti aggiungerli con il comando "export" come descritto prima.
+
+```
+ed assicurarsi che i percorsi *<AbsolutePath>/t6o-bytecodedeadlockanalysis-xxxxxxxxxxxx/bin* e *<AbsolutePath>/t6o-bytecodedeadlockanalysis-xxxxxxxxxxxx/lib/antlr-4.4-complete.jar* siano presenti. Se non presenti aggiungerli con il comando "export" come descritto prima.
 
 2b) Copiare i file .java del software da analizzare all'interno di una cartella da dare in input al programma (N.B. Tra i file deve essere presente un unico metodo main)
 
@@ -64,16 +70,16 @@ $ java com.laneve.deadlock.DeadlockAnalysis inputFolder [-o outputFolder] [-d ma
 ```
 
 dove:
-- inputFolder --> è l'unico parametro obbligatorio ed è il percorso della suddetta cartella di input contenente i file .java su cui verificare la presenza di deadlock.
-- outputFolder --> è la cartella in cui il software produrrà l'output necessario all'analisi finale.
-- maxSearchDepth --> è la profondità massima considerata durante l'analisi ricorsiva degli oggetti annidati. Se, ad esempio, un oggetto di tipo A ha un campo di tipo B che, a sua volta, ha un campo di tipo C la profondità minima necessaria per prendere in considerazione il campo di tipo C è 2. N.B.: Se il deadlock è causato da dipendenze tra campi situati a profondità maggiore di quella specificata il deadlock non sarà rilevato.
+* inputFolder --> è l'unico parametro obbligatorio ed è il percorso della suddetta cartella di input contenente i file .java su cui verificare la presenza di deadlock.
+* outputFolder --> è la cartella in cui il software produrrà l'output necessario all'analisi finale.
+* maxSearchDepth --> è la profondità massima considerata durante l'analisi ricorsiva degli oggetti annidati. Se, ad esempio, un oggetto di tipo A ha un campo di tipo B che, a sua volta, ha un campo di tipo C la profondità minima necessaria per prendere in considerazione il campo di tipo C è 2. N.B.: Se il deadlock è causato da dipendenze tra campi situati a profondità maggiore di quella specificata il deadlock non sarà rilevato.
 
 2d) All'interno della cartella di output (se questa non e' stata specificata ne verra' creata una automaticamente chiamata "output_DeadlockAnalysis") si avranno:
-- una cartella "classFiles", contenente i file .class generati dalla compilazione dei file .java del software dato in input
-- una cartella "bytecode", contenente i file .txt del bytecode generato dai suddetti file .class mediante il comando "javap"
-- un file chiamato "lams.txt" che contiene il programma Lam risultato dall'elaborazione; questo è costituito da una funzione lam per ogni metodo del software in esame
+* una cartella "classFiles", contenente i file .class generati dalla compilazione dei file .java del software dato in input
+*  una cartella "bytecode", contenente i file .txt del bytecode generato dai suddetti file .class mediante il comando "javap"
+*  un file chiamato "lams.txt" che contiene il programma Lam risultato dall'elaborazione; questo è costituito da una funzione lam per ogni metodo del software in esame
 
 2e) Analisi della presenza di un possibile deadlock mediante il tool DF4ABS
--  Andare alla pagina http://df4abs.nws.cs.unibo.it
--  Copiare il contenuto del file "lams.txt", ottenuto nel punto precedente, ed incollarlo nell'apposita area di testo
--  Selezionare l'opzione "Lam program" e premere "Invia" per verificare la possibile presenza di deadlock nel software Java di partenza
+* Andare alla pagina http://df4abs.nws.cs.unibo.it
+* Copiare il contenuto del file "lams.txt", ottenuto nel punto precedente, ed incollarlo nell'apposita area di testo
+* Selezionare l'opzione "Lam program" e premere "Invia" per verificare la possibile presenza di deadlock nel software Java di partenza
