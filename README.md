@@ -1,6 +1,6 @@
 # README #
 
-Il software permette di effettuare un'analisi statica di un programma Java al fine di rilevare la presenza di possibili deadlock.
+Il software permette di effettuare un'analisi statica di un programma Java, al fine di rilevare la presenza di possibili deadlock.
 In particolare, per bypassare l'eterogeneità sintattica delle numerose librerie Java dedite al parallelismo, questo viene fatto analizzandone direttamente il bytecode. 
 Partendo da quest'ultimo, viene generato un opportuno programma Lam (deadLock Analysis Model, http://www.cs.unibo.it/~laneve/papers/concur2014.pdf) che potrà essere dato in input al tool DF4ABS (http://df4abs.nws.cs.unibo.it). Questo sfrutta un algoritmo che, partendo dal suddetto programma Lam, è in grado di rilevare eventuali circolarità che indicano la possibile presenza di deadlock.
 
