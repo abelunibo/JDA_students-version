@@ -18,7 +18,7 @@ public abstract class Type {
 	}
 	
 	public boolean isInt(){
-		return isInt;
+		return isInt; //se e' true il tipo e' intero
 	}
 	
 	public String getClassName(){ //ottiene il nome semplice della classe del tipo (senza indice)

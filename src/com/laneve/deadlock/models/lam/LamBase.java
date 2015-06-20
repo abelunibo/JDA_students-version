@@ -90,8 +90,6 @@ public abstract class LamBase {
 							if(environment.getClassObject(clName)==null) //la classe proprietaria non e' una classe user-defined
 								continue;
 							fieldName= fullfieldName.substring(fullfieldName.lastIndexOf('.')+1); //nome campo
-							//String fieldType= entry1.getValue(); //tipo campo
-							//System.out.println("--"+fullfieldName+" "+clName+" "+fieldName+" "+fieldType);
 							objects.add(environment.getClassObject(clName).getFieldType(fieldName));
 						}
 					}
@@ -130,7 +128,6 @@ public abstract class LamBase {
 		lam= lam.replace("⊥", "_");
 		lam= lam.replace("[", "_");
 		lam= lam.replace("]", "_");
-		//lam= lam.replace("_", "");
 		
 		return lam;
 	}

@@ -5,7 +5,6 @@ import com.laneve.deadlock.models.lam.LamBase;
 public class BEInstructionLine extends BEBase {
 	protected String instructionName;
 	protected String number;
-	//it is the local var index in other compilers
 	protected String nat;
 	protected String ref;
 	protected String index;

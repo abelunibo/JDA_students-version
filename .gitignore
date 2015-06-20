@@ -10,6 +10,7 @@ target/
  
 # Package Files #
 *.jar
+!antlr-4.4-complete.jar
 *.war
 *.ear
 *.db

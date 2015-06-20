@@ -2,12 +2,11 @@ package com.laneve.deadlock.utilities;
 
 public final class Consts{
 
-	/* true se deve generare i file .txt del bytecode nella cartella "bytecode"
-	 *  a partire dai file .class contenuti in "bin/com/laneve/test" */
-	public static final boolean CONVERTCLASS2TXT = false;
+	/* true se deve generare i file .txt del bytecode a partire dai file .java delle classi user-defined */
+	public static final boolean CONVERTJAVA2TXT = true;
 	
 	/* specifica la profondità di ricorsione sui campi nell'espansione dei tipi */
-	public static final int DEPTH = 2;
+	public static int DEPTH = 2;
 	
 	/* specifica se i campi devono essere appiattiti
 	 * se è false i campi degli vengono mostrati tra parentesi quadre 

@@ -22,6 +22,10 @@ public class BEGoto extends BEInstructionLine implements BEInstruction{
 
 	@Override
 	public void updateEnvironment(Environment environment) {
+		//TODO bisogna capire come gestire il goto
+		// puo' essere il goto di un if-else o di un ciclo while, o di uno switch, o proprio di un'istruzione goto
+		// se while è dentro if oppure if e' dentro while come riconosco di chi e' il goto?
+		
 	}
 
 

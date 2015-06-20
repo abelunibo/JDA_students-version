@@ -34,7 +34,6 @@ public class BEPut extends BEInstructionLine implements BEInstruction{
 		//String fieldType = getfieldRef.substring(0, getfieldRef.indexOf(" ")); //tipo del campo da modificare
 		//String fieldName = getfieldRef.substring(getfieldRef.indexOf(" ")+1, getfieldRef.lastIndexOf(" ")); //nome del campo da modificare
 		String fieldObjectType = getfieldRef.substring(getfieldRef.lastIndexOf(" ")+1); //tipo dell'oggetto in cui e' contenuto il campo
-		//String firstLetter = getfieldRef.substring(0, 1);		
 		if(getName().equals("putfield")){
 			
 			//non si puo' modificare il campo della classe se non siamo nella sua init

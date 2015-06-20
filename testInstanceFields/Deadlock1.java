@@ -1,5 +1,3 @@
-package com.laneve.test;
-
 // pc1 = monitorenter , pc2 = monitorenter
 
 public class Deadlock1 {

@@ -90,7 +90,6 @@ public class BEMethodDeclaration extends BEBase{
 					continue;
 				fieldName= fullfieldName.substring(fullfieldName.lastIndexOf('.')+1); //nome campo
 				//String fieldType= entry1.getValue(); //tipo campo
-				//System.out.println("--"+fullfieldName+" "+clName+" "+fieldName+" "+fieldType);
 				aType.add(environment.getClassObject(clName).getFieldType(fieldName));
 			}
 		}

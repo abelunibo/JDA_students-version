@@ -56,7 +56,6 @@ public class BEConstantPool extends BEBase{
 			String methodName = takeCpoolRef(constantPool,methodNameRef);
 			String returnType = takeCpoolRef(constantPool,returnTypeRef);
 			returnType = returnType.substring(0, returnType.length());
-			//returnType = returnType.substring(1);
 			return returnType+" "+methodName;
 		case "String":
 			return "java/lang/String";

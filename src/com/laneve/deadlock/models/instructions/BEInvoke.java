@@ -70,7 +70,7 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 			
 			//genera LAM
 			String signature = BEConstantPool.takeCpoolRef(environment.getConstantPool(environment.getClassName()),getRef());
-			//String methodName = signature.substring(signature.indexOf(" ")+1,signature.lastIndexOf(" "));
+			//String methodName = signature.substring(signature.indexOf(" ")+1,signature.lastIndexOf(" ")); //nome del metodo
 			String methodClass = signature.substring(signature.lastIndexOf(" ")+1); //la classe in cui si trova il costruttore	
 			
 			TypeObject ob=null;
@@ -175,7 +175,6 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 								continue;
 							fieldName= fullfieldName.substring(fullfieldName.lastIndexOf('.')+1); //nome campo
 							//String fieldType= entry1.getValue(); //tipo campo
-							//System.out.println("--"+fullfieldName+" "+clName+" "+fieldName+" "+fieldType);
 							pars.add(environment.getClassObject(clName).getFieldType(fieldName));
 						}
 					}
@@ -263,7 +262,6 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 									continue;
 								fieldName= fullfieldName.substring(fullfieldName.lastIndexOf('.')+1); //nome campo
 								//String fieldType= entry1.getValue(); //tipo campo
-								//System.out.println("--"+fullfieldName+" "+clName+" "+fieldName+" "+fieldType);
 								pars.add(environment.getClassObject(clName).getFieldType(fieldName));
 							}
 						}
@@ -290,6 +288,10 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 			}else if(resultType.equals("L")){
 
 				String resultTypeClass = signature.substring(index+1,signature.indexOf(" "));
+
+				if(resultTypeClass.lastIndexOf(';')!=-1){
+					resultTypeClass= resultTypeClass.substring(1, resultTypeClass.lastIndexOf(';'));
+				}
 
 				environment.pushStack(new TypeObject(resultTypeClass,environment.getFields(),false));
 
@@ -345,7 +347,6 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 								continue;
 							fieldName= fullfieldName.substring(fullfieldName.lastIndexOf('.')+1); //nome campo
 							//String fieldType= entry1.getValue(); //tipo campo
-							//System.out.println("--"+fullfieldName+" "+clName+" "+fieldName+" "+fieldType);
 							pars.add(environment.getClassObject(clName).getFieldType(fieldName));
 						}
 					}
@@ -364,15 +365,20 @@ public class BEInvoke extends BEInstructionLine implements BEInstruction{
 	
 				return; //tipo di ritorno void niente da aggiungere sullo stack
 				
-			}else if(resultType.equals("L")){
+			}else if(resultType.equals("L")){ // tipo oggetto
 	
 				String resultTypeClass = signature.substring(index+1,signature.indexOf(" "));
+
+				if(resultTypeClass.lastIndexOf(';')!=-1){
+					resultTypeClass= resultTypeClass.substring(1, resultTypeClass.lastIndexOf(';'));
+				}
+
 	
 				environment.pushStack(new TypeObject(resultTypeClass,environment.getFields(),false));
 	
 			}
-			else if(resultType.equals("I") || resultType.equals("F")){
-	
+			else if(resultType.equals("I") || resultType.equals("F")){ // tipo int o float
+				// noi gestiamo solo int quindi creiamo un int anche per un float
 				environment.pushStack(new TypeInt());
 			}
 

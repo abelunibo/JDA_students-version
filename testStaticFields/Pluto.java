@@ -1,5 +1,3 @@
-package com.laneve.test;
-
 public class Pluto {
 
 	

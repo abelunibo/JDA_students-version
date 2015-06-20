@@ -132,7 +132,8 @@ public class Environment {
 		Type o = null;
 		if(!locks.isEmpty())
 			o = locks.removeLast();
-		//else throw new BEException("rimozione da pila dei lock vuota"); TODO rimetterlo
+		//TODO scommentare quando gestite tutte le possibili istruzioni del bytecode
+		//else throw new BEException("rimozione da pila dei lock vuota"); 
 		return o;
 	}
 
@@ -163,20 +164,24 @@ public class Environment {
 		return o;
 	}
 
+	//pop dall'operand stack e restituzione di tale oggetto
 	public Type popStack() throws BEException {
 		Type o = null;
 		if(!operandStack.isEmpty())
 			o = operandStack.removeLast();
-		//else throw new BEException("pop da operand stack vuoto"); TODO rimetterlo
+		//TODO scommentare quando gestite tutte le possibili istruzioni del bytecode
+		//else throw new BEException("pop da operand stack vuoto");
 		return o;
 	}
+	
 	//pop multiplo senza interesse su cosa si è scartato
 	public void popStack(int count) throws BEException {
 
 		for(int i = 0; i<count; i++){
 			if(!operandStack.isEmpty())
 				operandStack.removeLast();
-			//else throw new BEException("pop da operand stack vuoto"); //TODO rimetterlo
+			//TODO scommentare quando gestite tutte le possibili istruzioni del bytecode
+			//else throw new BEException("pop da operand stack vuoto");
 		}
 	}
 	public void pushStack(Type val){
@@ -185,17 +190,6 @@ public class Environment {
 
 	public void putLocalVar(String localVarIndex, Type val) {
 		localVar.put(localVarIndex, val);
-
-	}
-
-	//TODO usata solo per debug
-	public void setLocks(LinkedList<TypeObject> z) {
-		this.locks=z;
-	}
-
-	//TODO usata solo per debug
-	public void setQueuethreads(LinkedList<TypeObject> t) {
-		this.queueThreads=t;
 
 	}
 
