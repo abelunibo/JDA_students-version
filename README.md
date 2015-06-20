@@ -12,7 +12,13 @@ Partendo da quest'ultimo, viene generato un opportuno programma Lam (deadLock An
 
 $ find src -name "*.java" > sources.txt
 
+
+```
+#!bash
+
 $ mkdir -p bin
+```
+
 
 $ export CLASSPATH=$CLASSPATH:<AbsolutePath>/t6o-bytecodedeadlockanalysis-xxxxxxxxxxxx/bin:<AbsolutePath>/t6o-bytecodedeadlockanalysis-xxxxxxxxxxxx/lib/antlr-4.4-complete.jar
 
