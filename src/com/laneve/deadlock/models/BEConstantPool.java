@@ -1,18 +1,19 @@
 package com.laneve.deadlock.models;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.laneve.deadlock.models.lam.LamBase;
 
 
 public class BEConstantPool extends BEBase{
-	BETableEntries tableEntries;
+	HashMap<String, BEConstantAndInfo> tableEntries =  new HashMap<String, BEConstantAndInfo>();
 
-	public BEConstantPool(BETableEntries tableEntries) {
-		this.tableEntries = tableEntries;
+	public void addTableEntry(BETableEntry tableEntry) {
+		this.tableEntries.put(tableEntry.getRef(), tableEntry.costantAndInfo);
 	}
 
-	public BETableEntries getTableEntries() {
+	public HashMap<String, BEConstantAndInfo> getTableEntries() {
 		return tableEntries;
 	}
 	
@@ -34,7 +35,7 @@ public class BEConstantPool extends BEBase{
 	|
 	 */
 	public static String takeCpoolRef(BEConstantPool constantPool,String ref) {
-		BEConstantAndInfo constantInfo = constantPool.getTableEntries().getTableEntry().get(ref);
+		BEConstantAndInfo constantInfo = constantPool.tableEntries.get(ref);
 		ArrayList<String> a = constantInfo.getConstantAndInfo();
 		switch (a.get(0)) {
 		case "Class":
@@ -66,7 +67,7 @@ public class BEConstantPool extends BEBase{
 	
 	
 	public static String takeCpoolRefType(BEConstantPool constantPool, String ref) {
-		BEConstantAndInfo constantInfo = constantPool.getTableEntries().getTableEntry().get(ref);
+		BEConstantAndInfo constantInfo = constantPool.tableEntries.get(ref);
 		ArrayList<String> a = constantInfo.getConstantAndInfo();
 		return a.get(0);
 	}

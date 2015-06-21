@@ -80,8 +80,8 @@ public class Environment {
 		
 		int j=0;
 		
-		if(mb.getMethodModifier() != null && 
-				mb.getMethodModifier().getModifier().contains("static")){ //ha un modificatore statico
+		if((!mb.getMethodModifier().equals("")) && 
+				mb.getMethodModifier().contains("static")){ //ha un modificatore statico
 			isStatic=true;
 		}
 		else{  
@@ -96,8 +96,8 @@ public class Environment {
 		}
 		
 		//controllo se metodo synchronized
-		if(mb.getMethodModifier() != null && 
-				mb.getMethodModifier().getModifier().contains("synchronized")){ 
+		if((!mb.getMethodModifier().equals("")) && 
+				mb.getMethodModifier().contains("synchronized")){ 
 			// se metodo e' synchronized  aggiungi il tipo dell'oggetto this o della classe (se e' statico) ai lock
 			if(isStatic)
 				addLock(t);

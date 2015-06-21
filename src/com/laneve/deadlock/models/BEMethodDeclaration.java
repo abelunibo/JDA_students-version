@@ -15,17 +15,17 @@ import com.laneve.deadlock.type.TypeObject;
 
 
 public class BEMethodDeclaration extends BEBase{
-	BEMethodModifier modifier;
+	String modifier;
 	BEMethodHeader methodHeader;
 	BEMethodBody methodBody;
 		
-	public BEMethodDeclaration(BEMethodModifier modifier,BEMethodHeader methodHeader,BEMethodBody methodBody) {
+	public BEMethodDeclaration(String modifier,BEMethodHeader methodHeader,BEMethodBody methodBody) {
 		this.modifier = modifier;
 		this.methodHeader = methodHeader;
 		this.methodBody = methodBody;
 	}
 
-	public BEMethodModifier getModifier() {
+	public String getModifier() {
 		return modifier;
 	}
 
@@ -59,8 +59,8 @@ public class BEMethodDeclaration extends BEBase{
 					
 		ArrayList<FormalParameterContext> pars = getMethodHeader().getMethodDeclarator().getFormalParameters();
 		
-		if(methodBody.getMethodModifier() != null && 
-				!methodBody.getMethodModifier().getModifier().contains("static")){ //non ha un modificatore statico
+		if((!methodBody.getMethodModifier().equals("")) && 
+				!methodBody.getMethodModifier().contains("static")){ //non ha un modificatore statico
 			aType.add(t);
 		}
 		else{

@@ -56,8 +56,8 @@ public class DiningPhilosopher extends Thread{
 		Fork f1= new Fork(1);
 		Fork f2= new Fork(2);
 		
-		//DiningPhilosopher d1 = new DiningPhilosopher(0,f0,f2); //Deadlock
-		DiningPhilosopher d1 = new DiningPhilosopher(0,f2,f0); //No Deadlock
+		DiningPhilosopher d1 = new DiningPhilosopher(0,f0,f2); //Deadlock
+		//DiningPhilosopher d1 = new DiningPhilosopher(0,f2,f0); //No Deadlock
 		DiningPhilosopher d2 = new DiningPhilosopher(1,f1,f0); 
 		DiningPhilosopher d3 = new DiningPhilosopher(2,f2,f1); 
 		

@@ -24,8 +24,6 @@ import com.laneve.deadlock.models.BEMethodBody;
 import com.laneve.deadlock.models.BEMethodDeclaration;
 import com.laneve.deadlock.models.BEMethodDeclarator;
 import com.laneve.deadlock.models.BEMethodHeader;
-import com.laneve.deadlock.models.BEMethodModifier;
-import com.laneve.deadlock.models.BETableEntries;
 import com.laneve.deadlock.models.BETableEntry;
 import com.laneve.deadlock.models.instructions.BEAthrow;
 import com.laneve.deadlock.models.instructions.BEConst;
@@ -72,21 +70,12 @@ public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
 	
 	@Override 
 	public BEBase visitConstantPool(@NotNull BytecodeParser.ConstantPoolContext ctx) { 
-		BETableEntries tableEntries;
-		BEConstantPool constantPool; 
-		tableEntries = (BETableEntries) visitTableEntries(ctx.tableEntries());
-		constantPool = new BEConstantPool(tableEntries);
-		return constantPool;
-	}
-
-	@Override
-	public BEBase visitTableEntries(@NotNull BytecodeParser.TableEntriesContext ctx) { 
-		BETableEntries tableEntries = new BETableEntries() ;
-		for(TableEntryContext tb : ctx.tableEntry()){
+		BEConstantPool constantPool=new BEConstantPool(); 
+		for(TableEntryContext tb : ctx.tableEntries().tableEntry()){
 			BETableEntry tableEntry = (BETableEntry) visitTableEntry(tb);
-			tableEntries.addTableEntry(tableEntry);
+			constantPool.addTableEntry(tableEntry);
 		}
-		return tableEntries; 
+		return constantPool;
 	}
 
 	@Override
@@ -121,14 +110,12 @@ public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
 	@Override 
 	public BEBase visitMethodDeclaration(@NotNull BytecodeParser.MethodDeclarationContext ctx) { 
 		BEMethodDeclaration methodDeclaration;
-		BEMethodModifier methodModifier = new BEMethodModifier("");;
+		String methodModifier = "";
 		BEMethodBody methodBody;
 		BEMethodHeader methodHeader;
 
 		for(MethodModifierContext m : ctx.methodModifier()){
-			BEMethodModifier modifier = (BEMethodModifier)visitMethodModifier(m);
-			if(modifier.getModifier().contentEquals("synchronized"))
-				methodModifier = modifier;
+			methodModifier = methodModifier + " " + m.getText();
 		}
 		
 		if(ctx.methodHeader()!=null){
@@ -150,11 +137,6 @@ public class BytecodeVisitor extends BytecodeBaseVisitor<BEBase> {
 		methodDeclaration = new BEMethodDeclaration(methodModifier, methodHeader, methodBody);
 
 		return methodDeclaration;
-	}
-
-	@Override public BEBase visitMethodModifier(@NotNull BytecodeParser.MethodModifierContext ctx) {
-		BEMethodModifier modifier = new BEMethodModifier(ctx.getText());
-		return modifier; 
 	}
 
 	@Override public BEBase visitMethodHeader(@NotNull BytecodeParser.MethodHeaderContext ctx) { 

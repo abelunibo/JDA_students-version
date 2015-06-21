@@ -175,7 +175,7 @@ public class DeadlockAnalysis {
 		for(BEClassFile cf : classfiles){ //creiamo dalla constant Pool la mappa <NomeClasse, <nomeCampo, tipoCampo>>
 			String className="",nameAndType="",fieldName = "",type="";
 			LinkedHashMap<String, String> fieldNameAndTypes = new LinkedHashMap<String, String>();
-			HashMap<String, BEConstantAndInfo> tableEntries = cf.getCostantPool().getTableEntries().getTableEntry();
+			HashMap<String, BEConstantAndInfo> tableEntries = cf.getCostantPool().getTableEntries();
 			for (Map.Entry<String, BEConstantAndInfo> entry : tableEntries.entrySet()){
 				ArrayList<String> a = entry.getValue().getConstantAndInfo();
 				if(a.get(0).contentEquals("Fieldref")){

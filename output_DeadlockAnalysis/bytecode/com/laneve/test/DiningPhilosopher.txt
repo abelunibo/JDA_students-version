@@ -1,6 +1,6 @@
 Classfile /Users/andrea/Documents/workspace/bytecodedeadlockanalysis/output_DeadlockAnalysis/classFiles/com/laneve/test/DiningPhilosopher.class
-  Last modified 20-giu-2015; size 2134 bytes
-  MD5 checksum a160a33b4d0571f43ef2a69c29a99e0d
+  Last modified 21-giu-2015; size 2134 bytes
+  MD5 checksum e7aaa643d0c720b618f23a84bfc83d7f
   Compiled from "DiningPhilosopher.java"
 public class com.laneve.test.DiningPhilosopher extends java.lang.Thread
   minor version: 0
@@ -382,8 +382,8 @@ Constant pool:
         27: new           #32                 // class com/laneve/test/DiningPhilosopher
         30: dup
         31: iconst_0
-        32: aload_3
-        33: aload_1
+        32: aload_1
+        33: aload_3
         34: invokespecial #33                 // Method "<init>":(ILcom/laneve/test/Fork;Lcom/laneve/test/Fork;)V
         37: astore        4
         39: new           #32                 // class com/laneve/test/DiningPhilosopher
@@ -411,7 +411,7 @@ Constant pool:
         line 55: 0
         line 56: 9
         line 57: 18
-        line 60: 27
+        line 59: 27
         line 61: 39
         line 62: 51
         line 64: 63

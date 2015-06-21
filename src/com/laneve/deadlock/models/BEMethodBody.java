@@ -16,7 +16,7 @@ import com.laneve.deadlock.type.Type;
 
 public class BEMethodBody extends BEBase{
 	LinkedList<BEInstructionLine> instructions;
-	BEMethodModifier methodModifier = null;
+	String methodModifier = null;
 	BEMethodHeader methodHeader = null;
 	HashMap<String, Integer> instructionMap;
 	BEInstructionLine instructionTemp;
@@ -39,7 +39,7 @@ public class BEMethodBody extends BEBase{
 		return instructions;
 	}
 
-	public void setMethodSignature(BEMethodModifier methodModifier,
+	public void setMethodSignature(String methodModifier,
 			BEMethodHeader methodHeader) throws BEException{
 
 		if(this.methodHeader!=null){
@@ -67,7 +67,7 @@ public class BEMethodBody extends BEBase{
 		return this.lamInvokeSignature;
 	}
 
-	public BEMethodModifier getMethodModifier() {
+	public String getMethodModifier() {
 		return methodModifier;
 	}
 

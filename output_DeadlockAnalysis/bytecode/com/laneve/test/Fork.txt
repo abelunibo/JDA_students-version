@@ -1,5 +1,5 @@
 Classfile /Users/andrea/Documents/workspace/bytecodedeadlockanalysis/output_DeadlockAnalysis/classFiles/com/laneve/test/Fork.class
-  Last modified 20-giu-2015; size 323 bytes
+  Last modified 21-giu-2015; size 323 bytes
   MD5 checksum 1ee3162b1fc0bd39f9ffd11529670fb3
   Compiled from "DiningPhilosopher.java"
 class com.laneve.test.Fork
