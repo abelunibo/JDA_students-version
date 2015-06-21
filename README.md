@@ -1,4 +1,4 @@
-# Analisi statica di Deadlock in Java #
+# Analisi statica di Deadlock su Bytecode Java #
 
 Il software permette di effettuare un'analisi statica di un programma Java, al fine di rilevare la presenza di possibili deadlock.
 In particolare, per bypassare l'eterogeneità sintattica delle numerose librerie Java dedite al parallelismo, questo viene fatto analizzandone direttamente il bytecode.
