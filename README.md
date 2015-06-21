@@ -1,9 +1,7 @@
 # README #
 
 Il software permette di effettuare un'analisi statica di un programma Java, al fine di rilevare la presenza di possibili deadlock.
-
 In particolare, per bypassare l'eterogeneità sintattica delle numerose librerie Java dedite al parallelismo, questo viene fatto analizzandone direttamente il bytecode.
- 
 Partendo da quest'ultimo, viene generato un opportuno programma Lam (**deadLock Analysis Model**, http://www.cs.unibo.it/~laneve/papers/concur2014.pdf) che potrà essere dato in input al tool **DF4ABS** (http://df4abs.nws.cs.unibo.it). Questo sfrutta un algoritmo che, partendo dal suddetto programma Lam, è in grado di rilevare eventuali circolarità che indicano la possibile presenza di deadlock.
 
 ## Download del repository e compilazione del codice sorgente (istruzioni Linux / OS X) ##
@@ -43,7 +41,7 @@ $ javac -d bin @sources.txt
 
 ## Esecuzione del software ed analisi dell'output mediante il tool DF4ABS ##
 
-1) Assicurarsi che la variabile d'ambiente CLASSPATH sia configurata correttamente per puntare alla cartella /bin, creata in precedenza, e alla libreria *lib/antlr-4.4-complete.jar*, entrambe contenute dentro la cartella *t6o-bytecodedeadlockanalysis-xxxxxxxxxxxx*. Per verificarlo, basta eseguire da terminale il comando:
+1) Assicurarsi che la variabile d'ambiente CLASSPATH sia configurata correttamente per puntare alla cartella */bin*, creata in precedenza, e alla libreria *lib/antlr-4.4-complete.jar*, entrambe contenute dentro la cartella *t6o-bytecodedeadlockanalysis-xxxxxxxxxxxx*. Per verificarlo, basta eseguire da terminale il comando:
 
 ```
 #!bash
@@ -51,7 +49,7 @@ $ javac -d bin @sources.txt
 $ echo $CLASSPATH
 
 ```
-ed assicurarsi che i percorsi *<AbsolutePath>/t6o-bytecodedeadlockanalysis-xxxxxxxxxxxx/bin* e *<AbsolutePath>/t6o-bytecodedeadlockanalysis-xxxxxxxxxxxx/lib/antlr-4.4-complete.jar* siano presenti. Se non presenti aggiungerli con il comando *export* come descritto prima.
+ed assicurarsi che i percorsi *<AbsolutePath>/t6o-bytecodedeadlockanalysis-xxxxxxxxxxxx/bin* e *<AbsolutePath>/t6o-bytecodedeadlockanalysis-xxxxxxxxxxxx/lib/antlr-4.4-complete.jar* siano presenti. Se non presenti aggiungerli con il comando "export" come descritto prima.
 
 2) Copiare i file .java del software da analizzare all'interno di una cartella da dare in input al programma (N.B. Tra i file deve essere presente un unico metodo main)
 
@@ -66,6 +64,7 @@ $ java com.laneve.deadlock.DeadlockAnalysis inputFolder [-o outputFolder] [-d ma
 ```
 
 dove:
+
 * inputFolder --> è l'unico parametro obbligatorio ed è il percorso della suddetta cartella di input contenente i file .java su cui verificare la presenza di deadlock.
 
 * outputFolder --> è la cartella in cui il software produrrà l'output necessario all'analisi finale.
