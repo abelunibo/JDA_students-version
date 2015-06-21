@@ -69,8 +69,8 @@ dove:
 
 * *outputFolder* --> è la cartella in cui il software produrrà l'output necessario all'analisi finale.
 
-* *maxSearchDepth* --> è la profondità massima considerata durante l'analisi ricorsiva degli oggetti annidati. Se, ad esempio, un oggetto di tipo A ha un campo di tipo B che, a sua volta, ha un campo di tipo C la profondità minima necessaria per prendere in considerazione il campo di tipo C è 2. 
-(N.B. Se il deadlock è causato da dipendenze tra campi situati a profondità maggiore di quella specificata il deadlock non sarà rilevato)
+* *maxSearchDepth* --> è la profondità massima considerata durante l'analisi ricorsiva degli oggetti annidati. Se, ad esempio, un oggetto di tipo A ha un campo di tipo B che, a sua volta, ha un campo di tipo C la profondità minima necessaria per prendere in considerazione il campo di tipo C è 2 
+(N.B. Se il deadlock è causato da dipendenze tra campi situati a profondità maggiore di quella specificata allora non sarà rilevato).
 
 4) All'interno della cartella di output (se questa non e' stata specificata ne verra' creata una automaticamente chiamata *output_DeadlockAnalysis*) si avranno:
 
